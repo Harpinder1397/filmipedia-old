@@ -1,0 +1,55 @@
+@import '../../assets/styles/variables.less';
+.card-container {
+  background: #fff;
+  padding: 10px;
+  border-radius: 8px;
+  // min-width: 222px;
+  margin: 0 0px 12px 12px;
+  box-shadow: 0px 0px 10px @theme-color;
+  display: flex;
+  flex-direction: row;
+
+  .img-wrapper {
+    overflow: hidden;
+    height: 130px;
+    width: 130px;
+    border-radius: 50%;
+    margin-right: 6px;
+    img {
+      height: 100%;
+      width: 100%;
+      // border-radius: 8px;
+      transition: .3s;
+    }
+  
+    img:hover {
+      transform: scale(1.5);
+      cursor: pointer;
+    }
+  }
+  
+
+  .details {
+    // margin: 10px 0;
+    font-size: 18px;
+    line-height: 1.5;
+    min-width: 150px;
+    max-width: 150px;
+    display: flex;
+    justify-content: space-between;
+    // align-items: center;
+    .sub-cat {
+      font-size: 16px;
+      color: rgba(0, 0, 0, 0.4)
+    }
+    .meta {
+      font-size: 16px;
+      color: rgba(0, 0, 0, 1)
+    }
+    .action-btns {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+  }
+}

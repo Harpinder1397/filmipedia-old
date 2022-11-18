@@ -1,0 +1,132 @@
+@import "../../assets/styles/variables.less";
+.navbar {
+  position: fixed;
+  background: #f5f5f5;
+  box-shadow: 0 0 8px #000;
+  font-size: inherit;
+  z-index: 9;
+  width: 100%;
+
+  .ant-select-selector {
+    border-radius: 20px !important;
+    padding: 20px 20px !important;
+    background-color: @content-background;
+    border: none;
+  }
+  // .ant-select-arrow {
+    // width: 2em !important;
+    // height: 2em !important;
+  // }
+
+  &__category-selector {
+    // width: 500px; 
+
+    .ant-select-selector {
+      // border: none !important;
+      border-radius: 8px 0 0 8px !important;
+      width: 150px !important;
+    }
+
+    .ant-select-selection-search {
+      // padding: 5px 20px !important;
+    }
+  }
+
+  &__tag-selector {
+    // width: 500px;
+
+    .ant-select-selector {
+      // border: none !important;
+      background-color: #fff !important;
+      border-radius: 0px 8px 8px 0 !important;
+      width: 200px !important;
+    }
+
+    .ant-select-selection-search {
+      // padding: 5px 20px !important;
+    }
+  }
+
+  &__left > * {
+    // margin-right: 32px;
+  }
+
+  &__right > * {
+    margin-left: 16px;
+  }
+
+  &__right {
+    margin-right: 50px;
+  }
+
+  &__logo {
+    // position: fixed;
+    font-size: 1.25rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    display: inline-block;
+    // padding: 23px;
+    background-color: black;
+    color: @theme-color;
+    margin-left: 50px;
+  }
+
+  &__domain-dd {
+    width: 176px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  &__search {
+    width: 384px;
+  }
+
+  &__tags-container {
+    // color: red !important;
+    line-height: 24px;
+    padding: 2px 50px;
+    background: @theme-color;
+
+    .nav-subBar {
+      margin: 0 1px;
+      padding: 4px 10px;
+      border-radius: 4px;
+      background-color: @selected-color;
+      cursor: pointer;
+      // color: white;
+    }
+
+    .nav-subBar:hover {
+      background-color: @theme-color;
+    }
+  }
+}
+.ant-layout-footer footer {
+  margin-top: -69vh;
+}
+
+.ant-layout-header {
+  line-height: 0px !important;
+  min-width: 1350px;
+  height: 60px;
+}
+
+.navbar__left {
+  margin-left: 50px;
+  flex-flow: unset !important;
+  .navbar__category-selector {
+    .ant-select-selector {
+      border-radius: 8px 0 0 8px !important;
+    }
+  }
+  .navbar__tag-selector {
+    .ant-select-selector {
+      border-radius: 0 8px 8px 0 !important;
+    }
+  }
+}
+.navbar-search-input {
+  width: 300px !important;
+  height: 40px;
+}
