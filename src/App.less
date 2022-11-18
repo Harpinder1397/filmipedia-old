@@ -41,13 +41,13 @@ body {
   .ant-btn-primary {
     color: @text-color !important;
     border-radius: 8px;
-    background: @theme-color;
+    background: @theme-color !important;
     border: none;
   }
   .ant-btn {
     color: #fff !important;
     border-radius: 4px;
-    background: @selected-color;
+    background: @selected-color !important;
     border: none;
   }
   .ant-tabs-tab.ant-tabs-tab-active .ant-tabs-tab-btn {
@@ -85,17 +85,11 @@ body {
       background-color: @theme-color;
     }
   }
-  .ant-select-selection-placeholder,
-  .ant-input::placeholder {
-    color: #fff !important;
-  }
   .ant-select-selector {
-    background-color: @theme-color !important;
-    padding: 0 10px !important;
+    background-color: @theme-color;
   }
   .ant-input {
-    background-color: @theme-color !important;
-    
+    background-color: @theme-color;
   }
   .ant-pagination-item {
     background: @theme-color !important;

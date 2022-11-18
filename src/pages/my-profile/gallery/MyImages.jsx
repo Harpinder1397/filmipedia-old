@@ -1,8 +1,6 @@
-import { EditOutlined, EllipsisOutlined, SettingOutlined, UploadOutlined } from '@ant-design/icons';
-import { Row, Col, Button, Upload, Card, Avatar } from 'antd';
-import { Meta } from 'antd/lib/list/Item';
+import { UploadOutlined } from '@ant-design/icons';
+import { Row, Col, Button, Upload } from 'antd';
 import ImageUploaderComponent from '../../../common/image-uploader';
-import './galleryStyle.less';
 
 const MyImages = ({
   userDetails,
@@ -43,57 +41,29 @@ const MyImages = ({
           </div>
         </div>
       </Row>
-
-        <Row gutter={[24, 24]}>
-        { userDetails?.thumbnails?.map((thumbnail, index) => {
-          return (
-            <Col xs={24} sm={12} md={8} lg={6} xxl={6} xl={6}>
-              <Card
-                className="profile-ant-card"
-                bodyStyle={{display: 'none'}}
-                cover={
-                  <img
-                    alt="example"
-                    className="profile-images"
-                    src={thumbnail.url}
-                  />
-                }
-                actions={[
-                  thumbnail.dp ? <Button className="current-dp-btn" >Current DP</Button> : <Button onClick={() => makeDp(index)}>Make it DP</Button>,
-                  <Button onClick={() => removePic(index, thumbnail.url)}>Delete</Button>
-                ]}
-              >
-              </Card>
-            </Col>
-          )
-        })}
-      </Row>
+      <Row gutter={[24, 24]}>
+        {
+          userDetails?.thumbnails?.map((thumbnail, index) => (
+            // <div className="uploaded-container">
+              <Col span={4}>
+                <div className="uploaded-container">
+                  <div className="title">{thumbnail.dp ? 'Current DP' : ''}</div>
+                  <img src={thumbnail.url} width={'100%'} />
+                  {/* <Button>tags</Button> */}
+                  <div className="action-btn">
+                    {
+                      thumbnail.dp ? null : <Button onClick={() => makeDp(index)}>Make it DP</Button>
+                    }
+                    <Button onClick={() => removePic(index, thumbnail.url)}>Delete</Button>
+                  </div>
+                </div>
+              </Col>
+            // </div>
+          ))
+        }  
+        </Row>
     </>
   )
 }
 
 export default MyImages;
-
-// old code 
-
-{/* // <Row gutter={[24, 24]}>
-      //   {
-      //     userDetails?.thumbnails?.map((thumbnail, index) => (
-      //       // <div className="uploaded-container">
-      //         <Col xs={24} sm={12} md={8} lg={6} xxl={6} xl={6} className={thumbnail.dp ? "select-current-dp" : ""}>
-      //           <div className="uploaded-container">
-      //            {/* <div className="title">{thumbnail.dp ? 'Current DP' : ''}</div> */}
-      //             <img src={thumbnail.url} width={'100%'} />
-      //             {/* <Button>tags</Button> */}
-      //             <div className="action-btn">
-      //               {
-      //                 thumbnail.dp ? <Button className="current-dp-btn" >Current DP</Button> : <Button onClick={() => makeDp(index)}>Make it DP</Button>
-      //               }
-      //               <Button onClick={() => removePic(index, thumbnail.url)}>Delete</Button>
-      //             </div>
-      //           </div>
-      //         </Col>
-      //       // </div>
-      //     ))
-      //   }  
-// </Row> */}

@@ -50,7 +50,7 @@ const AllStates = ({states, getStates }) => {
             }
           }}
           body={
-            <DeleteOutlined className="state-delete-btn" />
+            <DeleteOutlined />
           }
         />
             

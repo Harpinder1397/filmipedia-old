@@ -5,8 +5,8 @@ import { genderOptions } from '../../../constant/common';
 import { FiltersContext } from '../../../App';
 import { eyeColors, hairColors, skinColors } from '../../../constant/artistsFeatures';
 import { mapStates, mapCities } from '../../../common/utils';
+
 import { useState, useContext, useEffect } from 'react';
-import './basicInfoStyle.less'
 
 const BasicInfo = ({
   userDetails,
@@ -33,8 +33,8 @@ const BasicInfo = ({
 	},[selectedState])
 
   return (
-      <Row gutter={[24, 24]} className="basic-info-ant-row">
-        <Col xs={24} sm={12} md={8} lg={6} xxl={6} xl={6}>
+      <Row gutter={[24, 24]} style={{ padding: '24px'}}>
+        <Col span={6}>
           <FormInput 
             type="text"
             name="fullName"
@@ -44,7 +44,7 @@ const BasicInfo = ({
             required
           /> 
         </Col>
-        <Col xs={24} sm={12} md={8} lg={6} xxl={6} xl={6}>
+        <Col span={6}>
           <FormSelect
             name="gender"
             label="Gender"
@@ -60,7 +60,7 @@ const BasicInfo = ({
             width={"100%"}
           /> 
         </Col>
-        <Col xs={24} sm={12} md={8} lg={6} xxl={6} xl={6}>
+        <Col span={6}>
           <FormInput
             type="date"
             name="dateOfBirth"
@@ -72,7 +72,7 @@ const BasicInfo = ({
           // disabled
           />
         </Col>
-        <Col xs={24} sm={12} md={8} lg={6} xxl={6} xl={6}>
+        <Col span={6}>
           <FormInput 
             type="text"
             name="userName"
@@ -83,7 +83,7 @@ const BasicInfo = ({
             required
           />
         </Col>
-        <Col xs={24} sm={12} md={8} lg={6} xxl={6} xl={6}>
+        <Col span={6}>
           {/* <FormSelect
             name="languages"
             label="change your language"
@@ -135,14 +135,13 @@ const BasicInfo = ({
             mode="multiple"
           />
         </Col>
-        <Col xs={24} sm={12} md={8} lg={6} xxl={6} xl={6}>
+        <Col span={6}>
           <FormSelect
 						name="category"
 						label="you are"
 						value={userDetails?.rest?.category}
 						onSelect={(id, val) => {
-              // console.log(id , val, 'aa')
-							setSubCategories(val.id);
+							// setSubCategories(id);
               const data = {...userDetails, rest: {...userDetails.rest, category: val.value}}
 							setUserDetails(data)
 						}}
@@ -152,7 +151,7 @@ const BasicInfo = ({
 						filterOption={(input, option) => option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0 }
 					/>    
         </Col>
-        <Col xs={24} sm={12} md={8} lg={6} xxl={6} xl={6}>
+        <Col span={6}>
           <FormSelect
 						name="subCategory"
 						label="sub-category"
@@ -167,7 +166,7 @@ const BasicInfo = ({
 						filterOption={(input, option) => option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0 }
 					/>  
         </Col>
-        <Col xs={24} sm={12} md={8} lg={6} xxl={6} xl={6}>
+        <Col span={6}>
           <FormSelect
             name="tags"
             label="Best in"
@@ -191,7 +190,7 @@ const BasicInfo = ({
             mode="multiple"
           />
         </Col>
-        <Col xs={24} sm={12} md={8} lg={6} xxl={6} xl={6}>
+        <Col span={6}>
           <FormInput
 						type="number"
 						name="experience"
@@ -203,7 +202,7 @@ const BasicInfo = ({
 					// disabled
 					/>
         </Col>
-        <Col xs={24} sm={12} md={8} lg={6} xxl={6} xl={6}>
+        <Col span={6}>
           <FormSelect
 						name="state"
 						label="Select your state"
@@ -226,7 +225,7 @@ const BasicInfo = ({
 						width={"100%"}
 					/>
         </Col>
-        <Col xs={24} sm={12} md={8} lg={6} xxl={6} xl={6}>
+        <Col span={6}>
           <FormSelect
             name="cities"
 						label="Select your city"
@@ -243,7 +242,7 @@ const BasicInfo = ({
 						width={"100%"}
 					/>
         </Col>
-        <Col xs={24} sm={12} md={8} lg={6} xxl={6} xl={6}>
+        <Col span={6}>
           <FormInput
 						type="textarea"
 						name="bio"
@@ -258,7 +257,7 @@ const BasicInfo = ({
           userDetails?.rest?.category === 'Art'
             ? (
               <>
-                <Col xs={24} sm={12} md={8} lg={6} xxl={6} xl={6}>
+                <Col span={6}>
                   <FormInput
                     type="text"
                     name="height"
@@ -270,7 +269,7 @@ const BasicInfo = ({
                     // disabled
                   />
                 </Col>
-                <Col xs={24} sm={12} md={8} lg={6} xxl={6} xl={6}>
+                <Col span={6}>
                   <FormInput
                     type="text"
                     name="weight"
@@ -282,7 +281,7 @@ const BasicInfo = ({
                     // disabled
                   />
                 </Col>
-                <Col xs={24} sm={12} md={8} lg={6} xxl={6} xl={6}>
+                <Col span={6}>
                   <FormInput
                     type="text"
                     name="budget"
@@ -294,7 +293,7 @@ const BasicInfo = ({
                     // disabled
                   />
                 </Col>
-                <Col xs={24} sm={12} md={8} lg={6} xxl={6} xl={6}>
+                <Col span={6}>
                   <FormSelect
                     name="eyes"
                     label="Eyes color"
@@ -315,7 +314,7 @@ const BasicInfo = ({
                     width={"100%"}
                   />
                 </Col>
-                <Col xs={24} sm={12} md={8} lg={6} xxl={6} xl={6}>
+                <Col span={6}>
                   <FormSelect
                     name="skin"
                     label="Skin color"
@@ -335,7 +334,7 @@ const BasicInfo = ({
                     width={"100%"}
                   />
                 </Col>
-                <Col xs={24} sm={12} md={8} lg={6} xxl={6} xl={6}>
+                <Col span={6}>
                   <FormSelect
                     name="hair"
                     label="Hair color"
@@ -359,12 +358,7 @@ const BasicInfo = ({
             ) : null
         }
         
-        <Button
-          className="submit-save-btn"
-          onClick={updateBasicDetails}
-        >
-          Save
-        </Button>
+        <Button onClick={updateBasicDetails}>Save</Button>
 
       </Row>
   )

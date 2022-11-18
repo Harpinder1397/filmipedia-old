@@ -164,9 +164,6 @@
 
 .all-states {
   background: white;
-  .state-delete-btn {
-    margin-left: 10px;
-  }
   .all-states-header-button {
     display: flex;
     flex-direction: row;
@@ -180,7 +177,7 @@
             width: 170px;
           }
           .ant-select-selector {
-            border-radius: 8px 0 0 8px !important;
+            border-radius: 8px 0 0 8px;
             .ant-select-selection-placeholder {
               color: white !important;
               display: flex;
@@ -204,22 +201,5 @@
 .state-input, .city-input {
   .ant-form-item-label {
     width: 50px;
-  }
-}
-
-
-@media screen and (max-width: 456px) {
-  .admin-panel {
-    width: 100%;
-    .content-area {
-      width: 100%;
-      margin-left: 0;
-    }
-  }
-  .filter-sub-buttons {
-    display: none !important;
-  }
-  .all-states-header-button {
-    justify-content: end !important;
   }
 }

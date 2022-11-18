@@ -57,7 +57,7 @@ const FormSelect = ({
 				>
 					{
 						options.map((option) => (
-							<Option key={option._id} id={option._id} value={option.value}>
+							<Option key={option.id} id={option.id} value={option.value}>
 								{option.value}
 							</Option>
 						))

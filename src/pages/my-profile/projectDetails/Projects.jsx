@@ -7,8 +7,6 @@ import { getProjectsApi, createProjectApi, updateProjectApi, deleteProjectApi } 
 import PopConfirm from '../../../common/pop-confirm';
 import ProjectModal from './ProjectModal';
 
-import './projectDetailsStyle.less'
-
 const Projects = () => {
 
   const { categories } = useContext(FiltersContext)
@@ -128,26 +126,26 @@ const Projects = () => {
         {
           projects.length ?  projects.map((project) => (
             <>
-              <Col xs={24} sm={12} md={8} lg={5} xxl={5} xl={5}>
+              <Col span={5}>
                 <FormInput
                   label={'Project Name'}
                   value={project.projectName}
                 />
               </Col>
-              <Col xs={24} sm={12} md={8} lg={5} xxl={5} xl={5}>
+              <Col span={5}>
                 <FormSelect
                   label={'Category'}
                   className="navbar__tag-selector"
                   value={project.category}
                 />
               </Col>
-              <Col xs={24} sm={12} md={8} lg={5} xxl={5} xl={5}>
+              <Col span={5}>
                 <FormSelect
                   label={'Sub Category'}
                   value={project.subCategory}
                 />
               </Col>
-              <Col xs={24} sm={12} md={8} lg={5} xxl={5} xl={5} className="links-input">
+              <Col span={5} className="links-input">
                 <FormInput
                   type="text"
                   label={'Links'}
@@ -155,7 +153,7 @@ const Projects = () => {
                   value={project.links}
                 />
               </Col>
-              <Col xs={24} sm={12} md={8} lg={4} xxl={4} xl={4} className="project-details-button">
+              <Col span={4} className="project-details-button">
                 <Button onClick={() => handleUpdateButtonFun(project)}>Update</Button>
                 <PopConfirm
                   title='Are you sure?'

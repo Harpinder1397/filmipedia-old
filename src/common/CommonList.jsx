@@ -3,6 +3,7 @@ import { Row, Col, Card } from "antd";
 import 'react-calendar/dist/Calendar.css';
 import './style.less'
 import { mapStates, mapCities } from '../common/utils';
+import SubCategoryComponent from "./SubCategories";
 import { FiltersContext } from "../App";
 import Requirements from "../components/requirements/Requirements";
 import FormSelect from "./inputs/FormSelect";
@@ -94,6 +95,16 @@ export default function CommonList({ users, isFav }) {
             users?.length ? users.map((user) => 
               <CommonCard user={user} favList={favList} getFavList={getFavList} isFav={isFav}/>
             ) : <h4>No Data</h4>
+          }
+          {
+            users?.length ? users.map((user) => 
+              <CommonCard user={user} favList={favList} getFavList={getFavList} isFav={isFav}/>
+            ): null
+          }
+           {
+            users?.length ? users.map((user) => 
+              <CommonCard user={user} favList={favList} getFavList={getFavList} isFav={isFav}/>
+            ): null
           }
         </div>
         {/* </Col> */}

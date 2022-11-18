@@ -62,15 +62,20 @@ const App = () => {
   const [subCategory, setSubCategory] = useState(undefined);
   const [states, setStates] = useState([]);
 
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    getCategories();
+    getStates();
+    setToken(token);
+  }, []);
+
   const getCategories = async () => {
     const data = await getCategoryApi();
-    console.log(data, 'data 22')
-
-    // const updateData = data?.map((item) => ({
-    //   ...item,
-    //   id: item?._id,
-    // }));
-    setCategories(data);
+    const updateData = data?.map((item) => ({
+      ...item,
+      id: item?._id,
+    }));
+    setCategories(updateData);
   };
 
   const getStates = async () => {
@@ -79,9 +84,7 @@ const App = () => {
   };
 
   const setSubCategories = (id) => {
-    console.log(id, 'id 1')
-    const data = categories.find((cat) => cat._id === id);
-    console.log(data, 'data')
+    const data = categories.find((cat) => cat.id === id);
     setSelectedCategory(data?.value);
     setSelectedSubCategories(data?.childern);
     setTags(data?.tags);
@@ -90,13 +93,6 @@ const App = () => {
   useEffect(() => {
     const isProfileCompleted = localStorage.getItem("isProfileCompleted");
     setProfileCompleted(isProfileCompleted);
-  }, []);
-
-  useEffect(() => {
-    const token = localStorage.getItem("token");
-    getCategories();
-    getStates();
-    setToken(token);
   }, []);
 
   return (

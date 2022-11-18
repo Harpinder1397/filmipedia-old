@@ -63,7 +63,6 @@ export default function TableComponent(props) {
         columns={columns}
         dataSource={data}
         bordered
-        size="middle"
         // onChange={onChange}
         // pagination={paginationProp || false}
       />
