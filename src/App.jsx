@@ -23,7 +23,8 @@ import CompleteList from "./pages/complete-list";
 import Demo from "./Demo";
 import LoginRoute from "./routes/LoginRoute";
 import SignIn from "./pages/sign-in";
-import NotFound from "./pages/not-found";
+import NotFound from "./pages/not-found/index";
+// import NotFound from "pages/not-found/index";
 import Navbar from "./components/navbar/Navbar";
 import Footer from "./components/Footer/Footer";
 import { Content } from "antd/lib/layout/layout";
@@ -64,7 +65,7 @@ const App = () => {
 
   const getCategories = async () => {
     const data = await getCategoryApi();
-    console.log(data, 'data 22')
+    console.log(data, "data 22");
 
     // const updateData = data?.map((item) => ({
     //   ...item,
@@ -79,9 +80,9 @@ const App = () => {
   };
 
   const setSubCategories = (id) => {
-    console.log(id, 'id 1')
+    console.log(id, "id 1");
     const data = categories.find((cat) => cat._id === id);
-    console.log(data, 'data')
+    console.log(data, "data");
     setSelectedCategory(data?.value);
     setSelectedSubCategories(data?.childern);
     setTags(data?.tags);
