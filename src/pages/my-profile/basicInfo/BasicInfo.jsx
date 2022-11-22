@@ -7,6 +7,7 @@ import { eyeColors, hairColors, skinColors } from '../../../constant/artistsFeat
 import { mapStates, mapCities } from '../../../common/utils';
 import { useState, useContext, useEffect } from 'react';
 import './basicInfoStyle.less'
+import { useStateQuery } from '../../../api/getStatesQuery';
 
 const BasicInfo = ({
   userDetails,
@@ -18,19 +19,29 @@ const BasicInfo = ({
   const [location, setLocation] = useState(undefined);
 	const [selectedState, setSelectedState] = useState(null);
 	const [cities, setCities] = useState([]);
-	const { categories, setSubCategories, selectedSubCategories, category, states } = useContext(FiltersContext)
+	const { categories, setSubCategories, selectedSubCategories} = useContext(FiltersContext)
+console.log(selectedState, 'selectedState')
+  const { data } = useStateQuery();
 
   useEffect(() => {
-		const data = mapStates(states)
-		setLocation(data);
-	},[states])
+		const states = mapStates(data);
+		setLocation(states);
+	},[data])
 
 	useEffect(() => {
 		if(selectedState) {
-			const cities = mapCities(states, selectedState)
+			const cities = mapCities(data, selectedState)
 			setCities(cities);
 		}
 	},[selectedState])
+
+  // const getUniqueListBy = (arr, key) => {
+  //   return [...new Map(arr?.map(item => [item[key], item])).values()]
+  // }
+
+  // const cities = getUniqueListBy(data, 'state').sort((a, b) => a.state.localeCompare(b.state)).map(data =>(
+  //   {...data, 'value': data.state }
+  // ));
 
   return (
       <Row gutter={[24, 24]} className="basic-info-ant-row">
@@ -209,7 +220,7 @@ const BasicInfo = ({
 						label="Select your state"
 						value={userDetails?.rest?.state}
             onSelect={(cat, val) => {
-              setSelectedState(val.children)
+              setSelectedState(val.value)
               const data = {...userDetails, rest: {...userDetails.rest, state: val.value}}
 							setUserDetails(data)
             }}
@@ -232,10 +243,10 @@ const BasicInfo = ({
 						label="Select your city"
 						value={userDetails?.rest?.city}
             onSelect={(cat, val) => {
-              const data = {...userDetails, rest: {...userDetails.rest, city: val.value}}
+              const data = {...userDetails, rest: {...userDetails.rest, city: cat.value}}
 							setUserDetails(data)
             }}
-						options={cities && cities}
+						options={cities}
 						showSearch
 						required
 						filterOption={(input, option) => option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0 }

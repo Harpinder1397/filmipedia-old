@@ -1,7 +1,7 @@
 import { useMutation, useQuery, useQueryClient } from 'react-query';
 import { apiDelete, apiGet, apiPost } from '../utils/api';
 import qs from "query-string";
-const API_URL = 'http://node-env.eba-xnwspbk7.ap-northeast-1.elasticbeanstalk.com'
+const API_URL = 'http://localhost:3000'
 
 export const createStateApi = (payload) => {
   const url = `${API_URL}/states`
@@ -15,29 +15,29 @@ export const createStateApi = (payload) => {
   });
 };
 
-export const getStatesApi = (payload) => {
-  const url = `${API_URL}/states${payload ? `?${qs.stringify(payload)}` : ''}`
-  return apiGet(url)
-  .then((res) => {
-      return res; 
-    }
-  )
-  .catch((error) => {
-    return error;
-  });
-};
+// export const getStatesApi = (payload) => {
+//   const url = `${API_URL}/states${payload ? `?${qs.stringify(payload)}` : ''}`
+//   return apiGet(url)
+//   .then((res) => {
+//       return res; 
+//     }
+//   )
+//   .catch((error) => {
+//     return error;
+//   });
+// };
 
-export const getStatesSearchApi = (payload) => {
-  const url = `${API_URL}/states/search${payload ? `?${qs.stringify(payload)}` : ''}`
-  return apiGet(url)
-  .then((res) => {
-      return res; 
-    }
-  )
-  .catch((error) => {
-    return error;
-  });
-};
+// export const getStatesSearchApi = (payload) => {
+//   const url = `${API_URL}/states/search${payload ? `?${qs.stringify(payload)}` : ''}`
+//   return apiGet(url)
+//   .then((res) => {
+//       return res; 
+//     }
+//   )
+//   .catch((error) => {
+//     return error;
+//   });
+// };
 
 export const updateStatesApi = (id, payload) => {
   const url = `${API_URL}/states/${id}`

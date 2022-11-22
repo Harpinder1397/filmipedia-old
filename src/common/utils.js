@@ -30,9 +30,9 @@ export const onChangeInput = (e, formData, setFormData) => {
 }
 
 export const mapStates = (states) => {
-  const result = states.reduce(function (r, a) {
-    r[a.state] = r[a.state] || [];
-    r[a.state].push(a);
+  const result = states?.reduce(function (r, a) {
+    r[a?.state] = r[a?.state] || [];
+    r[a?.state].push(a);
     return r;
 }, Object.create(null));
   return result;
@@ -41,8 +41,8 @@ export const mapStates = (states) => {
 export const mapCities = (states, selectedState) => {
   return mapStates(states)[selectedState].map((item) => {
     return {
-      id: item.id,
-      value: item.name
+      id: item?.id,
+      value: item?.name
     }
   });
 }

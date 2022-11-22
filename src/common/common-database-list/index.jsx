@@ -9,11 +9,14 @@ import { FiltersContext } from "../../App";
 import SubCategoryComponent from "../sub-categories/SubCategories";
 import CommonList from "../../common/CommonList";
 import banner from '../../assets/images/banner.png';
-import { useUpdateUserNameMutation } from "../../api/user";
+import { useUpdateUserNameMutation,  } from "../../api/user";
+import { useStateQuery } from "../../api/getStatesQuery";
 
 const CommonDataBaseList = ({ allUsers, isFav }) => {
 	const { selectedSubCategories } = useContext(FiltersContext);
 	const [formData, setFormData] = useState({});
+  const { data } = useStateQuery();
+  console.log(data, 'data 22')
   const experienceFilter = [
     {
       key: 1,
@@ -42,7 +45,7 @@ const CommonDataBaseList = ({ allUsers, isFav }) => {
     {
       key: 5,
       name: '21 - 25',
-      value: 20,
+      value: 25,
       objName: 'experience'
     }
   ]
@@ -52,30 +55,30 @@ const CommonDataBaseList = ({ allUsers, isFav }) => {
       key: 1,
       name: 'Baby (0 - 3)',
       objName: 'age',
-      value: 5,
+      value: 'baby',
     },
     {
       key: 2,
       name: 'Child (4 - 12)',
-      value: 10,
+      value: 'child',
       objName: 'age'
     },
     {
       key: 3,
       name: 'Teenager (13 - 19)',
-      value: 15,
+      value: 'teenager',
       objName: 'age'
     },
     {
       key: 4,
       name: 'Adult (20 - 59)',
-      value: 20,
+      value: 'adult',
       objName: 'age'
     },
     {
       key: 5,
       name: 'Senior (60 and Up)',
-      value: 20,
+      value: 'senior',
       objName: 'age'
     }
   ]
@@ -105,33 +108,42 @@ const CommonDataBaseList = ({ allUsers, isFav }) => {
     {
       key: 1,
       name: 'Hindi',
-      objName: 'language',
+      objName: 'languages',
       value: 'hindi',
     },
     {
       key: 2,
       name: 'English',
       value: 'english',
-      objName: 'language'
+      objName: 'languages'
     },
     {
       key: 3,
       name: 'Spanish',
       value: 'spanish',
-      objName: 'language'
+      objName: 'languages'
     }
   ]
 
   const { mutate: userNameMutation } = useUpdateUserNameMutation();
 
+
+
+
 console.log(formData, 'formData?.experience')
   useEffect(() => {
+    console.log([...Array(10).keys()], '[...Array(10).keys()]')
     // const payloadSubCategory = {
     //   gt: formData?.experience - 5,
     //   lt: formData?.experience,
     // }
-    // // const payload = formData?.subCategory === null ? payloadSubCategory : formData
-    // userNameMutation(!formData?.experience ? formData : payloadSubCategory)
+    // const payload = formData?.subCategory === null ? payloadSubCategory : formData
+    const payload = formData;
+    Object.keys(formData).forEach(key => {
+      if(!formData[key])
+        delete formData[key]
+    });
+    userNameMutation(payload)
   }, [formData])
 
   return (
@@ -162,30 +174,35 @@ console.log(formData, 'formData?.experience')
               */}
           <SubCategoryComponent
             title='Experience'
+            name='experience'
             subCategoryFilter={experienceFilter}
             formData={formData}
             setFormData={setFormData}
           />
           <SubCategoryComponent
             title='Location'
+            name='location'
             subCategoryFilter={ageFilter}
             formData={formData}
             setFormData={setFormData}
           />
           <SubCategoryComponent
             title='Age'
+            name='age'
             subCategoryFilter={ageFilter}
             formData={formData}
             setFormData={setFormData}
           />
           <SubCategoryComponent
             title='Gender'
+            name='gender'
             subCategoryFilter={genderFilter}
             formData={formData}
             setFormData={setFormData}
           />
           <SubCategoryComponent
             title='Language'
+            name='language'
             subCategoryFilter={languageFilter}
             formData={formData}
             setFormData={setFormData}

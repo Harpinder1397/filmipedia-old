@@ -1,7 +1,7 @@
 import { apiPost, apiGet, apiDelete } from "../utils/api";
 import { qs } from "query-string";
 
-const API_URL = 'http://node-env.eba-xnwspbk7.ap-northeast-1.elasticbeanstalk.com'
+const API_URL = 'http://localhost:3000'
 
 export const getMyFavouritesApi = (userId) => {
   return apiGet(`${API_URL}/favourites/${userId}`)

@@ -1,11 +1,12 @@
 import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
 import { getCategoryApi } from '../../api/getCategories';
-import { getStatesApi } from '../../api/getStates';
+// import { getStatesApi } from '../../api/getStates';
 import React, {useEffect, useState} from 'react';
 import './admin.less';
 import AdminSideBar from './AdminSideBar';
 import AllCategories from './AllCategories';
 import AllStates from './AllStates';
+import { useUpdateStateMutation } from '../../api/getStatesQuery';
 
 const tabs = [
   {
@@ -54,19 +55,21 @@ const AdminPanel = () => {
   const [states, setStates] = useState([]);
   const [activeTab, setActiveTab] = useState(0);
 
+  const { mutate: fetchStatesMutation } = useUpdateStateMutation();
+
   const getCategories = async() => {
     const data = await getCategoryApi();
     setCategories(data);
   }
 
-  const getStates = async() => {
-    const data = await getStatesApi();
-    setStates(data);
-  }
+  // const getStates = async() => {
+  //   const data = await getStatesApi();
+  //   setStates(data);
+  // }
  
 
   useEffect(() => {
-    getStates();
+    // getStates();
     getCategories();
     // getMovies();
     // getAllUsersApi();
@@ -75,11 +78,11 @@ const AdminPanel = () => {
   const renderComponent = () => {
     switch (activeTab) {
       case 0:
-        return <AllStates states={states} getStates={getStates} />
+        return <AllStates states={states} />
       case 1: 
         return <AllCategories categories={categories} col={categoryCol} getCategories={getCategories}/>
       default:
-        return <AllStates states={states} getStates={getStates} />
+        return <AllStates states={states} />
     }
   }
 

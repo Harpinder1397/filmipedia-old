@@ -3,19 +3,23 @@ import TableComponent from "../../common/TableComponent";
 import { Button, Form, Input, Modal, Typography } from "antd";
 import './admin.less';
 import FormSelect from "../../common/inputs/FormSelect";
-import { createStateApi, deleteStateApi, getStatesApi, getStatesSearchApi, updateStatesApi } from "../../api/getStates";
+import { createStateApi, deleteStateApi, updateStatesApi } from "../../api/getStates";
 import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
 import PopConfirm from "../../common/pop-confirm";
+import { useStateQuery, useUpdateStateMutation } from "../../api/getStatesQuery";
 
 const { Title } = Typography;
 
-const AllStates = ({states, getStates }) => {
+const AllStates = ({states }) => {
  
   const [formData, setFormData] = useState({});
-  const [statesList, setStatesList] = useState([]);
   const [searchQuery, setSearchQuery] = useState({});
   const [isVisible, setIsVisible] = useState(false);
   const [isEditModal, setIsEditModal] = useState('add');
+
+  const { data } = useStateQuery();
+  const { mutate: fetchStatesMutation } = useUpdateStateMutation();
+
 
   // States Table Columns
   const stateCol = [
@@ -46,7 +50,7 @@ const AllStates = ({states, getStates }) => {
           onConfirm={ async() => {
             const res = await deleteStateApi(row._id);
             if(res){
-              getStates();
+              fetchStatesMutation();
             }
           }}
           body={
@@ -64,7 +68,7 @@ const AllStates = ({states, getStates }) => {
     return [...new Map(arr?.map(item => [item[key], item])).values()]
   }
 
-  const stateList = getUniqueListBy(states, 'state').sort((a, b) => a.state.localeCompare(b.state)).map(data =>(
+  const stateList = getUniqueListBy(data, 'state').sort((a, b) => a.state.localeCompare(b.state)).map(data =>(
     {...data, 'value': data.state }
   ));
 
@@ -76,7 +80,7 @@ const AllStates = ({states, getStates }) => {
         setFormData({});
         setIsVisible(false);
         setIsEditModal('add');
-        getStates();
+        fetchStatesMutation();
       }
     }
 
@@ -89,19 +93,9 @@ const AllStates = ({states, getStates }) => {
       if(res){
         setIsVisible(false);
         setFormData({});
-        getStates();
+        fetchStatesMutation();
       }
     };
-  }
-
-  const fetchStatesList = async(paylad) => {
-    const filterState =  await getStatesApi(paylad)
-    setStatesList(filterState)
-  }
-
-  const handleSearchFilter = async(paylad) => {
-    const filterState =  await getStatesSearchApi(paylad)
-    setStatesList(filterState)
   }
 
   useEffect(() => {
@@ -109,14 +103,14 @@ const AllStates = ({states, getStates }) => {
     if(searchQuery?.name || searchQuery?.state){
       if(searchQuery?.name){
         const timeOutId = setTimeout(async() => {
-          handleSearchFilter(payload)
+          fetchStatesMutation(payload)
         }, 1000);
         return () => clearTimeout(timeOutId);
       }else {
-        handleSearchFilter(payload);
+        fetchStatesMutation(payload);
       }
     }else {
-      fetchStatesList();
+      fetchStatesMutation();
     }
   }, [searchQuery]);
 
@@ -165,7 +159,7 @@ const AllStates = ({states, getStates }) => {
       
       <TableComponent
         columns={stateCol}
-        data={statesList?.sort((a, b) => a.state.localeCompare(b.state))}
+        data={data?.sort((a, b) => a.state.localeCompare(b.state))}
       />
 
       <AddCatContentModal

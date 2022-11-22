@@ -1,6 +1,6 @@
 import { apiDelete, apiGet, apiPost } from '../utils/api';
 
-const API_URL = 'http://node-env.eba-xnwspbk7.ap-northeast-1.elasticbeanstalk.com'
+const API_URL = 'http://localhost:3000'
 
 export const getCategoryApi = () => {
 
