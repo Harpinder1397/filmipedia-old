@@ -1,6 +1,6 @@
 import { useMutation, useQuery, useQueryClient } from "react-query";
 import qs from "query-string";
-import { apiGet, apiPost } from "../utils/api";
+import { apiDelete, apiGet, apiPost } from "../utils/api";
 
 const API_URL = 'http://localhost:3000'
 
@@ -37,6 +37,7 @@ export const useJobsQuery = () => {
 
  export const useCreateJobMutation = () => {
   // const queryClient = useQueryClient();
+  const { mutate: fetchJobList } = useUpdateJobsMutation();
   return useMutation([`${API_URL}/jobs`],(payload) =>
     apiPost(`${API_URL}/jobs`, payload),
    {
@@ -51,13 +52,70 @@ export const useJobsQuery = () => {
 
     //   return { prevUserData };
     // },
-    // onSuccess: (newUser) => {
-    //    console.log(newUser, 'newUser')
-    //   queryClient.setQueryData(["jobs"], newUser);
-    // },
+    onSuccess: (newUser) => {
+      //  console.log(newUser, 'newUser')
+       fetchJobList()
+      // queryClient.setQueryData(["jobs"], newUser);
+    },
     // onError: (error, payload, { prevUserData }) => {
     //   queryClient.setQueryData(["jobs"], prevUserData);
     // },
   });
+};
+
+export const useUpdateJobMutation = () => {
+  // const queryClient = useQueryClient();
+  const { mutate: fetchJobList } = useUpdateJobsMutation();
+  return useMutation([`${API_URL}/jobs`],(payload) =>
+    apiPost(`${API_URL}/jobs/${payload._id}`, payload),
+   {
+    // onMutate: async () => {
+    //   await queryClient.cancelQueries("user");
+
+    //   const prevUserData = queryClient.getQueryData(["user"]);
+
+    //   queryClient.setQueryData(["user"], (prevData) => ({
+    //     ...prevData,
+    //   }));
+
+    //   return { prevUserData };
+    // },
+    onSuccess: (newUser) => {
+      //  console.log(newUser, 'newUser')
+       fetchJobList()
+      // queryClient.setQueryData(["jobs"], newUser);
+    },
+    // onError: (error, payload, { prevUserData }) => {
+    //   queryClient.setQueryData(["jobs"], prevUserData);
+    // },
+  });
+};
+
+export const useDeleteJobMutation = () => {
+  // const queryClient = useQueryClient();
+  const { mutate: fetchJobList } = useUpdateJobsMutation();
+  return useMutation([`${API_URL}/jobs`],(id) =>
+    apiDelete(`${API_URL}/jobs/${id}`),
+   {
+    // onMutate: async () => {
+    //   await queryClient.cancelQueries("user");
+
+    //   const prevUserData = queryClient.getQueryData(["user"]);
+
+    //   queryClient.setQueryData(["user"], (prevData) => ({
+    //     ...prevData,
+    //   }));
+
+    //   return { prevUserData };
+    // },
+    onSuccess: (newUser) => {
+      //  console.log(newUser, 'newUser')
+      // queryClient.setQueryData(["jobs"], newUser);
+      fetchJobList();
+    },
+    // onError: (error, payload, { prevUserData }) => {
+    //   queryClient.setQueryData(["jobs"], prevUserData);
+    // },
+})
 };
  

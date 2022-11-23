@@ -3,17 +3,25 @@ import { CloseOutlined, EditOutlined } from "@ant-design/icons";
 
 // styles
 import "./cardStyle.less";
+import PopConfirm from "../../../common/pop-confirm";
 
-const JobCard = ({ data, handleShareDetails }) => {
+const JobCard = ({ data, handleShareDetails, handleUpdate, handleDelete }) => {
   return (
     <div className="jobcard-page-body">
       <div className="job-card-outer-container">
         {data?.map((item) => {
           return (
             <div className="jobcard-container">
-              <CloseOutlined
-              // onClick={() => deleteItem(v.)}
-              />
+            <PopConfirm
+                  title='Are you sure?'
+                  onConfirm={() => {
+                    handleDelete(item._id)
+                  }}
+                  body={
+                    <CloseOutlined />
+                  }
+                />
+             
 
               <div className="info-image-container">
                 <div className="jobcard-image">
@@ -23,7 +31,7 @@ const JobCard = ({ data, handleShareDetails }) => {
                   <h1 className="user-name">
                     {item.postedByName}
                     <EditOutlined
-                    // onClick={() => editItem(v)}
+                      onClick={() => handleUpdate(item)}
                     />
                   </h1>
                   <p className="job-title">{item.jobTitle}</p>
