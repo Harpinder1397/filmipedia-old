@@ -41,7 +41,7 @@ export default function TableComponent(props) {
 
           {
             // eslint-disable-next-line react/destructuring-assignment
-            props.setIsListReadOnly && !toShowSearchBar
+            props?.setIsListReadOnly && !toShowSearchBar
               ? (
                 <Button type="primary" onClick={() => props.setIsListReadOnly(!isListReadOnly)}>
                   {isListReadOnly ? 'Edit' : 'Cancel'}

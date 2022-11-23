@@ -1,0 +1,213 @@
+.jobcard-page-body {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 19px;
+  
+    .job-card-outer-container {
+      display: flex;
+      flex-wrap: wrap;
+      // gap: 2%;
+      gap: 16px,
+      // paddingLeft: "45px",
+    }
+  
+    .jobcard-container {
+      width: 457px;
+      // width: 450px;
+      // width: 32%;
+      height: auto;
+      // height: 167px;
+      // height: 267px;
+      box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+      padding: 16px;
+      background: #001529;
+      border-radius: 10px;
+      position: relative;
+      margin-bottom: 34px;
+  
+      .job-card-bottom {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        height: 100%;
+      }
+  
+      .anticon-close {
+        font-size: 16px;
+        color: #dbd5d5;
+        position: absolute;
+        right: 14px;
+        top: 10px;
+        cursor: pointer;
+        background: none;
+        border: none;
+  
+        &:hover {
+          color: white;
+        }
+      }
+  
+      .info-image-container {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        gap: 19px;
+        justify-content: center;
+        align-items: center;
+  
+        .jobcard-image {
+          width: 126px;
+          height: 126px;
+          text-align: center;
+  
+          img {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+          }
+        }
+  
+        .jobcard-info {
+         
+  
+          .user-name {
+            margin-bottom: 0px;
+            font-size: 27px !important;
+  
+            .anticon-edit {
+              font-size: 16px;
+              cursor: pointer;
+              color: #cfbfbf;
+            }
+          }
+  
+          .job-title {
+            font-size: 18px ;
+            color: #bdb5b5;
+            display: block;
+            text-align: center;
+            margin-top: 10px;
+          }
+          p {
+            color: rgb(204, 197, 197);
+            font-size: 13px;
+            text-align: center;
+          }
+      
+          
+        }
+  
+        // .job-details {
+        //   display: flex;
+  
+        // .details {
+        //   color: white;
+        //   display: flex;
+        //   flex-direction: column;
+        //   align-items: center;
+        //   }
+        // }
+      }
+      .job-details {
+        display: flex;
+        justify-content: space-around;
+  
+      .details {
+        color: white;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        }
+      }
+      // ......
+     
+      .job-card-footer {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-end;
+  
+        .massage {
+          background: rgba(51, 50, 50, 0.336);
+          color: rgb(224, 223, 221);
+          padding: 3px 0px;
+          width: 78px;
+          border-radius: 6px;
+          border: 1px solid rgb(121, 119, 119);
+          cursor: pointer;
+  
+          &:hover {
+            border: 1px solid white;
+          }
+        }
+  
+        .time {
+          background: rgb(68 62 62 / 34%);
+          border: none;
+          color: rgb(224, 223, 221);
+          padding: 3px 0px;
+          width: 68px;
+          border-radius: 7px;
+          cursor: pointer;
+          margin-left: 7px;
+          font-size: 13px;
+        }
+      }
+    }
+  }
+  
+  //   Modal css..........
+  .ant-modal-body {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  
+    .ant-input {
+      margin-top: 4px;
+    }
+  
+    .ant-picker {
+      width: 100%;
+    }
+  
+    // .modal-btn {
+    //   background: #001529 !important;
+    //   display: block;
+    //   margin: auto;
+    //   width: 106px !important;
+    // }
+  }
+  
+  .input-label {
+    margin-top: 18px;
+    color: #7a7878;
+    font-size: 17px;
+    font-weight: 500;
+  }
+  
+  .modal-btn {
+    background: #001529 !important;
+    display: block;
+    margin: auto;
+    width: 106px;
+  }
+  
+  // media screen 548px..........
+  @media screen and (max-width: 548px) {
+    .jobcard-page-body {
+      justify-content: center;
+    }
+  }
+  
+  // media screen 478px..........
+  @media screen and (max-width: 548px) {
+    .jobcard-page-body {
+      .jobcard-container {
+        height: auto;
+      }
+    }
+  }
+  

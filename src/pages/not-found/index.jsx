@@ -1,13 +1,10 @@
-import React from 'react';
 
-const NotFound = () => {
-    return (
-        <>
-            <div>
-                404
-            </div>
-        </>
-    )
-}
+import React, { useState } from "react";
 
-export default NotFound
+const NoFound = () => {
+  return (
+    <div>No Found</div>
+  );
+};
+
+export default NoFound;

@@ -4,15 +4,15 @@ import { apiGet, apiPost } from "../utils/api";
 
 const API_URL = 'http://localhost:3000'
 
-export const useJobApplicationsQuery = () => {
-    return useQuery(["applications"],[`${API_URL}/job/applications`], () =>
-    apiGet(`${API_URL}/job/applications`)
+export const useJobsQuery = () => {
+    return useQuery(["jobs"],[`${API_URL}/jobs`], () =>
+    apiGet(`${API_URL}/jobs`)
    )}
  
- export const useUpdateJobApplicationsMutation = () => {
+ export const useUpdateJobsMutation = () => {
    const queryClient = useQueryClient();
-   return useMutation([`${API_URL}/job/applications`],(payload) =>
-     apiGet(`${API_URL}/job/applications${payload ? `?${qs.stringify(payload)}` : ''}`),
+   return useMutation([`${API_URL}/jobs`],(payload) =>
+     apiGet(`${API_URL}/jobs${payload ? `?${qs.stringify(payload)}` : ''}`),
     {
      // onMutate: async () => {
      //   await queryClient.cancelQueries("user");
@@ -27,18 +27,18 @@ export const useJobApplicationsQuery = () => {
      // },
      onSuccess: (newUser) => {
         console.log(newUser, 'newUser')
-       queryClient.setQueryData(["applications"], newUser);
+       queryClient.setQueryData(["jobs"], newUser);
      },
      onError: (error, payload, { prevUserData }) => {
-       queryClient.setQueryData(["applications"], prevUserData);
+       queryClient.setQueryData(["jobs"], prevUserData);
      },
    });
  };
 
- export const useCreateJobApplicationsMutation = () => {
+ export const useCreateJobMutation = () => {
   // const queryClient = useQueryClient();
-  return useMutation([`${API_URL}/job/applications`],(payload) =>
-    apiPost(`${API_URL}/job/applications`, payload),
+  return useMutation([`${API_URL}/jobs`],(payload) =>
+    apiPost(`${API_URL}/jobs`, payload),
    {
     // onMutate: async () => {
     //   await queryClient.cancelQueries("user");
@@ -53,10 +53,10 @@ export const useJobApplicationsQuery = () => {
     // },
     // onSuccess: (newUser) => {
     //    console.log(newUser, 'newUser')
-    //   queryClient.setQueryData(["applications"], newUser);
+    //   queryClient.setQueryData(["jobs"], newUser);
     // },
     // onError: (error, payload, { prevUserData }) => {
-    //   queryClient.setQueryData(["applications"], prevUserData);
+    //   queryClient.setQueryData(["jobs"], prevUserData);
     // },
   });
 };

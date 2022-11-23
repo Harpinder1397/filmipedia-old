@@ -9,6 +9,7 @@ import Demo from "./Demo";
 import LoginRoute from "./routes/LoginRoute";
 import SignIn from "./pages/sign-in";
 import NotFound from "./pages/not-found";
+// import NotFound from "pages/not-found/index";
 import Navbar from "./components/navbar/Navbar";
 import Footer from "./components/Footer/Footer";
 import { Content } from "antd/lib/layout/layout";
@@ -26,6 +27,7 @@ import "antd/dist/antd.css";
 import NavbarMain from "./components/navbar/NavbarMain";
 import { useUpdateStateMutation } from "./api/getStatesQuery";
 import JobApplications from "./pages/jobs/applications";
+import Jobs from "./pages/jobs";
 
 message.config({
   top: 70,
@@ -47,7 +49,7 @@ const App = () => {
 
   const getCategories = async () => {
     const data = await getCategoryApi();
-    console.log(data, 'data 22')
+    console.log(data, "data 22");
 
     // const updateData = data?.map((item) => ({
     //   ...item,
@@ -63,9 +65,9 @@ const App = () => {
   // };
 
   const setSubCategories = (id) => {
-    console.log(id, 'id 1')
+    console.log(id, "id 1");
     const data = categories.find((cat) => cat._id === id);
-    console.log(data, 'data')
+    console.log(data, "data");
     setSelectedCategory(data?.value);
     setSelectedSubCategories(data?.childern);
     setTags(data?.tags);
@@ -117,6 +119,7 @@ const App = () => {
                 component={ProfileDetails}
               />
               <LoginRoute exact path="/admin" component={AdminPanel} />
+              <LoginRoute exact path="/jobs" component={Jobs} />
               <LoginRoute exact path="/job/applications" component={JobApplications} />
               <Route exact path="/register" component={RegistrationForms} />
               <Route exact path="/database" component={CompleteList} />

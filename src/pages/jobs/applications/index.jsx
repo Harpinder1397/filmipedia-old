@@ -81,7 +81,7 @@ const JobApplications = () => {
       <Title level={3}>Job Applications</Title>
       <TableComponent
         columns={stateCol}
-        data={data?.sort((a, b) => a.state.localeCompare(b.state))}
+        data={data?.sort((a, b) => a?.state?.localeCompare(b?.state))}
       />
     </>
   );

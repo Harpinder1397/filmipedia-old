@@ -1,6 +1,47 @@
 .timeline-main-container {
-    background: '#fff';
-    display: flex;
-    flex-wrap: wrap;
-    gap: 20px;
+  background: "#fff";
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 20px;
+
+  .timeline-container {
+    margin-bottom: 0;
+  }
+
+  .info-con {
+    max-width: 376px;
+    // min-width: 200px !important;
+  }
+}
+
+// media screen 1024px............
+@media screen and (max-width: 1024px) {
+  .info-con {
+    // max-width: 271px !important;
+    min-width: 270px !important;
+  }
+}
+
+// media screen 974px............
+@media screen and (max-width: 974px) {
+  .info-con {
+    max-width: 271px !important;
+  }
+}
+
+// media screen 893px............
+@media screen and (max-width: 893px) {
+  .info-con {
+    max-width: 340px !important;
+  }
+}
+
+// media screen 465px............
+@media screen and (max-width: 565px) {
+  .timeline-main-container {
+    .info-con {
+      max-width: 380px !important;
+    }
+  }
 }
