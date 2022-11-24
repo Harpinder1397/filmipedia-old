@@ -1,55 +1,51 @@
 // import { useMutation, useQuery, useQueryClient } from 'react-query';
-import { apiDelete, apiGet, apiPost } from '../utils/api';
+import { apiDelete, apiGet, apiPost } from "../utils/api";
 
-const API_URL = 'http://localhost:3000'
+const API_URL =
+  "http://node-env.eba-xnwspbk7.ap-northeast-1.elasticbeanstalk.com";
 
 export const createProjectApi = (payload) => {
-  const url = `${API_URL}/projects`
+  const url = `${API_URL}/projects`;
   return apiPost(url, payload)
-  .then((res) => {
-      return res; 
-    }
-  )
-  .catch((error) => {
-    return error;
-  });
+    .then((res) => {
+      return res;
+    })
+    .catch((error) => {
+      return error;
+    });
 };
 
 export const getProjectsApi = () => {
-  const url = `${API_URL}/projects`
+  const url = `${API_URL}/projects`;
   return apiGet(url)
-  .then((res) => {
-      return res; 
-    }
-  )
-  .catch((error) => {
-    return error;
-  });
+    .then((res) => {
+      return res;
+    })
+    .catch((error) => {
+      return error;
+    });
 };
 
 export const updateProjectApi = (id, payload) => {
-  const url = `${API_URL}/projects/${id}`
+  const url = `${API_URL}/projects/${id}`;
   return apiPost(url, payload)
-  .then((res) => {
-      return res; 
-    }
-  )
-  .catch((error) => {
-    return error;
-  });
+    .then((res) => {
+      return res;
+    })
+    .catch((error) => {
+      return error;
+    });
 };
 
 export const deleteProjectApi = (id) => {
-
-  const url = `${API_URL}/projects/${id}`
+  const url = `${API_URL}/projects/${id}`;
   return apiDelete(url)
-  .then((res) => {
-      return res; 
-    }
-  )
-  .catch((error) => {
-    return error;
-  });
+    .then((res) => {
+      return res;
+    })
+    .catch((error) => {
+      return error;
+    });
 };
 
 // useQuery get all projects list  ( get method )
@@ -62,8 +58,8 @@ export const deleteProjectApi = (id) => {
 // export const useUpdateStatesMutation = () => {
 //   const queryClient = useQueryClient();
 //   return useMutation([`${API_URL}/projects`],(payload) =>
-//   payload ?  
-//     apiPost(`${API_URL}/projects/${payload._id}`, payload) : 
+//   payload ?
+//     apiPost(`${API_URL}/projects/${payload._id}`, payload) :
 //     apiGet(`${API_URL}/projects`),
 //    {
 //     onMutate: async () => {

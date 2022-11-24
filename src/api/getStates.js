@@ -1,25 +1,25 @@
-import { useMutation, useQuery, useQueryClient } from 'react-query';
-import { apiDelete, apiGet, apiPost } from '../utils/api';
+import { useMutation, useQuery, useQueryClient } from "react-query";
+import { apiDelete, apiGet, apiPost } from "../utils/api";
 import qs from "query-string";
-const API_URL = 'http://localhost:3000'
+const API_URL =
+  "http://node-env.eba-xnwspbk7.ap-northeast-1.elasticbeanstalk.com";
 
 export const createStateApi = (payload) => {
-  const url = `${API_URL}/states`
+  const url = `${API_URL}/states`;
   return apiPost(url, payload)
-  .then((res) => {
-      return res; 
-    }
-  )
-  .catch((error) => {
-    return error;
-  });
+    .then((res) => {
+      return res;
+    })
+    .catch((error) => {
+      return error;
+    });
 };
 
 // export const getStatesApi = (payload) => {
 //   const url = `${API_URL}/states${payload ? `?${qs.stringify(payload)}` : ''}`
 //   return apiGet(url)
 //   .then((res) => {
-//       return res; 
+//       return res;
 //     }
 //   )
 //   .catch((error) => {
@@ -31,7 +31,7 @@ export const createStateApi = (payload) => {
 //   const url = `${API_URL}/states/search${payload ? `?${qs.stringify(payload)}` : ''}`
 //   return apiGet(url)
 //   .then((res) => {
-//       return res; 
+//       return res;
 //     }
 //   )
 //   .catch((error) => {
@@ -40,28 +40,25 @@ export const createStateApi = (payload) => {
 // };
 
 export const updateStatesApi = (id, payload) => {
-  const url = `${API_URL}/states/${id}`
+  const url = `${API_URL}/states/${id}`;
   return apiPost(url, payload)
-  .then((res) => {
-      return res; 
-    }
-  )
-  .catch((error) => {
-    return error;
-  });
+    .then((res) => {
+      return res;
+    })
+    .catch((error) => {
+      return error;
+    });
 };
 
 export const deleteStateApi = (id) => {
-
-  const url = `${API_URL}/states/${id}`
+  const url = `${API_URL}/states/${id}`;
   return apiDelete(url)
-  .then((res) => {
-      return res; 
-    }
-  )
-  .catch((error) => {
-    return error;
-  });
+    .then((res) => {
+      return res;
+    })
+    .catch((error) => {
+      return error;
+    });
 };
 
 // useQuery get all states list  ( get method )
@@ -74,8 +71,8 @@ export const deleteStateApi = (id) => {
 // export const useUpdateStatesMutation = () => {
 //   const queryClient = useQueryClient();
 //   return useMutation([`${API_URL}/states`],(payload) =>
-//   payload ?  
-//     apiPost(`${API_URL}/states/${payload._id}`, payload) : 
+//   payload ?
+//     apiPost(`${API_URL}/states/${payload._id}`, payload) :
 //     apiGet(`${API_URL}/states`),
 //    {
 //     onMutate: async () => {
