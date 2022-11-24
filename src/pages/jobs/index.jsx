@@ -1,62 +1,53 @@
 import React, { useState, useEffect } from "react";
-import { Button, DatePicker, Input, Modal, InputNumber, Select, Space } from "antd";
+import { Button, DatePicker, Input, Modal, InputNumber, Select, Space, message } from "antd";
 import TextArea from "antd/lib/input/TextArea";
 import JobCard from "./card";
 import { useCreateJobMutation, useDeleteJobMutation, useJobsQuery, useUpdateJobMutation, useUpdateJobsMutation } from "../../api/getJobs";
-import { useCreateJobApplicationsMutation } from "../../api/getJobApplications";
+import { useCreateJobApplicationsMutation, useJobApplicationsQuery } from "../../api/getJobApplications";
 import { getUserApi } from "../../api/user";
+// import dayjs from 'dayjs';
+// import customParseFormat from 'dayjs/plugin/customParseFormat';
+import FormInput from '../../common/inputs/FormInput';
 
 // styles
 import "./card/cardStyle.less";
 import ImageCrop from "./image-crop";
+import EmptyMessage from "../../common/emptyMessage/EmptyMessage";
+import AlertMessage from "../../common/alert-message/AlertMessage";
+// import moment from "moment";
+
+// dayjs.extend(customParseFormat);
+
 
 const Jobs = () => {
+  // const dateFormatList = ['DD/MM/YYYY', 'DD/MM/YY'];
   const userId = localStorage.getItem('user');
   const [formData, setFormData] = useState({});
   const [userInfo, setUserInfo] = useState({});
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalTitle, setModalTitle] = useState("Add");
   const [fileList, setFileList] = useState();
+  const [messageApi, contextHolder] = message.useMessage();
   
-
-
+  // const dateSet = formData ? formData?.postedTill : ''
   const { data } = useJobsQuery();
+  // const { data: jobApplicationsData} = useJobApplicationsQuery();
+  
   const { mutate: fetchJobList } = useUpdateJobsMutation();
   const { mutate: createJobMutation, isSuccess, isLoading } = useCreateJobMutation();
   const { mutate: deleteJobMutation, } = useDeleteJobMutation();
   const { mutate: updateJobMutation, } = useUpdateJobMutation();
   const { mutate: createJobApplications } = useCreateJobApplicationsMutation()  
-  
-  useEffect(() => {
-  
-      if(fileList){
-        const payload = {
-          content:"qw",
-          jobTitle:"aaaaaaaaaaaa",
-          postedByCategory:"Director",
-          postedById:"6362881a7e175f0004be4671",
-          postedByName:"Harpinder Singh",
-          postedOn:"Tue Nov 22 2022 23:39:32 GMT+0530 (India Standard Time)",
-          postedTill: "23-11-2022",
-          requirement:1,
-          jobImageUploader: fileList
-          }
-        var fd = new FormData();
-      fd.append('jobImageUploader', fileList);
-      var sd = new FormData();
-      sd.append('jobImageUploader', payload);
-      
-      console.log(sd, 'payload')
-      // createJobMutation(fd)
-    }
-  }, [fileList])
 
   const showModal = () => {
     setModalTitle("Add");
     setIsModalOpen(true);
     setFormData({});
+    
   };
 
+  console.log(formData?.postedTill, 'formData?.postedTill')
+  
   const handleOk = () => {
     if(modalTitle == "Add"){
       const payload = {
@@ -66,10 +57,17 @@ const Jobs = () => {
         postedById: userInfo?._id,
         postedByName: userInfo?.fullName,
       }
-      createJobMutation(payload);
-      if(isSuccess || !isLoading){
-        setIsModalOpen(false);
-        setFormData({});
+      if(formData?.postedTill && formData?.jobTitle && formData?.requirement && formData?.content){
+        createJobMutation(payload);
+        if(isSuccess || !isLoading){
+          setIsModalOpen(false);
+          setFormData({});
+        }
+      }else {
+        messageApi.open({
+          type: 'error',
+          content: 'Please Fill Required Fields',
+        });
       }
     }else {
       const payload = formData
@@ -96,7 +94,7 @@ const Jobs = () => {
       sharedTo: value.postedById,
       jobId: value._id,
       jobTitle: value.jobTitle,
-      appliedDate: value.postedTill,
+      appliedDate: value.postedOn,
       jobExpired: value.postedTill,
     }
     createJobApplications(payload)
@@ -122,10 +120,14 @@ const Jobs = () => {
     fetchUserDetails();
   }, []);
 
+  
+
   return (
+    <>
+    {contextHolder}
     <div className="jobcard-page-body">
       <Button type="primary" className="modal-btn" onClick={showModal}>
-        Open Modal
+        Job Create
       </Button>
       <Modal
         title={modalTitle}
@@ -133,7 +135,7 @@ const Jobs = () => {
         onOk={handleOk}
         onCancel={handleCancel}
       >
-      <ImageCrop fileList={fileList} setFileList={setFileList} />
+     {/* <ImageCrop fileList={fileList} setFileList={setFileList} /> */}
         <div>
           <label className="input-label">
             <span style={{ color: "red", fontSize: "18px" }}>*</span> Posted By
@@ -211,17 +213,33 @@ const Jobs = () => {
               onChange={(e) => console.log(e.target.value, "data picker")}
             />
           </Space> */}
-        <label className="input-label">
+        {/*<label className="input-label">
           <span style={{ color: "red", fontSize: "18px" }}>*</span> End date:
-        </label>
+        </label>*/}
         <Space direction="vertical" size={12}>
-          <DatePicker
-            format="DD-MM-YYYY"
+          {/*<DatePicker
+            // format="DD-MM-YYYY"
             // value={formData?.postedTill}
+            format={dateFormatList}
+            // value={dayjs(formData?.postedTill, 'DD-MM-YYYY')}
+            selected={dateSet || ''}
+            placeholder={formData?.postedTill}
             onChange={(e, value) => {
-              setFormData({...formData, postedTill: value})
-              console.log(value, 'value')
+              setFormData({...formData, postedTill: e?._d})
+              console.log(e, 'e?._d')
             }}
+          />*/}
+          <FormInput
+            type="date"
+            name="postedTill"
+            label="End date:"
+            value={formData?.postedTill}
+            onChange={(e)=> {
+              setFormData({...formData, postedTill: e.target.value})
+            }}
+            // validationError={formDataErrors.dateOfBirth}
+            required
+          // disabled
           />
         </Space>
         {/* <label className="input-label">Time :</label>
@@ -248,13 +266,17 @@ const Jobs = () => {
           onChange={(e) => setFormData({ ...formData, content: e.target.value })}
         />
       </Modal>
-      <JobCard
-        data={data}
-        handleShareDetails={handleShareDetails}
-        handleUpdate={handleUpdate}
-        handleDelete={handleDelete}
-      />
+       {data?.length ? <JobCard
+          data={data}
+          handleShareDetails={handleShareDetails}
+          handleUpdate={handleUpdate}
+          handleDelete={handleDelete}
+        // JobApplicationsLength={jobApplicationsData?.length || 0}
+      /> : (
+       <EmptyMessage />
+      )}
     </div>
+    </>
   );
 };
 

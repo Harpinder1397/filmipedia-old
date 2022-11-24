@@ -1,70 +1,113 @@
 import React from "react";
-import { CloseOutlined, EditOutlined } from "@ant-design/icons";
+import {
+  CloseOutlined,
+  EditOutlined,
+  UsergroupAddOutlined,
+  UserOutlined,
+} from "@ant-design/icons";
+import PopConfirm from "../../../common/pop-confirm";
 
 // styles
 import "./cardStyle.less";
-import PopConfirm from "../../../common/pop-confirm";
+import JobApplications from "../applications";
 
-const JobCard = ({ data, handleShareDetails, handleUpdate, handleDelete }) => {
+const JobCard = ({ data, handleShareDetails, handleUpdate, handleDelete, JobApplicationsLength }) => {
   return (
-    <div className="jobcard-page-body">
-      <div className="job-card-outer-container">
+    <>
+      <div className="new-card-display">
+        {/* new card start.. */}
         {data?.map((item) => {
           return (
-            <div className="jobcard-container">
-            <PopConfirm
-                  title='Are you sure?'
-                  onConfirm={() => {
-                    handleDelete(item._id)
-                  }}
-                  body={
-                    <CloseOutlined />
-                  }
-                />
-             
-
-              <div className="info-image-container">
-                <div className="jobcard-image">
-                  <img src="https://bareillycollege.org/wp-content/uploads/2022/09/chris-evans.webp" />
-                </div>
-                <div className="jobcard-info">
-                  <h1 className="user-name">
-                    {item.postedByName}
+            <div className="new-card-container">
+              <div className="card-content-container">
+                <div>
+                  <h1>
+                    {item.jobTitle}
                     <EditOutlined
                       onClick={() => handleUpdate(item)}
+                      style={{ cursor: "pointer", fontSize: "19px" }}
+                    />
+                    <PopConfirm
+                      title="Are you sure?"
+                      onConfirm={() => {
+                        handleDelete(item._id);
+                      }}
+                      body={
+                        <CloseOutlined
+                          style={{ cursor: "pointer", fontSize: "19px" }}
+                        />
+                      }
                     />
                   </h1>
-                  <p className="job-title">{item.jobTitle}</p>
-                  <p>{item.content}</p>
-                </div>
-              </div>
+                  <b>
+                    <UserOutlined /> shared by-: <i> {item.postedByName}</i>
+                  </b>
+                  <p style={{ marginTop: "7px" }}>
+                    <UsergroupAddOutlined style={{ marginRight: "5px" }} />
+                    {item.postedByCategory}
+                  </p>
+                  <p>
+                    {" "}
+                    <img
+                      src="https://www.svgrepo.com/show/127575/location-sign.svg"
+                      width={"12px"}
+                      style={{ marginRight: "5px" }}
+                    />
+                    Ludhiana (Punjab)
+                  </p>
 
-              <div className="job-details">
-                <div className="details">
-                  <strong>Category</strong>
-                  {item.postedByCategory}
+                  <p style={{ margin: "11px 0 16px" }}>
+                    <img
+                      src="https://cdn.iconscout.com/icon/premium/png-256-thumb/writing-2779694-2324192.png"
+                      width={"19px"}
+                      style={{ marginRight: "4px" }}
+                    />
+                    {item.content}
+                  </p>
                 </div>
-                <div className="details">
-                  <strong>requirement</strong>
-                  {item.requirement}
-                </div>
-                {/*<div className="details">
-                  {item.postedOn}
-                  <strong>PostedOn</strong>
-          </div>*/}
-                <div className="details">
-                  <strong>Exp</strong>
-                  {item.postedTill}
+                <div className="card-bottom-content">
+                  <span>
+                    Poste:{" "}
+                    <b> {new Date(item?.postedOn).getUTCDate()} days ago</b>
+                  </span>
+                  <span>
+                    Openings: <b> {item.requirement}</b>
+                  </span>
+                  {/*<span>
+                    Job Applicants: <b>{JobApplicationsLength}</b>
+                    </span>*/}
+                    <span>
+                    Left: <b> {new Date(item?.postedTill).getUTCDate()} days</b>
+                  </span>
                 </div>
               </div>
-              <div className="job-card-footer">
-                <button className="massage" onClick={()=> handleShareDetails(item)}>Apply</button>
+              <div className="image-container">
+                <div className="image-box">
+                  <img src="https://t3.ftcdn.net/jpg/04/93/13/42/360_F_493134256_DsdRygnyk1VflTXXuAjI211fWJqDLu1W.jpg" />
+                </div>
+                <div
+                  style={{
+                    display: "flex",
+                    flexDirection: "column",
+                    gap: "12px",
+                  }}
+                >
+                  <button
+                    className="apply-btn"
+                    onClick={() => handleShareDetails(item)}
+                  >
+                    Apply
+                  </button>
+                  {/*<span>
+                    left: <b> {new Date(item?.postedTill).getUTCDate()}</b>
+                </span>*/}
+                </div>
               </div>
             </div>
           );
         })}
       </div>
-    </div>
+    </>
   );
 };
 

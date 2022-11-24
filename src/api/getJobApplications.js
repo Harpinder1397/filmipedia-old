@@ -2,10 +2,11 @@ import { useMutation, useQuery, useQueryClient } from "react-query";
 import qs from "query-string";
 import { apiGet, apiPost } from "../utils/api";
 
-const API_URL = 'http://localhost:3000'
+const API_URL =
+  "http://node-env.eba-xnwspbk7.ap-northeast-1.elasticbeanstalk.com";
 
 export const useJobApplicationsQuery = () => {
-    return useQuery(["applications"],[`${API_URL}/job/applications`], () =>
+  return useQuery(["applications"], [`${API_URL}/job/applications`], () =>
     apiGet(`${API_URL}/job/applications`)
    )}
  
@@ -61,4 +62,3 @@ export const useJobApplicationsQuery = () => {
     // },
   });
 };
- 
