@@ -4,6 +4,7 @@ import { DeleteOutlined, EditOutlined, FileAddOutlined } from "@ant-design/icons
 import { createCategoryApi, deleteCategoryApi, updateCategoryApi, updateSubCategoryApi, updateTagsApi } from "../../api/getCategories";
 import PopConfirm from "../../common/pop-confirm";
 
+
 const renderMethod = (payload, title, id) => {
   if (title === 'category') return createCategoryApi(payload);
   if (title === 'Sub-category') return updateSubCategoryApi(id, payload);
@@ -48,8 +49,6 @@ const AllCategories = ({categories, col, getCategories}) => {
   }
 
   const handleSave = () => {
-    const crypto = require("crypto");
-    const uniqueId = crypto.randomBytes(16).toString("hex");
     let payload = {};
     if ( title === 'category' ) {
       payload = {
@@ -66,7 +65,7 @@ const AllCategories = ({categories, col, getCategories}) => {
       } else {
         payload = [
           ...selectedCategory?.childern,
-          {key: formData['Sub-category'].toLowerCase().replace(' ', '-'), _id: uniqueId, value: formData[title]}
+          {key: formData['Sub-category'].toLowerCase().replace(' ', '-'), _id: new Date().valueOf(), value: formData[title]}
         ]
       } 
     }
@@ -79,10 +78,9 @@ const AllCategories = ({categories, col, getCategories}) => {
           : {...item}
         )
       } else {
-        
         payload = [
           ...selectedCategory.tags,
-          {key: formData['tags'].toLowerCase().replace(' ', '-'), _id: uniqueId, value: formData[title]}
+          {key: formData['tags'].toLowerCase().replace(' ', '-'), _id: new Date().valueOf(), value: formData[title]}
         ]
       } 
     } 

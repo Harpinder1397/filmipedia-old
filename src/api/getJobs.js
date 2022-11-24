@@ -37,9 +37,10 @@ export const useJobsQuery = () => {
 
  export const useCreateJobMutation = () => {
   // const queryClient = useQueryClient();
+  const url = `${API_URL}/jobs`
   const { mutate: fetchJobList } = useUpdateJobsMutation();
   return useMutation([`${API_URL}/jobs`],(payload) =>
-    apiPost(`${API_URL}/jobs`, payload),
+    apiPost(url, payload),
    {
     // onMutate: async () => {
     //   await queryClient.cancelQueries("user");

@@ -199,7 +199,9 @@ span.icon-label {
 .database-container {
   // position: absolute;
   // right: 0;
-  width: 970px;
+  // width: 970px;
+  // width: 100%;
+  width: 83%;
 }
 .banner-container {
   width: 200px;
@@ -218,6 +220,11 @@ span.icon-label {
 }
 .list-container {
   // width: 1350px;
+  .second-list-container {
+    display: flex;
+    flex-wrap: wrap;
+    margin: 0 auto;
+  }
 
   .location-filter {
     width: 150px;
@@ -293,5 +300,20 @@ span.icon-label {
 @media screen and (max-width: 456px) {
   .left-side-bar {
     display: none;
+  }
+  .banner-container {
+    display: none;
+  }
+  .list-con {
+    left: unset;
+    position: unset;
+  }
+  .database-container {
+    // position: absolute;
+    // right: 0;
+    width: 100%;
+  }
+  .second-list-container {
+    justify-content: center;
   }
 }

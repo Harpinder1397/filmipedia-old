@@ -27,7 +27,10 @@ const ImageUploaderComponent = (props) => {
   const [imgFile, setFile] = useState(null);
   const [isOpen, setIsOpen] = useState(false);
 
+  
+
   const handleChange = (event) => {
+    console.log(event, "event")
     const file = event.target.files[0];
     if (file) {
       setFile(file);

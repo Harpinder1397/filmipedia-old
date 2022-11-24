@@ -86,9 +86,7 @@ const AllStates = ({states }) => {
 
     // AllStates add state
     if(isEditModal == 'add') {
-      const crypto = require("crypto");
-      const uniqueId = crypto.randomBytes(16).toString("hex");
-      const payload = {...formData, '_id': uniqueId }
+      const payload = formData 
       const res = await createStateApi(payload);
       if(res){
         setIsVisible(false);

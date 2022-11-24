@@ -8,6 +8,7 @@ import { getUserApi } from "../../api/user";
 
 // styles
 import "./card/cardStyle.less";
+import ImageCrop from "./image-crop";
 
 const Jobs = () => {
   const userId = localStorage.getItem('user');
@@ -15,6 +16,8 @@ const Jobs = () => {
   const [userInfo, setUserInfo] = useState({});
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalTitle, setModalTitle] = useState("Add");
+  const [fileList, setFileList] = useState();
+  
 
 
   const { data } = useJobsQuery();
@@ -24,6 +27,30 @@ const Jobs = () => {
   const { mutate: updateJobMutation, } = useUpdateJobMutation();
   const { mutate: createJobApplications } = useCreateJobApplicationsMutation()  
   
+  useEffect(() => {
+  
+      if(fileList){
+        const payload = {
+          content:"qw",
+          jobTitle:"aaaaaaaaaaaa",
+          postedByCategory:"Director",
+          postedById:"6362881a7e175f0004be4671",
+          postedByName:"Harpinder Singh",
+          postedOn:"Tue Nov 22 2022 23:39:32 GMT+0530 (India Standard Time)",
+          postedTill: "23-11-2022",
+          requirement:1,
+          jobImageUploader: fileList
+          }
+        var fd = new FormData();
+      fd.append('jobImageUploader', fileList);
+      var sd = new FormData();
+      sd.append('jobImageUploader', payload);
+      
+      console.log(sd, 'payload')
+      // createJobMutation(fd)
+    }
+  }, [fileList])
+
   const showModal = () => {
     setModalTitle("Add");
     setIsModalOpen(true);
@@ -34,6 +61,7 @@ const Jobs = () => {
     if(modalTitle == "Add"){
       const payload = {
         ...formData,
+        // thumbnail: fileList,
         postedByCategory: userInfo.category,
         postedById: userInfo?._id,
         postedByName: userInfo?.fullName,
@@ -105,6 +133,7 @@ const Jobs = () => {
         onOk={handleOk}
         onCancel={handleCancel}
       >
+      <ImageCrop fileList={fileList} setFileList={setFileList} />
         <div>
           <label className="input-label">
             <span style={{ color: "red", fontSize: "18px" }}>*</span> Posted By

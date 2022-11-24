@@ -89,7 +89,7 @@ export default function CommonList({ users, isFav }) {
     <div className="list-container">
       <Row>
         {/* <Col span={18}> */}
-        <div style={{ display: 'flex', flexWrap: 'wrap', margin: '0 auto' }}>
+        <div className="second-list-container">
           {
             users?.length ? users.map((user) => 
               <CommonCard user={user} favList={favList} getFavList={getFavList} isFav={isFav}/>

@@ -6,6 +6,8 @@ import { useJobApplicationsQuery, useUpdateJobApplicationsMutation } from "../..
 const { Title } = Typography;
 
 const JobApplications = () => {
+
+  const userId = localStorage.getItem('user');
   const { data } = useJobApplicationsQuery();
   const { mutate: jobApplicationsMutation } = useUpdateJobApplicationsMutation();
 
@@ -70,9 +72,9 @@ const JobApplications = () => {
       // </>
     // },
   ];
-
+ 
   useEffect(() => {
-    jobApplicationsMutation()
+    jobApplicationsMutation(userId)
   }, [])
   
 
