@@ -62,7 +62,7 @@ const SubCategoryComponent = ({
         />
         <FormSelect
             name="cities"
-						label="Select your city"
+            placeholder="Select City"
             className="city-search-input"
 						value={formData.city}
             onSelect={(cat, val) => {

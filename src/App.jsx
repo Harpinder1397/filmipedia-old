@@ -4,6 +4,7 @@ import { Switch, Route, Link } from "react-router-dom";
 import { Layout, message, Row, Spin } from "antd";
 import "./App.less";
 // import Dashboard from './Dashboard';
+import useLocalStorage from "use-local-storage";
 import CompleteList from "./pages/complete-list";
 import Demo from "./Demo";
 import LoginRoute from "./routes/LoginRoute";
@@ -47,9 +48,11 @@ const App = () => {
   const [category, setSelectedCategory] = useState(undefined);
   const [subCategory, setSubCategory] = useState(undefined);
 
+  // loading
+  const [isloading, setIsloading] = useLocalStorage("isloading", "");
+  console.log(isloading, 'isloading')
   const getCategories = async () => {
     const data = await getCategoryApi();
-    console.log(data, "data 22");
 
     // const updateData = data?.map((item) => ({
     //   ...item,
@@ -80,6 +83,7 @@ const App = () => {
 
   const { mutate: fetchStatesMutation } = useUpdateStateMutation();
 
+  localStorage.setItem("loading", true);
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -87,10 +91,22 @@ const App = () => {
     // getStates();
     setToken(token);
     fetchStatesMutation();
+      
   }, []);
 
+  // useEffect(() => {
+  //   setIsloading(true);
+  //  setTimeout(() => {
+  //   setIsloading(false);
+    
+  //  }, 3000);
+  // }, [])
+  
+
   return (
-    <Spin spinning={false}>
+    <Spin 
+      spinning={false}
+      >
       <Layout>
         <FilterProvider
           value={{

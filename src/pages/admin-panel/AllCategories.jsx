@@ -11,13 +11,15 @@ const renderMethod = (payload, title, id) => {
   if (title === 'tags') return updateTagsApi(id, payload);
 }
 const AllCategories = ({categories, col, getCategories}) => {
-  const [selectedCategory, setSelectedCategory] = useState('');
+  const [selectedCategory, setSelectedCategory] = useState(categories[0]);
   const [title, setTitle] = useState('');
   const [isVisible, setIsVisible] = useState(false);
   const [formData, setFormData] = useState({});
   const [catId, setCatId] = useState(null);
   const [isEdit, setIsEdit] = useState(false);
   const [isEditOptions, setIsEditOptions] = useState(false);
+
+  console.log(selectedCategory, 'selectedCategory')
 
   const fetchCategoriesList = () => {
     const updateSelectedCategory = categories?.filter((item) => item?._id == selectedCategory?._id)
@@ -161,6 +163,9 @@ const AllCategories = ({categories, col, getCategories}) => {
   useEffect(() => {
     fetchCategoriesList();
   },[categories]);
+  useEffect(() => {
+    fetchCategoriesList();
+  },[]);
 
   return (
     <div className="all-categories">
@@ -185,6 +190,7 @@ const AllCategories = ({categories, col, getCategories}) => {
                 >
                   {category.value}
                 </div>
+                <span style={{marginLeft: '5px' }}>{category?._id == selectedCategory?._id ? `(active)` : ''}</span>
               </div>
               <div className="action">
                 <EditOutlined onClick={() => handleEdit(category, 'category')}/>

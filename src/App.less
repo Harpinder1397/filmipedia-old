@@ -97,15 +97,24 @@ body {
     background-color: @theme-color !important;
     
   }
+  .ant-table-pagination {
+    gap: 6px !important;
+  }
   .ant-pagination-item {
     background: @theme-color !important;
     border: none;
     color: @text-color;
+    min-width: 30px !important;
+    height: 30px !important;
+    line-height: 30px !important;
   }
   .ant-pagination-item-active {
     background: @selected-color !important;
     color: @text-color !important;
-  }  
+    a {
+      color: #fff !important;
+    }
+  }   
   .ant-input, .ant-input-password {
     border-radius: 8px;
     // padding: 6px;

@@ -97,3 +97,19 @@
         }
     }
 }
+
+@media screen and (max-width: 456px) {
+    .profile-details-container {
+        width: 100% !important;
+        height: unset !important;
+        .full-details-container {
+            display: none !important;
+        }
+        .meta-details-container {
+            height: unset !important;
+            .bottom-info {
+                flex-direction: column !important;
+            }
+        }
+    }
+}

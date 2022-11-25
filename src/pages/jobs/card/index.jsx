@@ -11,7 +11,9 @@ import PopConfirm from "../../../common/pop-confirm";
 import "./cardStyle.less";
 import JobApplications from "../applications";
 
-const JobCard = ({ data, handleShareDetails, handleUpdate, handleDelete, JobApplicationsLength }) => {
+const JobCard = ({ userId, data, jobApplicationsList, handleShareDetails, handleUpdate, handleDelete, JobApplicationsLength }) => {
+  console.log(jobApplicationsList, 'jobApplicationsList')
+  console.log(data, 'jobApplicationsList 22')
   return (
     <>
       <div className="new-card-display">
@@ -92,12 +94,14 @@ const JobCard = ({ data, handleShareDetails, handleUpdate, handleDelete, JobAppl
                     gap: "12px",
                   }}
                 >
-                  <button
+                  {userId == item?.postedById ? null : (
+                    <button
                     className="apply-btn"
                     onClick={() => handleShareDetails(item)}
                   >
                     Apply
-                  </button>
+                  </button> 
+                  )}
                   {/*<span>
                     left: <b> {new Date(item?.postedTill).getUTCDate()}</b>
                 </span>*/}

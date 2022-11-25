@@ -6,6 +6,7 @@ import { useContext, useState, useEffect } from 'react';
 import { getProjectsApi, createProjectApi, updateProjectApi, deleteProjectApi } from '../../../api/projects';
 import PopConfirm from '../../../common/pop-confirm';
 import ProjectModal from './ProjectModal';
+import useLocalStorage from "use-local-storage";
 
 import './projectDetailsStyle.less'
 
@@ -19,7 +20,8 @@ const Projects = () => {
 	const [modalTitle, setModalTitle] = useState('Add');
   const [subCategoriesList, setSubCategoriesList] = useState([]);
   const userId = localStorage.getItem('user');
-
+  const [isloading] = useLocalStorage("isloading", "");
+  console.log(isloading, 'isloading isloading')
   // GET PROJECTS LIST API
   const fetchProjects = async () => {
 		const res = await getProjectsApi(userId);

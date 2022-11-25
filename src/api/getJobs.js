@@ -1,6 +1,7 @@
 import { useMutation, useQuery, useQueryClient } from "react-query";
 import qs from "query-string";
 import { apiDelete, apiGet, apiPost } from "../utils/api";
+import useLocalStorage from "use-local-storage";
 
 const API_URL =
   "http://node-env.eba-xnwspbk7.ap-northeast-1.elasticbeanstalk.com";
@@ -13,6 +14,7 @@ export const useJobsQuery = () => {
 
 export const useUpdateJobsMutation = () => {
   const queryClient = useQueryClient();
+  const [, setIsloading] = useLocalStorage("isloading", "");
   return useMutation(
     [`${API_URL}/jobs`],
     (payload) =>
@@ -31,9 +33,11 @@ export const useUpdateJobsMutation = () => {
       // },
       onSuccess: (newUser) => {
         console.log(newUser, "newUser");
+        setIsloading(false);
         queryClient.setQueryData(["jobs"], newUser);
       },
       onError: (error, payload, { prevUserData }) => {
+        setIsloading(false);
         queryClient.setQueryData(["jobs"], prevUserData);
       },
     }

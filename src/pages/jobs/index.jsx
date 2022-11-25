@@ -8,6 +8,7 @@ import { getUserApi } from "../../api/user";
 // import dayjs from 'dayjs';
 // import customParseFormat from 'dayjs/plugin/customParseFormat';
 import FormInput from '../../common/inputs/FormInput';
+import useLocalStorage from "use-local-storage";
 
 // styles
 import "./card/cardStyle.less";
@@ -28,9 +29,11 @@ const Jobs = () => {
   const [modalTitle, setModalTitle] = useState("Add");
   const [fileList, setFileList] = useState();
   const [messageApi, contextHolder] = message.useMessage();
+  const [, setIsloading] = useLocalStorage("isloading", "");
   
   // const dateSet = formData ? formData?.postedTill : ''
   const { data } = useJobsQuery();
+  const { data: jobApplicationsList } = useJobApplicationsQuery();
   // const { data: jobApplicationsData} = useJobApplicationsQuery();
   
   const { mutate: fetchJobList } = useUpdateJobsMutation();
@@ -71,6 +74,7 @@ const Jobs = () => {
       }
     }else {
       const payload = formData
+      setIsloading(true);
       updateJobMutation(payload);
       if(isSuccess || !isLoading){
         setIsModalOpen(false);
@@ -107,6 +111,7 @@ const Jobs = () => {
   }
 
   const handleDelete = (id) => {
+    setIsloading(true);
     deleteJobMutation(id);
   }
 
@@ -116,6 +121,7 @@ const Jobs = () => {
   }
 
   useEffect(() => {
+    setIsloading(true);
     fetchJobList();
     fetchUserDetails();
   }, []);
@@ -267,7 +273,9 @@ const Jobs = () => {
         />
       </Modal>
        {data?.length ? <JobCard
+          userId={userId}
           data={data}
+          jobApplicationsList={jobApplicationsList}
           handleShareDetails={handleShareDetails}
           handleUpdate={handleUpdate}
           handleDelete={handleDelete}

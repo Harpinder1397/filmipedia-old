@@ -39,7 +39,7 @@ const ProfileDetails = () => {
 	return (
 		<div className="profile-details-container">
 			<Row>
-				<Col span={6}>
+				<Col  xs={24} sm={6} md={6} lg={6} xxl={6} xl={6}>
 					<div className="side-bar-details">
 						<div className="img-holder">
 							<img src={userDetails?.thumbnails?.find((thumbnail) => thumbnail.dp)?.url} alt="profile-pic" />
