@@ -113,10 +113,10 @@ const RegistrationStep1 = (props) => {
   }
 
   return (
-    <Spin spinning={isLoading}>
     <div 
       className="form-container"
     >
+    <Spin spinning={isLoading}>
     <h1>Register</h1>
     <FormInput 
       type="text"
@@ -207,8 +207,8 @@ const RegistrationStep1 = (props) => {
           Register
         </Button>
       </Form.Item>
-    </div>
     </Spin>
+    </div>
   );
 };
 
