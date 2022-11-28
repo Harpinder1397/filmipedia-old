@@ -14,4 +14,4 @@ phases:
   post_build:
     commands:
       - echo "Updating files in the S3 bucket..."
-      - aws s3 sync dist/filmipedia/ s3://filmipedia --delete
+      - aws s3 sync dist/filmipedia/ s3://bucket/filmipedia --delete
