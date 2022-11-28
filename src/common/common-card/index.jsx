@@ -1,40 +1,33 @@
 import React from 'react'
 import { HeartFilled, HeartOutlined, VerifiedOutlined } from "@ant-design/icons"
-import { Button } from "antd"
-import { addToFavouritesApi, removeFromFavouritesApi } from '../../api/favourites';
 import { useHistory } from 'react-router';
 import defaultThumbnail from '../../assets/images/avatar.png'
 import './commonCard.less';
 
-const CommonCard = ({user, favList, getFavList, isFav}) => {
-  const userId = localStorage.getItem('user');
-  const token = localStorage.getItem('token');
+const CommonCard = ({user, favList, isFav, handleFavourite, handleRemoveFavourite}) => {
+  // const userId = localStorage.getItem('user');
+  // const token = localStorage.getItem('token');
 
-  const handleFavourite = async (userInfo) => {
-      if(!token) return history.push('/signin')
-      const payload = {
-          userId: userId,
-          favUserId: userInfo._id,
-          favName: userInfo?.fullName || '',
-          favSubCategory: userInfo?.subCategory || '',
-          favThumbnail: userInfo.thumbnails.find((thumbnail) => thumbnail.dp)?.url || ''
-      }
-      const resp = await addToFavouritesApi(payload);
-      if (resp.success) {
-          getFavList();
-      }
-  }
 
-  const handleRemoveFavourite = async (id) => {
-    if(!token) return history.push('/signin')
-    const resp = await removeFromFavouritesApi(userId, id);
-    if (resp.success) {
-        getFavList();
-    }
-  }
+  // const handleFavourite = async (userInfo) => {
+  //     if(!token) return history.push('/signin')
+  //     const payload = {
+  //         userId: userId,
+  //         favUserId: userInfo._id,
+  //         favName: userInfo?.fullName || '',
+  //         favSubCategory: userInfo?.subCategory || '',
+  //         favThumbnail: userInfo.thumbnails?.find((thumbnail) => thumbnail.dp)?.url || ''
+  //     }
+  //     addToFavouritesApi(payload);
+  // }
+
+  // const handleRemoveFavourite = async (id) => {
+  //   if(!token) return history.push('/signin')
+  //   removeFromFavouritesApi(userId, id);
+  // }
 
   const handleNavigationUser = () => {
-    history.push(`/profile/${user.favUserId || user._id}`)
+    history.push(`/profile/${user?.favUserId || user?._id}`)
 
     // if(userId && token) {
     //   history.push(`/profile/${user.favUserId || user._id}`)
@@ -50,7 +43,7 @@ console.log(user.favUserId, user._id, 'user')
   return (
     <div className="card-container">
       <div className="img-wrapper">
-        <img src={isFav ? (user.favThumbnail || defaultThumbnail) : (user.thumbnails.find((thumbnail) => thumbnail.dp)?.url || defaultThumbnail)} alt="dp" />
+        <img src={isFav ? (user.favThumbnail || defaultThumbnail) : (user.thumbnails?.find((thumbnail) => thumbnail.dp)?.url || defaultThumbnail)} alt="dp" />
       </div>
       <div className='d-flex flex-col details'>
         <div>
@@ -71,7 +64,7 @@ console.log(user.favUserId, user._id, 'user')
         <div className="action-btns">
           {user?.verified ? <VerifiedOutlined style={{ color: 'green'}} /> : <VerifiedOutlined />}
           {
-            isFav || favList.find((fav) => user._id === fav.favUserId)
+            isFav || favList?.find((fav) => user._id === fav.favUserId)
             ? <HeartFilled style={{ color: 'red'}} onClick={() => handleRemoveFavourite(user.favUserId || user._id)}/>
             : <HeartOutlined onClick={() => handleFavourite(user)}/>
           }

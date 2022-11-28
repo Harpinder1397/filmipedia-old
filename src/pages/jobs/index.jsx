@@ -1,46 +1,37 @@
 import React, { useState, useEffect } from "react";
-import { Button, DatePicker, Input, Modal, InputNumber, Select, Space, message } from "antd";
+import { Button, Input, Modal, InputNumber, Space, message, Spin } from "antd";
 import TextArea from "antd/lib/input/TextArea";
 import JobCard from "./card";
 import { useCreateJobMutation, useDeleteJobMutation, useJobsQuery, useUpdateJobMutation, useUpdateJobsMutation } from "../../api/getJobs";
 import { useCreateJobApplicationsMutation, useJobApplicationsQuery } from "../../api/getJobApplications";
-import { getUserApi } from "../../api/user";
-// import dayjs from 'dayjs';
-// import customParseFormat from 'dayjs/plugin/customParseFormat';
+import { useGetUserDataQuery, useGetUserQuery } from "../../api/user";
 import FormInput from '../../common/inputs/FormInput';
-import useLocalStorage from "use-local-storage";
+import EmptyMessage from "../../common/emptyMessage/EmptyMessage";
 
 // styles
 import "./card/cardStyle.less";
-import ImageCrop from "./image-crop";
-import EmptyMessage from "../../common/emptyMessage/EmptyMessage";
-import AlertMessage from "../../common/alert-message/AlertMessage";
 // import moment from "moment";
 
-// dayjs.extend(customParseFormat);
-
-
 const Jobs = () => {
-  // const dateFormatList = ['DD/MM/YYYY', 'DD/MM/YY'];
   const userId = localStorage.getItem('user');
   const [formData, setFormData] = useState({});
-  const [userInfo, setUserInfo] = useState({});
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalTitle, setModalTitle] = useState("Add");
-  const [fileList, setFileList] = useState();
   const [messageApi, contextHolder] = message.useMessage();
-  const [, setIsloading] = useLocalStorage("isloading", "");
   
-  // const dateSet = formData ? formData?.postedTill : ''
-  const { data } = useJobsQuery();
-  const { data: jobApplicationsList } = useJobApplicationsQuery();
-  // const { data: jobApplicationsData} = useJobApplicationsQuery();
+  const { data, isLoading: loading1} = useJobsQuery();
+  const { data: userInfo, isLoading: loading8} = useGetUserDataQuery();
   
-  const { mutate: fetchJobList } = useUpdateJobsMutation();
-  const { mutate: createJobMutation, isSuccess, isLoading } = useCreateJobMutation();
-  const { mutate: deleteJobMutation, } = useDeleteJobMutation();
-  const { mutate: updateJobMutation, } = useUpdateJobMutation();
-  const { mutate: createJobApplications } = useCreateJobApplicationsMutation()  
+  const { data: jobApplicationsList } = useJobApplicationsQuery();  
+  const { mutate: fetchJobList, isLoading: loading2} = useUpdateJobsMutation();
+  const { mutate: createJobMutation, isSuccess, isLoading: loading3 } = useCreateJobMutation();
+  const { mutate: deleteJobMutation, isLoading: loading4} = useDeleteJobMutation();
+  const { mutate: updateJobMutation, isLoading: loading5} = useUpdateJobMutation();
+  const { mutate: createJobApplications} = useCreateJobApplicationsMutation()
+  const { mutate: getUserQuery, isLoading: loading6} = useGetUserQuery();
+
+
+  const mainLoader = loading1 || loading2 || loading3 || loading4 || loading5
 
   const showModal = () => {
     setModalTitle("Add");
@@ -49,7 +40,6 @@ const Jobs = () => {
     
   };
 
-  console.log(formData?.postedTill, 'formData?.postedTill')
   
   const handleOk = () => {
     if(modalTitle == "Add"){
@@ -62,7 +52,7 @@ const Jobs = () => {
       }
       if(formData?.postedTill && formData?.jobTitle && formData?.requirement && formData?.content){
         createJobMutation(payload);
-        if(isSuccess || !isLoading){
+        if(isSuccess || !loading4){
           setIsModalOpen(false);
           setFormData({});
         }
@@ -74,9 +64,8 @@ const Jobs = () => {
       }
     }else {
       const payload = formData
-      setIsloading(true);
       updateJobMutation(payload);
-      if(isSuccess || !isLoading){
+      if(isSuccess || !loading4){
         setIsModalOpen(false);
         setFormData({});
       }
@@ -111,17 +100,14 @@ const Jobs = () => {
   }
 
   const handleDelete = (id) => {
-    setIsloading(true);
     deleteJobMutation(id);
   }
 
   const fetchUserDetails = async () => {
-		const data = await getUserApi(userId);
-    setUserInfo(data);
+    getUserQuery(userId)
   }
 
   useEffect(() => {
-    setIsloading(true);
     fetchJobList();
     fetchUserDetails();
   }, []);
@@ -129,7 +115,7 @@ const Jobs = () => {
   
 
   return (
-    <>
+    <Spin spinning={mainLoader}>
     {contextHolder}
     <div className="jobcard-page-body">
       <Button type="primary" className="modal-btn" onClick={showModal}>
@@ -284,7 +270,7 @@ const Jobs = () => {
        <EmptyMessage />
       )}
     </div>
-    </>
+    </Spin>
   );
 };
 

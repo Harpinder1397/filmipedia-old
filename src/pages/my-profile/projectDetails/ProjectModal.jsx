@@ -36,7 +36,7 @@ const ProjectModal = (props) => {
             placeholder="Please select"
             className="navbar__tag-selector"
             onSelect={(id, val) => {
-              const getSubCategories = categories.filter((item) => item.id === val.id)
+              const getSubCategories = categories.filter((item) => item._id === val.id)
               setSubCategoriesList(getSubCategories[0].childern);
               onChangeProjectFun(val, 'category')
             }}

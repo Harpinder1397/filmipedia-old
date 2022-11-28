@@ -106,3 +106,29 @@ export const updateThumbnailsApi = (userId, payload) => {
       return error;
     });
 };
+
+
+// new 
+
+
+export const useGetUserDataQuery = () => {
+  return useQuery(["userInfo"], [`${API_URL}/user`], () =>
+    apiGet(`${API_URL}/user`)
+  );
+};
+
+export const useGetUserQuery = () => {
+  const queryClient = useQueryClient();
+  return useMutation([`${API_URL}/user`],(userId) =>
+    apiGet(`${API_URL}/user/${userId}`),
+   {
+      onSuccess: (newUser) => {
+        //  console.log(newUser, 'newUser')
+        queryClient.setQueryData(["userInfo"], newUser);
+      },
+      onError: (error, payload, { prevUserData }) => {
+        queryClient.setQueryData(["userInfo"], prevUserData);
+      },
+    }
+  );
+};

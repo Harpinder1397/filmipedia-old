@@ -1,0 +1,34 @@
+.filter-menu-container {
+    display: none !important;
+}
+
+@media screen and (max-width: 456px) {
+.filter-menu-container {
+    display: flex !important;
+    gap: 14px;
+    margin-bottom: 10px;
+    .ant-input {
+        height: 33px;
+    }
+}
+
+.button-menu-filter {
+    margin: 0 0 14px auto !important;
+}
+.basic-left-dashboard-drawer {
+    .ant-drawer-header-title {
+        display: flex !important;
+        flex-direction: row-reverse !important;
+        .ant-drawer-close {
+            margin: 0 !important;
+            padding: 0 !important;
+        }
+    }
+    .ant-drawer-body {
+        padding: 0 !important;
+    }
+    .ant-drawer-content-wrapper {
+        width: 280px !important;
+    }
+}
+}

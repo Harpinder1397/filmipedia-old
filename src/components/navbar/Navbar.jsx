@@ -14,23 +14,20 @@ import { useHistory } from "react-router-dom";
 import "./Navbar.less";
 import { FiltersContext } from "../../App";
 import FormSelect from "../../common/inputs/FormSelect";
-import { useMutation, useQuery, useQueryClient } from "react-query";
 import { useUpdateUserNameMutation } from "../../api/user";
-import { useSelector } from "react-redux";
 import MobileNavbar from "./MobileNavbar";
 
-const Navbar = () => {
+const Navbar = ({setIsloading}) => {
   const history = useHistory();
   const [collapsed, setCollapsed] = useState(false);
-  const [formData, setFormData] = useState();
-  const [loading, setLoading] = useState(false);
+  const [formData, setFormData] = useState({});
+  const [tags, setTags] = useState([]);
   const [subCategoriesList, setSubCategoriesList] = useState([]);
   const {
     categories,
     setSubCategories,
     token,
     setToken,
-    tags
   } = useContext(FiltersContext);
 
   const handelLogout = () => {
@@ -48,17 +45,35 @@ const Navbar = () => {
     setCollapsed(false);
   };
 
-  const { mutate: userNameMutation } = useUpdateUserNameMutation();
+  const { mutate: userNameMutation, isLoading } = useUpdateUserNameMutation();
+
+  console.log(formData, 'formData')
+  useEffect(() => {
+    if(formData){
+      setIsloading(isLoading);
+    }
+  }, [isLoading])
 
   useEffect(() => {
-    setLoading(true);
-    const timeOutId = setTimeout(async () => {
       const payload = formData;
+      Object.keys(formData)?.forEach(key => {
+        if(!formData[key])
+          delete formData[key]
+      });
       userNameMutation(payload);
-      setLoading(false);
+  }, [formData?.category, formData?.subCategory, formData?.tags])
+
+  useEffect(() => {
+    const timeOutId = setTimeout(async () => {
+        const payload = formData;
+        Object.keys(formData).forEach(key => {
+          if(!formData[key])
+            delete formData[key]
+        });
+        userNameMutation(payload);
     }, 1000);
     return () => clearTimeout(timeOutId);
-  }, [formData]);
+  }, [formData?.fullName]);
 
   const menu = (
     <Menu
@@ -150,9 +165,8 @@ const Navbar = () => {
   }
 
   return (
-    // <Spin spinning={loading}>
     <Layout.Header className="navbar">
-      <Row justify="space-around" align="middle">
+      <Row className="navbar-ant-row" justify="space-around" align="middle">
         <div className="ant-row ant-row-middle navbar__left">
           {/* <div className="navbar__logo" > */}
           {/* F I L M I P E D I A */}
@@ -166,22 +180,25 @@ const Navbar = () => {
               placeholder="Please select"
               className="navbar__category-selector"
               onSelect={(id, val) => {
+                console.log(id, val, 'ddddd')
                 const getSubCategories = categories.filter(
-                  (item) => item.id == val.id
+                  (item) => item._id == val.id
                 );
                 setSubCategoriesList(getSubCategories[0].childern);
                 setSubCategories(val.id);
                 // HandlenewChnage()
-                setLoading(true);
                 setFormData({
                   ...formData,
                   category: val.value,
                   subCategory: "",
+                  tags: ''
                 });
+                setTags(getSubCategories[0].tags)
               }}
               onClear={() => {
                 setFormData({ ...formData, category: "", subCategory: "" });
                 setSubCategories("");
+                setTags([]);
               }}
               options={categories}
               filterOption={(input, option) =>
@@ -230,12 +247,18 @@ const Navbar = () => {
       {tags?.length ? (
         <Row className="navbar__tags-container">
           {tags?.map((tag) => (
-            <div className="nav-subBar">{tag.value}</div>
+            <div
+              className="nav-subBar"
+              onClick={() => {
+                setFormData({...formData, tags: [tag.value]})
+              }}
+            >
+              {tag.value}
+            </div>
           ))}
         </Row>
       ) : null}
     </Layout.Header>
-    // </Spin>
   );
 };
 

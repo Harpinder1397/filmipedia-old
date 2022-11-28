@@ -5,14 +5,15 @@ import FormSelect from '../../../common/inputs/FormSelect';
 import { useContext, useState, useEffect } from 'react';
 import { getProjectsApi, createProjectApi, updateProjectApi, deleteProjectApi } from '../../../api/projects';
 import PopConfirm from '../../../common/pop-confirm';
+import EmptyMessage from '../../../common/emptyMessage/EmptyMessage';
 import ProjectModal from './ProjectModal';
-import useLocalStorage from "use-local-storage";
 
 import './projectDetailsStyle.less'
+import { getCategoryApi } from '../../../api/getCategories';
 
 const Projects = () => {
 
-  const { categories } = useContext(FiltersContext)
+  const [categories, setCategories] = useState({});
   const [createProject, setCreateProject] = useState({});
   const [projects, setProjects] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
@@ -20,8 +21,6 @@ const Projects = () => {
 	const [modalTitle, setModalTitle] = useState('Add');
   const [subCategoriesList, setSubCategoriesList] = useState([]);
   const userId = localStorage.getItem('user');
-  const [isloading] = useLocalStorage("isloading", "");
-  console.log(isloading, 'isloading isloading')
   // GET PROJECTS LIST API
   const fetchProjects = async () => {
 		const res = await getProjectsApi(userId);
@@ -118,6 +117,9 @@ const Projects = () => {
 
   useEffect(() => {
     fetchProjects();
+    getCategoryApi().then((data) => {
+      setCategories(data);
+    })
   }, [])
 
 
@@ -172,7 +174,7 @@ const Projects = () => {
               </Col>
             </>
           )): (
-            <h4 style={{textAlign: 'center', width: '100%', marginTop: '100px'}}>No Data</h4>
+            <EmptyMessage />
           )
         }
         

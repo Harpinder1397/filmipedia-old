@@ -1,3 +1,4 @@
+import { useMutation, useQuery, useQueryClient } from "react-query";
 import { apiDelete, apiGet, apiPost } from "../utils/api";
 
 const API_URL =
@@ -67,4 +68,27 @@ export const updateTagsApi = (id, payload) => {
     .catch((error) => {
       return error;
     });
+};
+
+
+export const useGetCategoryApiQuery = () => {
+  return useQuery(["categories"], [`${API_URL}/categories`], () =>
+    apiGet(`${API_URL}/categories`)
+  );
+};
+
+export const useFetchCategoryApiQuery = () => {
+  const queryClient = useQueryClient();
+  return useMutation([`${API_URL}/categories`],() =>
+    apiGet(`${API_URL}/categories`),
+   {
+      onSuccess: (newUser) => {
+        //  console.log(newUser, 'newUser')
+        queryClient.setQueryData(["categories"], newUser);
+      },
+      onError: (error, payload, { prevUserData }) => {
+        queryClient.setQueryData(["categories"], prevUserData);
+      },
+    }
+  );
 };

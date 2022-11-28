@@ -1,106 +1,92 @@
 import React, { useState, useEffect, useContext } from "react";
-import { Row, Col, Card } from "antd";
+import { Row, Spin } from "antd";
 import 'react-calendar/dist/Calendar.css';
 import './style.less'
 import { mapStates, mapCities } from '../common/utils';
 import { FiltersContext } from "../App";
-import Requirements from "../components/requirements/Requirements";
-import FormSelect from "./inputs/FormSelect";
-import { getMyFavouritesApi } from "../api/favourites";
+import { useAddToFavouritesApiQuery, useGetMyFavouritesQuery, useMyFavouritesQuery, useRemoveFromFavouritesApiQuery } from "../api/favourites";
 import CommonCard from "./common-card";
+import EmptyMessage from "./emptyMessage/EmptyMessage";
+import { useHistory } from "react-router";
 
-const { Meta } = Card;
-
-const requirements = [
-  {
-    required: 1,
-    what: 'camera',
-    description: 'need one camera',
-    location: 'mohali'
-  },
-  {
-    required: 2,
-    what: 'actors',
-    description: 'need 2 funny female leads',
-    location: 'mohali'
-  },
-  {
-    required: 1,
-    what: 'director',
-    description: 'need one director',
-    location: 'mohali'
-  },
-  {
-    required: 1,
-    what: 'spot boy',
-    description: 'need one spot boy',
-    location: 'mohali'
-  },
-  {
-    required: 1,
-    what: 'camera',
-    description: 'need one camera',
-    location: 'mohali'
-  },
-]
-
-const DATA_TAB = {
-  LIST_FORM: "list_form",
-  GRID_FORM: 'grid_form'
-}
-
-export default function CommonList({ users, isFav }) {
-  const [activeTab, setActiveTab] = useState(DATA_TAB.LIST_FORM);
+export default function CommonList({ users, isFav, isLoading }) {
+  const userId = localStorage.getItem('user');
+  const token = localStorage.getItem('token');
 	const [location, setLocation] = useState(undefined);
 	const [selectedState, setSelectedState] = useState(null);
 	const [cities, setCities] = useState([]);
+  const history = useHistory();
+  const { states } = useContext(FiltersContext);
+  
+  const {data, isLoading : loading1 } = useMyFavouritesQuery();
+  const {mutate: myFavouritesApi, isLoading : loading2 } = useGetMyFavouritesQuery();
+  const {mutate: addToFavouritesApi, isLoading: loading3} = useAddToFavouritesApiQuery();
+  const {mutate: removeFromFavouritesApi, isLoading: loading4} = useRemoveFromFavouritesApiQuery();
 
-  const [formData, setFormData] = useState({});
-  const [formDataErrors, setFormDataErrors] = useState({});
+  const mainLoader = isLoading || loading2 || loading3 || loading4
 
-  const { selectedSubCategories, states } = useContext(FiltersContext);
-
-  const userId = localStorage.getItem('user');
-  const [ favList, setFavList ] = useState([]);
   const getFavList = async () => {
-      const data = await getMyFavouritesApi(userId);
-      setFavList(data);
+      myFavouritesApi(userId);
+  }
+
+  const handleFavourite = async (userInfo) => {
+    if(!token) return history.push('/signin')
+    const payload = {
+        userId: userId,
+        favUserId: userInfo._id,
+        favName: userInfo?.fullName || '',
+        favSubCategory: userInfo?.subCategory || '',
+        favThumbnail: userInfo.thumbnails.find((thumbnail) => thumbnail.dp)?.url || ''
+    }
+    addToFavouritesApi(payload);
+}
+
+  const handleRemoveFavourite = async (id) => {
+    if(!token) return history.push('/signin')
+    const payload = {
+      userId: userId,
+      favUserId: id
+    }
+    removeFromFavouritesApi(payload);
   }
 
   console.log(users, 'users');
 
   useEffect(() => {
-      getFavList()
+    getFavList()
   }, []);
 
-  useEffect(() => {
-		const data = mapStates(states)
-		setLocation(data);
-	},[states])
+  // useEffect(() => {
+	// 	const data = mapStates(states)
+	// 	setLocation(data);
+	// },[states])
 
-	useEffect(() => {
-		if(selectedState) {
-			const cities = mapCities(states, selectedState)
-			setCities(cities);
-		}
-	},[selectedState])
+	// useEffect(() => {
+	// 	if(selectedState) {
+	// 		const cities = mapCities(states, selectedState)
+	// 		setCities(cities);
+	// 	}
+	// },[selectedState])
   
   return (
-    <div className="list-container">
-      <Row>
-        {/* <Col span={18}> */}
-        <div className="second-list-container">
-          {
-            users?.length ? users.map((user) => 
-              <CommonCard user={user} favList={favList} getFavList={getFavList} isFav={isFav}/>
-            ) : <h4>No Data</h4>
-          }
-        </div>
-        {/* </Col> */}
-        {/* <Col span={5}>
-          <Requirements requirements={requirements} />
-        </Col> */}
-      </Row>
-    </div>
+    <Spin spinning={mainLoader}>
+      <div className="list-container">
+        <Row>
+          <div className="second-list-container">
+            {
+              users?.length ? users?.map((user) => 
+                 <CommonCard
+                  user={user}
+                  favList={data}
+                  handleFavourite={handleFavourite}
+                  handleRemoveFavourite={handleRemoveFavourite}
+                  isFav={isFav}
+                />
+              ) : <EmptyMessage />
+            }
+          </div>
+        </Row>
+      </div>
+    </Spin>
   )
 }

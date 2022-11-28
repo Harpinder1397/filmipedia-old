@@ -1,6 +1,6 @@
 import TableComponent from "../../../common/TableComponent";
 import React, { useEffect } from "react";
-import { Typography } from "antd";
+import { Spin, Typography } from "antd";
 import { useJobApplicationsQuery, useUpdateJobApplicationsMutation } from "../../../api/getJobapplications";
 
 const { Title } = Typography;
@@ -8,9 +8,9 @@ const { Title } = Typography;
 const JobApplications = () => {
 
   const userId = localStorage.getItem('user');
-  const { data } = useJobApplicationsQuery();
-  const { mutate: jobApplicationsMutation } = useUpdateJobApplicationsMutation();
-
+  const { data, isLoading: loading1 } = useJobApplicationsQuery();
+  const { mutate: jobApplicationsMutation, isLoading: loading2 } = useUpdateJobApplicationsMutation();
+  const mainloader = loading1 || loading2
 
 //   applied on (jobTitle) (opens the job details on hover)
 // 2. Name (sharedByName) (opens the profile page in right side)
@@ -79,13 +79,13 @@ const JobApplications = () => {
   
 
   return (
-    <>
+    <Spin spinning={mainloader}>
       <Title level={3}>Job Applications</Title>
       <TableComponent
         columns={stateCol}
         data={data?.sort((a, b) => a?.state?.localeCompare(b?.state))}
       />
-    </>
+    </Spin>
   );
 };
 

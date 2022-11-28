@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 import './profileDetails.less';
 // import Thumbnail from 'assets/images/dummy.png'
 import { CheckCircleFilled } from '@ant-design/icons';
-import { getUserApi } from '../../api/user';
+import { useGetUserDataQuery, useGetUserQuery } from '../../api/user';
 import { useParams } from 'react-router';
 
 const renderTabData = (tab) => {
@@ -20,21 +20,14 @@ const renderTabData = (tab) => {
 }
 const ProfileDetails = () => {
 	const [activeTab, setActiveTab] = useState(1);
-
-	const [userDetails, setUserDetails] = useState();
+	const { data: userDetails, isLoading: loading8} = useGetUserDataQuery();
+	const { mutate: getUserQuery, isLoading: loading6} = useGetUserQuery();
 
 	const { id } = useParams();
 	
 	useEffect(() => {
-		getUserDetails();
+		getUserQuery(id);
 	}, [])
-
-	const getUserDetails = async () => {
-		const data = await getUserApi(id);
-		console.log('data', data)
-		setUserDetails(data);
-	}
-
 
 	return (
 		<div className="profile-details-container">

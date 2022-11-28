@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from "react";
-import { Input, Modal, Form } from "antd";
+import { Input, Modal, Form, Spin } from "antd";
 import { DeleteOutlined, EditOutlined, FileAddOutlined } from "@ant-design/icons";
-import { createCategoryApi, deleteCategoryApi, updateCategoryApi, updateSubCategoryApi, updateTagsApi } from "../../api/getCategories";
+import { createCategoryApi, deleteCategoryApi, updateCategoryApi, updateSubCategoryApi, updateTagsApi, useFetchCategoryApiQuery, useGetCategoryApiQuery } from "../../api/getCategories";
 import PopConfirm from "../../common/pop-confirm";
+import EmptyMessage from "../../common/emptyMessage/EmptyMessage";
 
 
 const renderMethod = (payload, title, id) => {
@@ -10,16 +11,19 @@ const renderMethod = (payload, title, id) => {
   if (title === 'Sub-category') return updateSubCategoryApi(id, payload);
   if (title === 'tags') return updateTagsApi(id, payload);
 }
-const AllCategories = ({categories, col, getCategories}) => {
-  const [selectedCategory, setSelectedCategory] = useState(categories[0]);
+const AllCategories = () => {
+
+  const { data: categories } = useGetCategoryApiQuery();
+  console.log(categories, 'categories')
+  const { mutate: getCategories, isLoading } = useFetchCategoryApiQuery();
   const [title, setTitle] = useState('');
   const [isVisible, setIsVisible] = useState(false);
   const [formData, setFormData] = useState({});
-  const [catId, setCatId] = useState(null);
   const [isEdit, setIsEdit] = useState(false);
   const [isEditOptions, setIsEditOptions] = useState(false);
+  const [selectedCategory, setSelectedCategory] = useState(categories?.length && categories[0]);
+  // const [isLoading, setIsLoading] = useState(false);
 
-  console.log(selectedCategory, 'selectedCategory')
 
   const fetchCategoriesList = () => {
     const updateSelectedCategory = categories?.filter((item) => item?._id == selectedCategory?._id)
@@ -44,7 +48,7 @@ const AllCategories = ({categories, col, getCategories}) => {
   console.log(selectedCategory, 'selectedCategory')
 
   const updateCategoryListApi = async(payload) => {
-    const res = await updateCategoryApi(formData._id, payload);
+    const res = await updateCategoryApi(formData?._id, payload);
     if(res){
       getCategories();
     }
@@ -74,14 +78,14 @@ const AllCategories = ({categories, col, getCategories}) => {
 
     if ( title === 'tags') {
       if (isEditOptions) {
-        payload = selectedCategory.tags.map((item) => 
+        payload = selectedCategory?.tags.map((item) => 
         item.key === formData.key
           ? {...item, value: formData[title]}
           : {...item}
         )
       } else {
         payload = [
-          ...selectedCategory.tags,
+          ...selectedCategory?.tags,
           {key: formData['tags'].toLowerCase().replace(' ', '-'), _id: new Date().valueOf(), value: formData[title]}
         ]
       } 
@@ -89,7 +93,7 @@ const AllCategories = ({categories, col, getCategories}) => {
     
     isEdit ? 
     updateCategoryListApi(payload)
-    : fetchRenderMethodData(payload, title, selectedCategory._id)
+    : fetchRenderMethodData(payload, title, selectedCategory?._id)
     setIsVisible(false);
     setFormData({});
     getCategories();
@@ -138,14 +142,14 @@ const AllCategories = ({categories, col, getCategories}) => {
     }
     if(type == 'Sub-category' ){
       const updateSubCategory = selectedCategory?.childern?.filter((item) => item?._id != id)
-      const res = await updateSubCategoryApi(selectedCategory._id, updateSubCategory)
+      const res = await updateSubCategoryApi(selectedCategory?._id, updateSubCategory)
       if(res){
         fetchCategories();
       }
     }
     if(type == 'tags' ){
       const updateTags = selectedCategory?.tags?.filter((item) => item?._id != id)
-      const res = await updateTagsApi(selectedCategory._id, updateTags)
+      const res = await updateTagsApi(selectedCategory?._id, updateTags)
       if(res){
         fetchCategories();
       }
@@ -163,11 +167,14 @@ const AllCategories = ({categories, col, getCategories}) => {
   useEffect(() => {
     fetchCategoriesList();
   },[categories]);
+
   useEffect(() => {
     fetchCategoriesList();
+    getCategories();
   },[]);
 
   return (
+    <Spin spinning={isLoading}>
     <div className="all-categories">
       <div className="category-container">
         <div className="title">
@@ -178,7 +185,7 @@ const AllCategories = ({categories, col, getCategories}) => {
         </div>
         
         {
-          categories.sort((a, b) => a.value.localeCompare(b.value)).map((category, idx) => (
+          categories?.length ? categories?.sort((a, b) => a.value.localeCompare(b.value)).map((category, idx) => (
             <div className="single-category">
               <div className="name-container">
                 <div className="serial-number">
@@ -197,7 +204,7 @@ const AllCategories = ({categories, col, getCategories}) => {
                 <PopConfirm
                   title='Are you sure?'
                   onConfirm={() => {
-                    handleDelete(category._id, 'category')
+                    handleDelete(category?._id, 'category')
                   }}
                   body={
                     <DeleteOutlined />
@@ -205,7 +212,7 @@ const AllCategories = ({categories, col, getCategories}) => {
                 />
               </div>
             </div>
-          ))
+          )) : <EmptyMessage /> 
         }
       </div>
       <div className="sub-category-container">
@@ -216,7 +223,7 @@ const AllCategories = ({categories, col, getCategories}) => {
           />
         </div>
         {
-          categories.find((cat) => cat._id === selectedCategory._id)?.childern?.map((subCat, idx) => (
+          categories?.find((cat) => cat?._id === selectedCategory?._id)?.childern?.length ? categories?.find((cat) => cat?._id === selectedCategory?._id)?.childern?.map((subCat, idx) => (
             <div className="single-sub-cat">
               <div className="name-container">
                 <div className="serial-number">
@@ -234,7 +241,7 @@ const AllCategories = ({categories, col, getCategories}) => {
                 <PopConfirm
                   title='Are you sure?'
                   onConfirm={() => {
-                    handleDelete(subCat._id, 'Sub-category')
+                    handleDelete(subCat?._id, 'Sub-category')
                   }}
                   body={
                     <DeleteOutlined />
@@ -242,7 +249,7 @@ const AllCategories = ({categories, col, getCategories}) => {
                 />
               </div>
             </div>
-          ))
+          )) : <EmptyMessage /> 
         }
       </div>
       <div className="tags-container">
@@ -253,7 +260,7 @@ const AllCategories = ({categories, col, getCategories}) => {
           />
         </div>
         {
-          categories.find((cat) => cat._id === selectedCategory._id)?.tags?.map((tag, idx) => (
+          categories?.find((cat) => cat?._id === selectedCategory?._id)?.tags?.length ? categories?.find((cat) => cat?._id === selectedCategory?._id)?.tags?.map((tag, idx) => (
             <div className="single-tag">
               <div className="name-container">
                 <div className="serial-number">
@@ -271,7 +278,7 @@ const AllCategories = ({categories, col, getCategories}) => {
                 <PopConfirm
                   title='Are you sure?'
                   onConfirm={() => {
-                    handleDelete(tag._id, 'tags')
+                    handleDelete(tag?._id, 'tags')
                   }}
                   body={
                     <DeleteOutlined />
@@ -279,7 +286,7 @@ const AllCategories = ({categories, col, getCategories}) => {
                 />
               </div>
             </div>
-          ))
+          )) : <EmptyMessage /> 
         }
       </div>
       <AddCatContentModal
@@ -292,6 +299,7 @@ const AllCategories = ({categories, col, getCategories}) => {
         title={isEdit ? `Edit ${title}` : `Add ${title}`}
       />
     </div>
+    </Spin>
   )
 }
 

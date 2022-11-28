@@ -1,10 +1,10 @@
-import React, { useEffect } from "react";
+import React from "react";
 import CommonDataBaseList from "../../common/common-database-list";
 import { useUserQuery } from "../../api/user";
 
 export default function CompleteList() {
-  const { data } = useUserQuery()
+  const { data, isLoading } = useUserQuery();
   return (
-    <CommonDataBaseList allUsers={data} />
+    <CommonDataBaseList allUsers={data} isLoading={isLoading} />
   )
 }

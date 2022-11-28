@@ -1,5 +1,5 @@
 import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
-import { getCategoryApi } from '../../api/getCategories';
+import { getCategoryApi, useGetCategoryApiQuery , useFetchCategoryApiQuery} from '../../api/getCategories';
 // import { getStatesApi } from '../../api/getStates';
 import React, {useEffect, useState} from 'react';
 import './admin.less';
@@ -7,6 +7,7 @@ import AdminSideBar from './AdminSideBar';
 import AllCategories from './AllCategories';
 import AllStates from './AllStates';
 import { useUpdateStateMutation } from '../../api/getStatesQuery';
+import { Spin } from 'antd';
 
 const tabs = [
   {
@@ -54,12 +55,17 @@ const AdminPanel = () => {
   const [categories, setCategories] = useState([]);
   const [states, setStates] = useState([]);
   const [activeTab, setActiveTab] = useState(0);
-
-  const { mutate: fetchStatesMutation } = useUpdateStateMutation();
-
+  // const [isLoading, setIsLoading] = useState(false);
+  
+  
+  // const { data } = useGetCategoryApiQuery();
+  // const { mutate: fetchCategoryApi, isLoading } = useFetchCategoryApiQuery();
+  
+// console.log(data, 'data')
   const getCategories = async() => {
-    const data = await getCategoryApi();
-    setCategories(data);
+    // const data = await getCategoryApi();
+    setCategories([]);
+    // fetchCategoryApi()
   }
 
   // const getStates = async() => {
@@ -80,13 +86,14 @@ const AdminPanel = () => {
       case 0:
         return <AllStates states={states} />
       case 1: 
-        return <AllCategories categories={categories} col={categoryCol} getCategories={getCategories}/>
+        return <AllCategories/>
       default:
         return <AllStates states={states} />
     }
   }
 
   return (
+    <Spin spinning={false}>
     <div className="admin-panel">
       <div className="side-bar">
         <AdminSideBar tabs={tabs} setActiveTab={setActiveTab} activeTab={activeTab} />
@@ -95,6 +102,7 @@ const AdminPanel = () => {
         {renderComponent()}
       </div>
     </div>
+    </Spin>
   );
 };
 

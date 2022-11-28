@@ -1,22 +1,15 @@
-import React, { useState, useEffect, useContext } from "react";
-import { Checkbox, Typography } from "antd";
+import React, { useState, useEffect } from "react";
 import 'react-calendar/dist/Calendar.css';
-// import './style.less'
-// import { mapStates, mapCities } from 'common/utils';
-import { FiltersContext } from "../../App";
-// import Requirements from "components/requirements/Requirements";
-// import { getMyFavouritesApi } from "api/favourites";
 import SubCategoryComponent from "../sub-categories/SubCategories";
 import CommonList from "../../common/CommonList";
 import banner from '../../assets/images/banner.png';
 import { useUpdateUserNameMutation,  } from "../../api/user";
-import { useStateQuery } from "../../api/getStatesQuery";
+import FilterMenu from "./FilterMenu";
+import { Spin } from "antd";
 
-const CommonDataBaseList = ({ allUsers, isFav }) => {
-	const { selectedSubCategories } = useContext(FiltersContext);
+const CommonDataBaseList = ({ allUsers, isFav, loading }) => {
 	const [formData, setFormData] = useState({});
-  const { data } = useStateQuery();
-  console.log(data, 'data 22')
+	const [isloading, setIsloading] = useState(false);
   const experienceFilter = [
     {
       key: 1,
@@ -125,19 +118,10 @@ const CommonDataBaseList = ({ allUsers, isFav }) => {
     }
   ]
 
-  const { mutate: userNameMutation } = useUpdateUserNameMutation();
+  const { mutate: userNameMutation, isLoading } = useUpdateUserNameMutation();
 
-
-
-
-console.log(formData, 'formData?.experience')
   useEffect(() => {
     console.log([...Array(10).keys()], '[...Array(10).keys()]')
-    // const payloadSubCategory = {
-    //   gt: formData?.experience - 5,
-    //   lt: formData?.experience,
-    // }
-    // const payload = formData?.subCategory === null ? payloadSubCategory : formData
     const payload = formData;
     Object.keys(formData).forEach(key => {
       if(!formData[key])
@@ -146,79 +130,67 @@ console.log(formData, 'formData?.experience')
     userNameMutation(payload)
   }, [formData])
 
+  const renderLeftSideFilter = () => {
+    return (
+      <>
+        <SubCategoryComponent
+          title='Experience'
+          name='experience'
+          subCategoryFilter={experienceFilter}
+          formData={formData}
+          setFormData={setFormData}
+        />
+        <SubCategoryComponent
+          title='Location'
+          name='location'
+          subCategoryFilter={ageFilter}
+          formData={formData}
+          setFormData={setFormData}
+        />
+        <SubCategoryComponent
+          title='Age'
+          name='age'
+          subCategoryFilter={ageFilter}
+          formData={formData}
+          setFormData={setFormData}
+        />
+        <SubCategoryComponent
+          title='Gender'
+          name='gender'
+          subCategoryFilter={genderFilter}
+          formData={formData}
+          setFormData={setFormData}
+        />
+        <SubCategoryComponent
+          title='Language'
+          name='language'
+          subCategoryFilter={languageFilter}
+          formData={formData}
+          setFormData={setFormData}
+        />
+    </>
+    )
+  }
+
   return (
     <div className="list-con">
       <div className='left-side-bar'>
-        {/*
-          selectedSubCategories?.length ?
-            <div className="sub-categories-container br-left">
-              <div className="title br-left">
-                <Typography.Title level={3}>Sub Category</Typography.Title>
-              </div>           
-              <div className="filter-container">
-                {
-                  selectedSubCategories.map((subCat) =>
-                    <Checkbox
-                      onChange={(e)=>console.log('event', e.target.value)} 
-                      value={subCat.id}
-                      style={{ marginTop: '20px'}}
-                    >
-                      <span style={{ fontSize: '16px' }}>{subCat.value}</span>
-                    </Checkbox>
-                  )
-                }
-              </div>
-          
-              
-            </div> : null 
-              */}
-          <SubCategoryComponent
-            title='Experience'
-            name='experience'
-            subCategoryFilter={experienceFilter}
-            formData={formData}
-            setFormData={setFormData}
-          />
-          <SubCategoryComponent
-            title='Location'
-            name='location'
-            subCategoryFilter={ageFilter}
-            formData={formData}
-            setFormData={setFormData}
-          />
-          <SubCategoryComponent
-            title='Age'
-            name='age'
-            subCategoryFilter={ageFilter}
-            formData={formData}
-            setFormData={setFormData}
-          />
-          <SubCategoryComponent
-            title='Gender'
-            name='gender'
-            subCategoryFilter={genderFilter}
-            formData={formData}
-            setFormData={setFormData}
-          />
-          <SubCategoryComponent
-            title='Language'
-            name='language'
-            subCategoryFilter={languageFilter}
-            formData={formData}
-            setFormData={setFormData}
-          />
-          
+        {renderLeftSideFilter()}
       </div>
 
-      <div className='database-container'>
-        <CommonList
-          users={allUsers}
-          isFav={isFav}
-        />
-      </div>
+      <div className="database-right-side-section">
+      <FilterMenu renderLeftSideFilter={renderLeftSideFilter} setIsloading={setIsloading} />
+        <div className='database-container'>
+          <CommonList
+            users={allUsers}
+            isFav={isFav}
+            isLoading={isLoading || loading || isloading}
+          />
+        </div>
 
-      <div className='banner-container'>
-        <img src={banner} alt="ad" width={'100%'}/>
+        <div className='banner-container'>
+          <img src={banner} alt="ad" width={'100%'}/>
+        </div>
       </div>
     </div>
   )

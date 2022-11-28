@@ -196,6 +196,10 @@ span.icon-label {
   left: 0;
   overflow: scroll;
 }
+.database-right-side-section {
+  display: flex;
+  width: 100%;
+}
 .database-container {
   // position: absolute;
   // right: 0;
@@ -213,6 +217,7 @@ span.icon-label {
   // width: 1440px;
   position: absolute;
   left: 240px;
+  width: calc(100% - 240px);
 }
 
 .br-left {
@@ -239,6 +244,11 @@ span.icon-label {
   padding-bottom: 8px;
   .title {
     background-color: @theme-color;
+    text-align: center;
+    .ant-typography {
+      font-size: 16px !important;
+      margin: 6px 0 !important;
+    }
   }
   .filter-container {
     padding-left: 10px;
@@ -307,6 +317,8 @@ span.icon-label {
   .list-con {
     left: unset;
     position: unset;
+    width: 100%;
+
   }
   .database-container {
     // position: absolute;
@@ -314,6 +326,10 @@ span.icon-label {
     width: 100%;
   }
   .second-list-container {
+    width: 100% !important;
     justify-content: center;
+  }
+  .database-right-side-section {
+    flex-direction: column !important;
   }
 }

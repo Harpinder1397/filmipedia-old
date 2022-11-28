@@ -12,7 +12,7 @@ const SideBar = () => {
   const [keys, setKeys] = useState('')
    
   const onOpenChange = (keeys) => {
-    const latestOpenKey = keeys.find(key => openKeys.indexOf(key) === -1);
+    const latestOpenKey = keeys?.find(key => openKeys.indexOf(key) === -1);
     if (rootSubmenuKeys.indexOf(latestOpenKey) === -1) {
       setOpenKeys(keeys);
     } else {

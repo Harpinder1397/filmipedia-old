@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import TableComponent from "../../common/TableComponent";
-import { Button, Form, Input, Modal, Typography } from "antd";
+import { Button, Form, Input, Modal, Typography, Spin } from "antd";
 import './admin.less';
 import FormSelect from "../../common/inputs/FormSelect";
 import { createStateApi, deleteStateApi, updateStatesApi } from "../../api/getStates";
@@ -18,7 +18,7 @@ const AllStates = ({states }) => {
   const [isEditModal, setIsEditModal] = useState('add');
 
   const { data } = useStateQuery();
-  const { mutate: fetchStatesMutation } = useUpdateStateMutation();
+  const { mutate: fetchStatesMutation, isLoading } = useUpdateStateMutation();
 
 
   // States Table Columns
@@ -119,6 +119,7 @@ const AllStates = ({states }) => {
   }
 
   return (
+    <Spin spinning={isLoading}>
     <div className="all-states">
       <div className="">
         <Title level={3}>States</Title>
@@ -171,6 +172,7 @@ const AllStates = ({states }) => {
         title={isEditModal == 'edit' ? `Edit ${"State"}` : `Add ${'State'}`}
       />
     </div>
+    </Spin>
   )
 }
 

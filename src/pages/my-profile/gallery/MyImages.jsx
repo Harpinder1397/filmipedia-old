@@ -1,6 +1,5 @@
-import { EditOutlined, EllipsisOutlined, SettingOutlined, UploadOutlined } from '@ant-design/icons';
-import { Row, Col, Button, Upload, Card, Avatar } from 'antd';
-import { Meta } from 'antd/lib/list/Item';
+import { Row, Col, Button, Card } from 'antd';
+import EmptyMessage from '../../../common/emptyMessage/EmptyMessage';
 import ImageUploaderComponent from '../../../common/image-uploader';
 import './galleryStyle.less';
 
@@ -44,8 +43,12 @@ const MyImages = ({
         </div>
       </Row>
 
-        <Row gutter={[24, 24]}>
-        { userDetails?.thumbnails?.map((thumbnail, index) => {
+        <Row
+          gutter={[24, 24]}
+          style={{marginTop: userDetails?.thumbnails?.length ? null : '40px'}}
+          justify={userDetails?.thumbnails?.length ? "left" : "center"}
+        >
+        { userDetails?.thumbnails?.length ? userDetails?.thumbnails?.map((thumbnail, index) => {
           return (
             <Col xs={24} sm={12} md={8} lg={6} xxl={6} xl={6}>
               <Card
@@ -66,7 +69,7 @@ const MyImages = ({
               </Card>
             </Col>
           )
-        })}
+        }): <EmptyMessage />}
       </Row>
     </>
   )

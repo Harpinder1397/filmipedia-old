@@ -1,19 +1,20 @@
-import React, { useState, useEffect } from "react";
-import { getAllUsersApi, useUserQuery } from "../../api/user";
+import React, { useEffect } from "react";
+import { useUpdateUserNameMutation, useUserQuery } from "../../api/user";
 import TimeLineCard from "../../common/timeline-card";
+import EmptyMessage from "../../common/emptyMessage/EmptyMessage";
 
 import "./timelineStyle.less";
+import { Spin } from "antd";
 
 const TimeLine = () => {
   const { data } = useUserQuery();
-  const [allUsers, setAllUsers] = useState([]);
+  const {mutate: fetchserNameMutation, isLoading} = useUpdateUserNameMutation()
 
-  // useEffect(() => {
-  //   getDetails();
-  // }, [])
+  useEffect(() => {
+    fetchserNameMutation();
+  }, [])
 
-  // const getDetails = async() => {
-  // const data = await getAllUsersApi();
+
   const timeLineArray = data
     ?.filter((user) => user.thumbnails.length)
     .map((item) =>
@@ -28,19 +29,15 @@ const TimeLine = () => {
     )
     .flat()
     .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
-  // setAllUsers(timeLineArray);
-  // }
   return (
-    <div className="timeline-main-container">
-      {timeLineArray?.map((user) => (
-        <>
-          <TimeLineCard user={user} />
-          <TimeLineCard user={user} />
-          <TimeLineCard user={user} />
-          <TimeLineCard user={user} />
-        </>
-      ))}
-    </div>
+    <Spin spinning={isLoading}>
+      <div className="timeline-main-container">
+        {timeLineArray?.length ? (
+          timeLineArray?.map((user) => (
+            <TimeLineCard user={user} />
+        ))) : <EmptyMessage />}
+      </div>
+    </Spin>
   );
 };
 

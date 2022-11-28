@@ -7,6 +7,7 @@ import {
   Checkbox,
   notification,
   Alert,
+  Spin,
 } from 'antd';
 import './SignIn.less';
 import { useHistory } from 'react-router-dom';
@@ -16,11 +17,13 @@ import { FiltersContext } from '../../App';
 const SignIn = (props) => {
   const history = useHistory();
   const formRef = useRef();
+  const [isLoading, setIsloading] = useState(false);
   const { setToken, setProfileCompleted } = useContext(FiltersContext)
 
   const [errorMsg, setErrorMsg] = useState('')
 
   const handleSubmit = async () => {
+    setIsloading(true);
     const { email, password } = formRef.current.getFieldsValue();
     const payload = {
       userName: email,
@@ -32,13 +35,16 @@ const SignIn = (props) => {
       // console.log
       setToken(loginResponse);
       history.push("/database")
+      setIsloading(false);
     } else {
       setErrorMsg('Incorrect userName or password');
+      setIsloading(false);
     }
     return null;
   };
 
   return (
+    <Spin spinning={isLoading}>
     <div className="signIn-container">
       {
         errorMsg && 
@@ -79,6 +85,7 @@ const SignIn = (props) => {
         </Form.Item> */}
       </Form>
     </div>
+    </Spin>
   );
 };
 

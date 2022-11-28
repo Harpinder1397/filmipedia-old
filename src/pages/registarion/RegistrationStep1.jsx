@@ -7,10 +7,11 @@ import {
   Upload,
   message,
   Col,
-  Row
+  Row,
+  Spin
 } from 'antd';
 import './Registration.less';
-import { useHistory } from 'react-router-dom';
+import { useHistory } from 'react-router';
 import { createUserApi } from '../../api/user';
 import FileUploaderWithImageCropper from '../../common/FileUploaderWithImageCropper';
 import { checkFieldType, passwordValidator, emailValidator, onChangeInput } from '../../common/utils';
@@ -57,9 +58,12 @@ const RegistrationStep1 = (props) => {
   const [image, setImage] = useState(undefined);
 
   const handleSubmit = async () => {
+    setIsLoading(true);
     const { userName, fullName, password, gender, dateOfBirth } = formData;
     if(!userName || !fullName || !password || !dateOfBirth || !gender) {
+      setIsLoading(false);
       return message.error('Please fill in mandatory fields.');
+      
     }
 
     // if(confirmPassword !== password) return message.error('Please confirm the password.');
@@ -74,6 +78,12 @@ const RegistrationStep1 = (props) => {
     //   email: formData.email
     // }
     const loginResponse = await createUserApi(formData);
+    if(loginResponse){
+      history.push('/signin')
+      setIsLoading(false);
+    }else {
+      setIsLoading(false);
+    }
     // setImage(loginResponse);
     // return null;
   };
@@ -103,6 +113,7 @@ const RegistrationStep1 = (props) => {
   }
 
   return (
+    <Spin spinning={isLoading}>
     <div 
       className="form-container"
     >
@@ -197,6 +208,7 @@ const RegistrationStep1 = (props) => {
         </Button>
       </Form.Item>
     </div>
+    </Spin>
   );
 };
 

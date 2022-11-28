@@ -1,27 +1,21 @@
-import { getMyFavouritesApi } from '../../api/favourites';
-// import CommonCard from 'common/common-card';
+import { useGetMyFavouritesQuery, useMyFavouritesQuery } from '../../api/favourites';
 import CommonDataBaseList from '../../common/common-database-list';
-import React, { useEffect, useState } from 'react';
-import { useHistory } from 'react-router';
+import React, { useEffect } from 'react';
 
 const ShortListedProfiles = ({ users }) => {
     const userId = localStorage.getItem('user');
-    const history = useHistory();
-    const [ favList, setFavList ] = useState([]);
 
-    const getFavList = async () => {
-        const data = await getMyFavouritesApi(userId);
-        setFavList(data);
-    }
+    const { data, isLoading: loading1 } = useMyFavouritesQuery();
+    const {mutate: myFavouritesApi, isLoading: loading2} = useGetMyFavouritesQuery();
+
+    const mainLoader = loading1 || loading2;
 
     useEffect(() => {
-        getFavList()
+      myFavouritesApi(userId);
     }, []);
 
     return (
-      <>
-        <CommonDataBaseList allUsers={favList} isFav/>
-      </>
+        <CommonDataBaseList allUsers={data} loading={mainLoader} isFav/>
     )
 }
 

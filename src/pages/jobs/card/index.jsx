@@ -25,7 +25,9 @@ const JobCard = ({ userId, data, jobApplicationsList, handleShareDetails, handle
                 <div>
                   <h1>
                     {item.jobTitle}
-                    <EditOutlined
+                    {userId == item?.postedById ? (
+                      <>
+                      <EditOutlined
                       onClick={() => handleUpdate(item)}
                       style={{ cursor: "pointer", fontSize: "19px" }}
                     />
@@ -40,6 +42,9 @@ const JobCard = ({ userId, data, jobApplicationsList, handleShareDetails, handle
                         />
                       }
                     />
+                    </>
+                    ): null}
+                    
                   </h1>
                   <b>
                     <UserOutlined /> shared by-: <i> {item.postedByName}</i>

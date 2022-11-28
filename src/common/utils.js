@@ -39,7 +39,7 @@ export const mapStates = (states) => {
 }
 
 export const mapCities = (states, selectedState) => {
-  return mapStates(states)[selectedState].map((item) => {
+  return mapStates(states)[selectedState]?.map((item) => {
     return {
       id: item?.id,
       value: item?.name

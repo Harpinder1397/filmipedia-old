@@ -49,7 +49,7 @@ const App = () => {
   const [subCategory, setSubCategory] = useState(undefined);
 
   // loading
-  const [isloading, setIsloading] = useLocalStorage("isloading", "");
+  const [isloading, setIsloading] = useState(false);
   console.log(isloading, 'isloading')
   const getCategories = async () => {
     const data = await getCategoryApi();
@@ -69,7 +69,7 @@ const App = () => {
 
   const setSubCategories = (id) => {
     console.log(id, "id 1");
-    const data = categories.find((cat) => cat._id === id);
+    const data = categories?.find((cat) => cat._id === id);
     console.log(data, "data");
     setSelectedCategory(data?.value);
     setSelectedSubCategories(data?.childern);
@@ -105,8 +105,8 @@ const App = () => {
 
   return (
     <Spin 
-      spinning={false}
-      >
+    spinning={isloading}
+    >
       <Layout>
         <FilterProvider
           value={{
@@ -121,8 +121,10 @@ const App = () => {
             setSubCategory,
           }}
         >
-          <Navbar />
+          <Navbar setIsloading={setIsloading} />
+          
           <Content className="layout-content">
+         
             <Switch>
               <Route exact path="/" component={Demo} />
               <Route exact path="/signin" component={SignIn} />
@@ -163,10 +165,11 @@ const App = () => {
               </div>
             )}
           </Content>
+            
           <Footer />
         </FilterProvider>
       </Layout>
-    </Spin>
+      </Spin>
   );
 };
 export default App;
