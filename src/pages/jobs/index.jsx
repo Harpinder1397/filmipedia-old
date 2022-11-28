@@ -89,6 +89,7 @@ const Jobs = () => {
       jobTitle: value.jobTitle,
       appliedDate: value.postedOn,
       jobExpired: value.postedTill,
+      status: true
     }
     createJobApplications(payload)
   }
