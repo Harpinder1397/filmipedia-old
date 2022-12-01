@@ -32,14 +32,32 @@ const TimeLine = () => {
   // }
   return (
     <div className="timeline-main-container">
-      {timeLineArray?.map((user) => (
-        <>
-          <TimeLineCard user={user} />
-          <TimeLineCard user={user} />
-          <TimeLineCard user={user} />
-          <TimeLineCard user={user} />
-        </>
-      ))}
+      <div className="info-left-container">
+        <div className="image-box">
+          <img src="https://images.pexels.com/photos/2379005/pexels-photo-2379005.jpeg?cs=srgb&dl=pexels-italo-melo-2379005.jpg&fm=jpg" />
+        </div>
+        <span style={{ textAlign: "center", lineHeight: "10px" }}>
+          <h1>khushvinder singh </h1>
+          <p>Front-end developer </p>
+        </span>
+      </div>
+      <div className="center-card-container">
+        {timeLineArray?.map((user) => (
+          <>
+            <TimeLineCard user={user} />
+          </>
+        ))}
+      </div>
+      <div className="right-container">
+        <ul style={{ display: "flex", flexDirection: "column", gap: "20px" }}>
+          <li>publishing and graphic design, Lorem ipsum is a</li>
+          <li>publishing and graphic design, Lorem ipsum is a</li>
+          <li>publishing and graphic design, Lorem ipsum is a</li>
+          <li>publishing and graphic design, Lorem ipsum is a</li>
+          <li>publishing and graphic design, Lorem ipsum is a</li>
+          <li>publishing and graphic design, Lorem ipsum is a</li>
+        </ul>
+      </div>
     </div>
   );
 };
