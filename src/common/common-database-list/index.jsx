@@ -6,6 +6,7 @@ import banner from '../../assets/images/banner.png';
 import { useUpdateUserNameMutation,  } from "../../api/user";
 import FilterMenu from "./FilterMenu";
 import { Spin } from "antd";
+import CommonPagination from "../../common/pagination/CommonPagination";
 
 const CommonDataBaseList = ({ allUsers, isFav, loading }) => {
 	const [formData, setFormData] = useState({});
@@ -120,6 +121,19 @@ const CommonDataBaseList = ({ allUsers, isFav, loading }) => {
 
   const { mutate: userNameMutation, isLoading } = useUpdateUserNameMutation();
 
+  const onShowSizeChange = (page, limit) => {
+    const payload = {
+      ...formData,
+      page: page,
+      // limit: limit
+    };
+    Object.keys(formData).forEach(key => {
+      if(!formData[key])
+        delete formData[key]
+    });
+    userNameMutation(payload)
+  }
+
   useEffect(() => {
     console.log([...Array(10).keys()], '[...Array(10).keys()]')
     const payload = formData;
@@ -182,10 +196,13 @@ const CommonDataBaseList = ({ allUsers, isFav, loading }) => {
       <FilterMenu renderLeftSideFilter={renderLeftSideFilter} setIsloading={setIsloading} />
         <div className='database-container'>
           <CommonList
-            users={allUsers}
+            users={allUsers?.users || allUsers}
             isFav={isFav}
             isLoading={isLoading || loading || isloading}
           />
+          <div className="pagination-section">
+         {allUsers?.total >= 9 && <CommonPagination total={allUsers?.total} onShowSizeChange={onShowSizeChange}/>}
+          </div>
         </div>
 
         <div className='banner-container'>

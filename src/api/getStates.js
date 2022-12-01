@@ -1,8 +1,10 @@
 import { useMutation, useQuery, useQueryClient } from "react-query";
 import { apiDelete, apiGet, apiPost } from "../utils/api";
 import qs from "query-string";
+import { PORT } from '../../env.json';
+
 const API_URL =
-  "http://node-env.eba-xnwspbk7.ap-northeast-1.elasticbeanstalk.com";
+ PORT
 
 export const createStateApi = (payload) => {
   const url = `${API_URL}/states`;

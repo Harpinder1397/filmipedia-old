@@ -1,8 +1,9 @@
 import { apiPost, apiGet, apiDelete } from "../utils/api";
 import { useMutation, useQuery, useQueryClient } from "react-query";
+import { PORT } from '../../env.json';
 
 const API_URL =
-  "http://node-env.eba-xnwspbk7.ap-northeast-1.elasticbeanstalk.com";
+ PORT
 
 export const useMyFavouritesQuery = () => {
   return useQuery(["MyFavourites"], [`${API_URL}/favourites`], () =>

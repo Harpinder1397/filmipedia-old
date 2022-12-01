@@ -190,7 +190,7 @@ span.icon-label {
 .left-side-bar {
   border-right: 1px solid @theme-color;
   position: fixed;
-  width: 240px;
+  width: 190px;
   height: 80vh;
   // height: 100vh;
   left: 0;
@@ -206,6 +206,11 @@ span.icon-label {
   // width: 970px;
   // width: 100%;
   width: 83%;
+  .pagination-section {
+    display: flex;
+    justify-content: end;
+    margin: 23px 30px 0 0;
+  }
 }
 .banner-container {
   width: 200px;
@@ -216,8 +221,8 @@ span.icon-label {
   flex-direction: row;
   // width: 1440px;
   position: absolute;
-  left: 240px;
-  width: calc(100% - 240px);
+  left: 190px;
+  width: calc(100% - 190px);
 }
 
 .br-left {
@@ -324,6 +329,10 @@ span.icon-label {
     // position: absolute;
     // right: 0;
     width: 100%;
+    .pagination-section {
+      justify-content: center;
+      margin: 23px 0;
+    }
   }
   .second-list-container {
     width: 100% !important;

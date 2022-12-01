@@ -3,13 +3,14 @@ import { Button, Input, Modal, InputNumber, Space, message, Spin } from "antd";
 import TextArea from "antd/lib/input/TextArea";
 import JobCard from "./card";
 import { useCreateJobMutation, useDeleteJobMutation, useJobsQuery, useUpdateJobMutation, useUpdateJobsMutation } from "../../api/getJobs";
-import { useCreateJobApplicationsMutation, useJobApplicationsQuery } from "../../api/getJobApplications";
+import { useCreateJobApplicationsMutation, useJobApplicationsQuery, useUpdateJobApplicationsMutation } from "../../api/getJobApplications";
 import { useGetUserDataQuery, useGetUserQuery } from "../../api/user";
 import FormInput from '../../common/inputs/FormInput';
 import EmptyMessage from "../../common/emptyMessage/EmptyMessage";
 
 // styles
 import "./card/cardStyle.less";
+import CommonPagination from "../../common/pagination/CommonPagination";
 // import moment from "moment";
 
 const Jobs = () => {
@@ -19,14 +20,16 @@ const Jobs = () => {
   const [modalTitle, setModalTitle] = useState("Add");
   const [messageApi, contextHolder] = message.useMessage();
   
-  const { data, isLoading: loading1} = useJobsQuery();
+  const { data: jobList, isLoading: loading1} = useJobsQuery();
   const { data: userInfo, isLoading: loading8} = useGetUserDataQuery();
   
-  const { data: jobApplicationsList } = useJobApplicationsQuery();  
+  const { data: jobApplicationsList } = useJobApplicationsQuery();
+  const { mutate: jobApplicationsMutation } = useUpdateJobApplicationsMutation();
   const { mutate: fetchJobList, isLoading: loading2} = useUpdateJobsMutation();
   const { mutate: createJobMutation, isSuccess, isLoading: loading3 } = useCreateJobMutation();
   const { mutate: deleteJobMutation, isLoading: loading4} = useDeleteJobMutation();
   const { mutate: updateJobMutation, isLoading: loading5} = useUpdateJobMutation();
+
   const { mutate: createJobApplications} = useCreateJobApplicationsMutation()
   const { mutate: getUserQuery, isLoading: loading6} = useGetUserQuery();
 
@@ -77,7 +80,6 @@ const Jobs = () => {
   };
 
   const handleShareDetails = (value) => {
-    console.log(value, 'value')
     const payload = {
       sharedById: userInfo?._id,
       sharedByName: userInfo?.fullName,
@@ -92,6 +94,19 @@ const Jobs = () => {
       status: true
     }
     createJobApplications(payload)
+  }
+
+  const onShowSizeChange = (page, limit) => {
+    const payload = {
+      ...formData,
+      page: page,
+      // limit: limit
+    };
+    Object.keys(formData).forEach(key => {
+      if(!formData[key])
+        delete formData[key]
+    });
+    fetchJobList(payload);
   }
 
   const handleUpdate = (item) => {
@@ -111,9 +126,10 @@ const Jobs = () => {
   useEffect(() => {
     fetchJobList();
     fetchUserDetails();
+    jobApplicationsMutation(userId);
   }, []);
 
-  
+  console.log(jobApplicationsList, 'jobApplicationsList')
 
   return (
     <Spin spinning={mainLoader}>
@@ -259,9 +275,9 @@ const Jobs = () => {
           onChange={(e) => setFormData({ ...formData, content: e.target.value })}
         />
       </Modal>
-       {data?.length ? <JobCard
+       {jobList?.data?.length ? <JobCard
           userId={userId}
-          data={data}
+          data={jobList?.data}
           jobApplicationsList={jobApplicationsList}
           handleShareDetails={handleShareDetails}
           handleUpdate={handleUpdate}
@@ -270,6 +286,9 @@ const Jobs = () => {
       /> : (
        <EmptyMessage />
       )}
+      <div className="pagination-section">
+      {jobList?.data?.length >= 9 && <CommonPagination total={jobList?.data?.length} onShowSizeChange={onShowSizeChange}/>}
+       </div>
     </div>
     </Spin>
   );

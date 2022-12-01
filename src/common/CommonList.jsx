@@ -8,6 +8,7 @@ import { useAddToFavouritesApiQuery, useGetMyFavouritesQuery, useMyFavouritesQue
 import CommonCard from "./common-card";
 import EmptyMessage from "./emptyMessage/EmptyMessage";
 import { useHistory } from "react-router";
+import CommonPagination from "./pagination/CommonPagination";
 
 export default function CommonList({ users, isFav, isLoading }) {
   const userId = localStorage.getItem('user');

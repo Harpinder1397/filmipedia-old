@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Typography, Checkbox, Input, Row, Col } from "antd";
+import { Typography, Checkbox, Input, Row, Col, Divider } from "antd";
 import FormSelect from "../inputs/FormSelect";
 import './subCategoriesStyle.less';
 import GroupCheckbox from "../group-checkbox/GroupCheckbox";
@@ -104,11 +104,13 @@ const SubCategoryComponent = ({
 
   return (
     <div className="sub-categories-container">
-      <div className="title">
-        <Typography.Title level={3} style={{ color: "rgba(0, 0, 0, 0.85)" }}>
+    {/*  <div className="title">
+      <Typography.Title level={3} style={{ color: "rgba(0, 0, 0, 0.85)" }}>
           {title}
-        </Typography.Title>
-      </div>
+  </Typography.Title
+      </div>> */}
+      <Divider orientation="left">{title}</Divider>
+
       <div className="filter-container">{renderFilter()}</div>
     </div>
   );

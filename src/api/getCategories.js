@@ -1,8 +1,9 @@
 import { useMutation, useQuery, useQueryClient } from "react-query";
 import { apiDelete, apiGet, apiPost } from "../utils/api";
+import { PORT } from '../../env.json';
 
 const API_URL =
-  "http://node-env.eba-xnwspbk7.ap-northeast-1.elasticbeanstalk.com";
+ PORT
 
 export const getCategoryApi = () => {
   const url = `${API_URL}/categories`;

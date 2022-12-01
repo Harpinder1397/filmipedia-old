@@ -9,11 +9,27 @@ import PopConfirm from "../../../common/pop-confirm";
 
 // styles
 import "./cardStyle.less";
-import JobApplications from "../applications";
+import { Button, Popover } from "antd";
 
 const JobCard = ({ userId, data, jobApplicationsList, handleShareDetails, handleUpdate, handleDelete, JobApplicationsLength }) => {
   console.log(jobApplicationsList, 'jobApplicationsList')
-  console.log(data, 'jobApplicationsList 22')
+  // const rend = (item) => {
+  //   const db = jobApplicationsList.find((job)=> {
+  //    return job.jobId === item._id && job.sharedById === item.postedById
+  //   })
+  //   console.log(db, 'jobApplicationsList db')
+  // }
+  // console.log(data, 'jobApplicationsList 22')
+    // jobId, sharedById
+// _id, postedById
+
+const content = (
+  <div>
+    <p>Content</p>
+    <p>Content</p>
+  </div>
+);
+
   return (
     <>
       <div className="new-card-display">
@@ -47,7 +63,7 @@ const JobCard = ({ userId, data, jobApplicationsList, handleShareDetails, handle
                     
                   </h1>
                   <b>
-                    <UserOutlined /> shared by-: <i> {item.postedByName}</i>
+                    <UserOutlined /> shared by-: <Popover content={content} title="Title"><i>{item.postedByName}</i></Popover>
                   </b>
                   <p style={{ marginTop: "7px" }}>
                     <UsergroupAddOutlined style={{ marginRight: "5px" }} />

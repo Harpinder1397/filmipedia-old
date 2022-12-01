@@ -1,9 +1,10 @@
 import { useMutation, useQuery, useQueryClient } from "react-query";
 import qs from "query-string";
 import { apiGet, apiPost } from "../utils/api";
+import { PORT } from '../../env.json';
 
 const API_URL =
-  "http://node-env.eba-xnwspbk7.ap-northeast-1.elasticbeanstalk.com";
+ PORT
 
 export const useJobApplicationsQuery = () => {
   return useQuery(["applications"], [`${API_URL}/job/applications`], () =>
@@ -53,12 +54,14 @@ export const useJobApplicationsQuery = () => {
 
     //   return { prevUserData };
     // },
-    // onSuccess: (newUser) => {
-    //    console.log(newUser, 'newUser')
-    //   queryClient.setQueryData(["applications"], newUser);
-    // },
-    // onError: (error, payload, { prevUserData }) => {
-    //   queryClient.setQueryData(["applications"], prevUserData);
-    // },
+    onSuccess: (newUser) => {
+       console.log(newUser, 'error, payload 11')
+      // queryClient.setQueryData(["applications"], newUser);
+    },
+    onError: (newUser) => {
+      // queryClient.setQueryData(["applications"], prevUserData);
+      console.log(newUser, "error, payload")
+      // alert('hello')
+    },
   });
 };

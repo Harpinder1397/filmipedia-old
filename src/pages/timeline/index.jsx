@@ -15,7 +15,7 @@ const TimeLine = () => {
   }, [])
 
 
-  const timeLineArray = data
+  const timeLineArray = data?.users
     ?.filter((user) => user.thumbnails.length)
     .map((item) =>
       item.thumbnails.map((dt) => {

@@ -1,9 +1,10 @@
 import { useMutation, useQuery, useQueryClient } from "react-query";
 import qs from "query-string";
 import { apiGet } from "../utils/api";
+import { PORT } from '../../env.json';
 
 const API_URL =
-  "http://node-env.eba-xnwspbk7.ap-northeast-1.elasticbeanstalk.com";
+ PORT
 
 export const useStateQuery = () => {
   return useQuery(["states"], [`${API_URL}/states`], () =>
