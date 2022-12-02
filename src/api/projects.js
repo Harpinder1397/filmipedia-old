@@ -1,9 +1,9 @@
 // import { useMutation, useQuery, useQueryClient } from 'react-query';
 import { apiDelete, apiGet, apiPost } from "../utils/api";
-import { PORT } from '../../env.json';
+import { AWS_URL } from '../../env.json';
 
 const API_URL =
- PORT
+ AWS_URL
 
 export const createProjectApi = (payload) => {
   const url = `${API_URL}/projects`;

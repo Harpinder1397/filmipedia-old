@@ -1,10 +1,10 @@
 import { apiPost, apiGet } from "../utils/api";
 import qs from "query-string";
 import { useQuery, useMutation, useQueryClient } from "react-query";
-import { PORT } from '../../env.json';
+import { AWS_URL } from '../../env.json';
 
 const API_URL =
- PORT
+ AWS_URL
 
 export const useUserQuery = () => {
   return useQuery(["user"], [`${API_URL}/user`], () =>

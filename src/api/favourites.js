@@ -1,9 +1,9 @@
 import { apiPost, apiGet, apiDelete } from "../utils/api";
 import { useMutation, useQuery, useQueryClient } from "react-query";
-import { PORT } from '../../env.json';
+import { AWS_URL } from '../../env.json';
 
 const API_URL =
- PORT
+ AWS_URL
 
 export const useMyFavouritesQuery = () => {
   return useQuery(["MyFavourites"], [`${API_URL}/favourites`], () =>

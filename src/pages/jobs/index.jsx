@@ -3,7 +3,7 @@ import { Button, Input, Modal, InputNumber, Space, message, Spin } from "antd";
 import TextArea from "antd/lib/input/TextArea";
 import JobCard from "./card";
 import { useCreateJobMutation, useDeleteJobMutation, useJobsQuery, useUpdateJobMutation, useUpdateJobsMutation } from "../../api/getJobs";
-import { useCreateJobApplicationsMutation, useJobApplicationsQuery, useUpdateJobApplicationsMutation } from "../../api/getJobApplications";
+import { useCreateJobApplicationsMutation, useJobApplicationsQuery, useJobAllApplicationsMutation, useUpdateJobApplicationsMutation, useJobAllApplicationsQuery } from "../../api/getJobApplications";
 import { useGetUserDataQuery, useGetUserQuery } from "../../api/user";
 import FormInput from '../../common/inputs/FormInput';
 import EmptyMessage from "../../common/emptyMessage/EmptyMessage";
@@ -24,7 +24,9 @@ const Jobs = () => {
   const { data: userInfo, isLoading: loading8} = useGetUserDataQuery();
   
   const { data: jobApplicationsList } = useJobApplicationsQuery();
+  const { data: allJobApplicationsList } = useJobAllApplicationsQuery();
   const { mutate: jobApplicationsMutation } = useUpdateJobApplicationsMutation();
+  const { mutate: getAllApplicationsMutation } = useJobAllApplicationsMutation();
   const { mutate: fetchJobList, isLoading: loading2} = useUpdateJobsMutation();
   const { mutate: createJobMutation, isSuccess, isLoading: loading3 } = useCreateJobMutation();
   const { mutate: deleteJobMutation, isLoading: loading4} = useDeleteJobMutation();
@@ -35,6 +37,9 @@ const Jobs = () => {
 
 
   const mainLoader = loading1 || loading2 || loading3 || loading4 || loading5
+
+ 
+  console.log(allJobApplicationsList, 'allJobApplicationsList')
 
   const showModal = () => {
     setModalTitle("Add");
@@ -107,6 +112,7 @@ const Jobs = () => {
         delete formData[key]
     });
     fetchJobList(payload);
+    getAllApplicationsMutation();
   }
 
   const handleUpdate = (item) => {
@@ -127,6 +133,7 @@ const Jobs = () => {
     fetchJobList();
     fetchUserDetails();
     jobApplicationsMutation(userId);
+    getAllApplicationsMutation();
   }, []);
 
   console.log(jobApplicationsList, 'jobApplicationsList')
@@ -279,6 +286,7 @@ const Jobs = () => {
           userId={userId}
           data={jobList?.data}
           jobApplicationsList={jobApplicationsList}
+          allJobApplicationsList={allJobApplicationsList}
           handleShareDetails={handleShareDetails}
           handleUpdate={handleUpdate}
           handleDelete={handleDelete}

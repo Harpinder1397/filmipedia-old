@@ -12,19 +12,19 @@ const TimeLineCard = ({user}) => {
       {/*<div className="dp-con">
         <img src={user.dp} width="100%" style={{ borderRadius: '50%'}} />
   </div>*/}
-      <div className="info-con" onClick={() => history.push(`/profile/${user.id}`)}>
+      <div className="info-con" onClick={() => history.push(`/profile/${user?.id}`)}>
         <div className="name-date">
           <div className="section-profile">  
             <div className="dp-con">
-              <img src={user.dp} width="100%" style={{ borderRadius: '50%'}} />
-            </div>{user.name} <VerifiedOutlined />
+              <img src={user?.dp} width="100%" style={{ borderRadius: '50%'}} />
+            </div>{user?.name} <VerifiedOutlined />
           </div>
           <div>
-            {moment(user.createdAt).format('DD-MM-YYYY')}
+            {moment(user?.createdAt).format('DD-MM-YYYY')}
           </div>
         </div>
         <div className="img-con">
-          <img src={user.url} width='250px' />
+          <img src={user?.url || 'https://t3.ftcdn.net/jpg/04/93/13/42/360_F_493134256_DsdRygnyk1VflTXXuAjI211fWJqDLu1W.jpg'} style={{width: '235px', height: '235px'}} alt="post" />
         </div>
         <div>
 

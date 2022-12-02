@@ -6,29 +6,64 @@ import {
   UserOutlined,
 } from "@ant-design/icons";
 import PopConfirm from "../../../common/pop-confirm";
+import defaultThumbnail from '../../../assets/images/avatar.png'
 
 // styles
 import "./cardStyle.less";
-import { Button, Popover } from "antd";
+import { Popover } from "antd";
 
-const JobCard = ({ userId, data, jobApplicationsList, handleShareDetails, handleUpdate, handleDelete, JobApplicationsLength }) => {
-  console.log(jobApplicationsList, 'jobApplicationsList')
-  // const rend = (item) => {
-  //   const db = jobApplicationsList.find((job)=> {
-  //    return job.jobId === item._id && job.sharedById === item.postedById
-  //   })
-  //   console.log(db, 'jobApplicationsList db')
-  // }
-  // console.log(data, 'jobApplicationsList 22')
-    // jobId, sharedById
-// _id, postedById
+const JobCard = ({ userId, data, jobApplicationsList, allJobApplicationsList, handleShareDetails, handleUpdate, handleDelete, JobApplicationsLength }) => {
 
-const content = (
-  <div>
-    <p>Content</p>
-    <p>Content</p>
+  const renderApplyButton = (item) => {
+   const alreadyApplyApplication = allJobApplicationsList?.find((job)=> job?.jobId == item?._id && job?.sharedById == userId)
+   if(alreadyApplyApplication){
+    return (
+      <button
+        className="already-applied-btn"
+        // onClick={() => handleShareDetails(item)}
+      >
+        Already Applied
+      </button> 
+    )
+   } else {
+    return (
+      <button
+        className="apply-btn"
+        onClick={() => handleShareDetails(item)}
+      >
+        Apply
+      </button> 
+    )
+   }
+  }
+
+const content = (item) => {
+  return (
+  <div className="ant-popover-inner-content-section card-container">
+  <div className="img-wrapper">
+    <img src={defaultThumbnail} alt="dp" />
   </div>
+  <div className='d-flex flex-col details'>
+    <div>
+      <div className="cursor-pointer" style={{fontSize: '16px'}}>
+          {item.postedByName}
+      </div>
+      <div className="sub-cat" style={{fontSize: '15px'}}>
+         {item.postedByCategory}
+      </div>
+      <div className="meta" style={{fontSize: '14px'}}>
+       7 Years
+      </div>
+      <div className="meta" style={{fontSize: '14px'}}>
+        Available
+      </div>
+    </div>
+    
+  </div>
+ 
+</div>
 );
+}
 
   return (
     <>
@@ -63,7 +98,7 @@ const content = (
                     
                   </h1>
                   <b>
-                    <UserOutlined /> shared by-: <Popover content={content} title="Title"><i>{item.postedByName}</i></Popover>
+                    <UserOutlined /> shared by-: <Popover className="top" placement="bottom" content={content(item)} ><i className="hover-user-name">{item.postedByName}</i></Popover>
                   </b>
                   <p style={{ marginTop: "7px" }}>
                     <UsergroupAddOutlined style={{ marginRight: "5px" }} />
@@ -116,12 +151,7 @@ const content = (
                   }}
                 >
                   {userId == item?.postedById ? null : (
-                    <button
-                    className="apply-btn"
-                    onClick={() => handleShareDetails(item)}
-                  >
-                    Apply
-                  </button> 
+                    renderApplyButton(item)
                   )}
                   {/*<span>
                     left: <b> {new Date(item?.postedTill).getUTCDate()}</b>
