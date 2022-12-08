@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
-import { Switch, Route, Link } from "react-router-dom";
+import { Switch, Route, Link, useLocation } from "react-router-dom";
+import { useHistory } from 'react-router';
 // eslint-disable-next-line import/no-unresolved
 import { Layout, message, Row, Spin } from "antd";
 import "./App.less";
@@ -29,6 +30,8 @@ import NavbarMain from "./components/navbar/NavbarMain";
 import { useUpdateStateMutation } from "./api/getStatesQuery";
 import JobApplications from "./pages/jobs/applications";
 import Jobs from "./pages/jobs";
+import MyApplications from "./pages/jobs/applications/MyApplications";
+import MyJobs from "./pages/jobs/MyJobs";
 
 message.config({
   top: 70,
@@ -47,6 +50,9 @@ const App = () => {
   const [token, setToken] = useState(false);
   const [category, setSelectedCategory] = useState(undefined);
   const [subCategory, setSubCategory] = useState(undefined);
+  const history = useHistory();
+  const location = useLocation(); // React Hook
+  console.log(location.pathname, 'ddddddd');
 
   // loading
   const [isloading, setIsloading] = useState(false);
@@ -101,7 +107,24 @@ const App = () => {
     
   //  }, 3000);
   // }, [])
-  
+  const pathFilter = ['/register', '/signin']
+  const renderTopNavbar = () => {
+    if(pathFilter.includes(location.pathname)){
+      return null
+    }else {
+      return <Navbar setIsloading={setIsloading} />
+    }
+  }
+
+  const renderFooter = () => {
+    if(pathFilter.includes(location.pathname)){
+      return null
+    }else {
+      return <Footer />
+    }
+  }
+
+  console.log(history.location.pathname , 'history.location.pathname')
 
   return (
     <Spin 
@@ -121,13 +144,12 @@ const App = () => {
             setSubCategory,
           }}
         >
-          <Navbar setIsloading={setIsloading} />
-          
-          <Content className="layout-content">
+         {renderTopNavbar()}
+          <Content className={pathFilter.includes(location.pathname) ? '' : "layout-content"}>
          
             <Switch>
               <Route exact path="/" component={Demo} />
-              <Route exact path="/signin" component={SignIn} />
+              <Route exact path="/signin" component={RegistrationForms} />
               <LoginRoute exact path="/my-profile" component={MyProfile} />
               <Route exact path="/timeline" component={TimeLine} />
               <LoginRoute exact path="/messages" component={Messages} />
@@ -138,7 +160,9 @@ const App = () => {
               />
               <LoginRoute exact path="/admin" component={AdminPanel} />
               <LoginRoute exact path="/jobs" component={Jobs} />
+              <LoginRoute exact path="/my/jobs" component={MyJobs} />
               <LoginRoute exact path="/job/applications" component={JobApplications} />
+              <LoginRoute exact path="/my/job/applications" component={MyApplications} />
               <Route exact path="/register" component={RegistrationForms} />
               <Route exact path="/database" component={CompleteList} />
               <LoginRoute
@@ -165,8 +189,7 @@ const App = () => {
               </div>
             )}
           </Content>
-            
-          <Footer />
+            {renderFooter()}
         </FilterProvider>
       </Layout>
       </Spin>

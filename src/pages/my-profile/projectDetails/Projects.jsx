@@ -43,7 +43,8 @@ const Projects = () => {
     if(modalTitle === 'Add'){
        // PROJECT ADD API
        setIsLoading(true);
-      const res = await createProjectApi(createProject);
+      const payload = {...createProject, userId: userId }
+      const res = await createProjectApi(payload);
       if(res){
          setIsVisibleModal(false);
          setCreateProject({});

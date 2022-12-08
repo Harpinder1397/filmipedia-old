@@ -16,8 +16,8 @@ export const createProjectApi = (payload) => {
     });
 };
 
-export const getProjectsApi = () => {
-  const url = `${API_URL}/projects`;
+export const getProjectsApi = (id) => {
+  const url = `${API_URL}/projects/${id}`;
   return apiGet(url)
     .then((res) => {
       return res;

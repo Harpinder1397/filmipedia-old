@@ -5,18 +5,12 @@ import { useJobApplicationsQuery, useUpdateJobApplicationsMutation } from "../..
 
 const { Title } = Typography;
 
-const JobApplications = () => {
+const MyApplications = () => {
 
   const userId = localStorage.getItem('user');
   const { data, isLoading: loading1 } = useJobApplicationsQuery();
   const { mutate: jobApplicationsMutation, isLoading: loading2 } = useUpdateJobApplicationsMutation();
   const mainloader = loading1 || loading2
-
-//   applied on (jobTitle) (opens the job details on hover)
-// 2. Name (sharedByName) (opens the profile page in right side)
-// 3. Category (sharedByCategory) 
-// 4. Experience (sharedByExperience)
-// 5. job Expired(jobExpire)
 
   const stateCol = [
     {
@@ -75,7 +69,7 @@ const JobApplications = () => {
 
   const fetchJobApplicationsMutation = () => {
     const payload = {
-      userId: userId
+      sharedById: userId
     };
     Object.keys(payload).forEach(key => {
       if(!payload[key])
@@ -91,7 +85,7 @@ const JobApplications = () => {
 
   return (
     <Spin spinning={mainloader}>
-      <Title level={3}>Job Applications</Title>
+      <Title level={3}>My Job Applications</Title>
       <TableComponent
         columns={stateCol}
         data={data?.sort((a, b) => a?.state?.localeCompare(b?.state))}
@@ -100,4 +94,4 @@ const JobApplications = () => {
   );
 };
 
-export default JobApplications;
+export default MyApplications;

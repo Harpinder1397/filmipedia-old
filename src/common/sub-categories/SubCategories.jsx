@@ -79,16 +79,25 @@ const SubCategoryComponent = ({
     );
   };
 
-  const checkboxFun = () => {
+  const checkboxFun = (title) => {
+    console.log(title === 'Experience', 'title');
     return (
       <GroupCheckbox
         options={subCategoryFilter}
         onChange={(e) => {
+          if(title == 'Experience'){
+            setFormData({
+              ...formData,
+              [name]: e 
+            })
+          }else {
+            // setFormData({
+            //   ...formData,
+            //   [name]: e
+            // })
+          }
           console.log(e, 'val')
-          setFormData({
-          ...formData,
-          [name]: e
-        })}}
+        }}
       />
     );
   };
@@ -98,7 +107,7 @@ const SubCategoryComponent = ({
       case "Location":
         return locationFun();
       default:
-        return checkboxFun();
+        return checkboxFun(title);
     }
   };
 

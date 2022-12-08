@@ -15,8 +15,6 @@ const TimeLine = () => {
   const { data: userList } = useUserQuery();
   const {mutate: fetchserNameMutation, isLoading} = useUpdateUserNameMutation()
 
-
-
   const getUserDetails = async () => {
     await getUserApi(userId).then((data) => {
       setUserDetails(data);
@@ -78,7 +76,7 @@ const TimeLine = () => {
       </div>
       <div className="right-container">
         <div>
-          <ListCard userList={userList}/>
+          <ListCard userList={timeLineArray}/>
         </div>
       </div>
     </div>

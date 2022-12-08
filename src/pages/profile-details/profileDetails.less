@@ -1,7 +1,7 @@
 @import '../../assets/styles/variables.less';
 
 .profile-details-container {
-    width: 1350px;
+    // width: 1350px;
     height: 80vh;
     // background-color: antiquewhite;
     margin-top: 20px;
@@ -14,24 +14,25 @@
         height: 100%;
 
         .img-holder {
-            width: 300px;
+            width: 284px;
             border-radius: 50%;
-            height: 300px;
+            height: 284px;
             background: aqua;
             z-index: 8;
+            border: 1px solid #dcd9d9 !important;
 
             img {
                 width: 100%;
                 height: 100%;
                 border-radius: 50%;
-                border: 1px solid;
+                // border: 1px solid;
             }
         }
         .meta-details-container {
-            width: 300px;
+            width: 284px;
             // border-radius: 100px;
-            height: 300px;
-            background: @theme-color;
+            height: 400px;
+            // background: @theme-color;
            
             margin-top: -135px;
             z-index: 0000000;
@@ -78,23 +79,88 @@
         .full-details-header {
             display: flex;
             padding: 20px;
-            background: grey;
-            border-bottom: 5px solid;
-            border-radius: 20px 20px 0 0;
+            // background: grey;
+            border-bottom: 1px solid #dcd9d9;
+            // border-radius: 20px 20px 0 0;
             justify-content: end;
-            padding-right: 50px;
-            
+            // padding-right: 50px;
+            position: sticky;
+            top: 0;
+            background: #fff;
+            z-index: 1;
+            .tab-active-color {
+                color: #0857ff;
+            }
             .vertical-line {
                 height: 100%;
-                width: 2px;
+                width: 1px;
                 margin: 0 15px;
-                background-color: black;
+                background-color: #dcd9d9;
             }
         }
         .full-details {
-            background: #f5f5f5;
-            height: 70%;
+            // background: #f5f5f5;
+            // height: 70%;
         }
+    }
+
+    .profile-first-section {
+        height: 500px;
+        // border: 1px solid #dcd9d9;
+        border-radius: 6px;
+        position: sticky !important;
+        top: 98px !important;
+        // padding: 20px;
+        overflow: scroll;
+        .meta-details-container {
+            border: 1px solid #dcd9d9 !important;
+            border-radius: 6px;
+        }
+    }
+
+    .profile-second-section {
+        height: 568px;
+        border: 1px solid #dcd9d9;
+        border-radius: 6px;
+        position: sticky !important;
+        top: 98px !important;
+        // padding: 20px;
+        overflow: scroll;
+        .ant-descriptions  {
+            width: 100%;
+        }
+        .full-details {
+            display: flex;
+            flex-wrap: wrap;
+            // justify-content: center;
+            gap: 9px;
+            padding: 12px;
+            .ant-empty {
+                margin: 0 auto !important;
+            }
+            .ant-image {
+                // width: 178px !important;
+                .ant-image-img {
+                    border-radius: 6px;
+                }
+            }
+            .links-container {
+                display: flex;
+                flex-direction: column;
+                width: 100%;
+                gap: 10px;
+            }
+        }
+    }
+
+    .profile-thrid-section {
+        height: 500px;
+        border: 1px solid #dcd9d9;
+        border-radius: 6px;
+        position: sticky;
+        top: 98px;
+        padding: 20px;
+        overflow: scroll;
     }
 }
 
@@ -103,7 +169,12 @@
         width: 100% !important;
         height: unset !important;
         .full-details-container {
-            display: none !important;
+            // display: none !important;
+            .full-details {
+                .ant-image {
+                    width: 150px !important;
+                }
+            }
         }
         .meta-details-container {
             height: unset !important;

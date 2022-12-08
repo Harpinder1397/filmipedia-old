@@ -9,7 +9,7 @@ import {
   Space,
   Avatar,
 } from "antd";
-import { useHistory } from "react-router-dom";
+import { useHistory, useLocation } from "react-router-dom";
 // eslint-disable-next-line import/no-unresolved
 import "./Navbar.less";
 import { FiltersContext } from "../../App";
@@ -47,7 +47,7 @@ const Navbar = ({setIsloading}) => {
 
   const { mutate: userNameMutation, isLoading } = useUpdateUserNameMutation();
 
-  console.log(formData, 'formData')
+
   useEffect(() => {
     if(formData){
       setIsloading(isLoading);
@@ -89,13 +89,31 @@ const Navbar = ({setIsloading}) => {
         },
         {
           key: "2",
-          label: <div onClick={() => history.push("/admin")}>Admin</div>,
+          label: (
+            <div onClick={() => history.push("/my/jobs")}> My Jobs</div>
+          ),
         },
         {
           type: "divider",
         },
         {
           key: "3",
+          label: (
+            <div onClick={() => history.push("/my/job/applications")}> My Applications</div>
+          ),
+        },
+        {
+          type: "divider",
+        },
+        {
+          key: "4",
+          label: <div onClick={() => history.push("/admin")}>Admin</div>,
+        },
+        {
+          type: "divider",
+        },
+        {
+          key: "5",
           label: <div onClick={() => handelLogout()}>Sign Out</div>,
         },
       ]}
@@ -198,6 +216,7 @@ const Navbar = ({setIsloading}) => {
               onClear={() => {
                 setFormData({ ...formData, category: "", subCategory: "" });
                 setSubCategories("");
+                setSubCategoriesList([])
                 setTags([]);
               }}
               options={categories}

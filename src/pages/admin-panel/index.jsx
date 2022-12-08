@@ -8,6 +8,7 @@ import AllCategories from './AllCategories';
 import AllStates from './AllStates';
 import { useUpdateStateMutation } from '../../api/getStatesQuery';
 import { Spin } from 'antd';
+import ManageUsers from './ManageUsers';
 
 const tabs = [
   {
@@ -17,6 +18,10 @@ const tabs = [
   {
     title: 'Manage Categories',
     Component: 'categories',
+  },
+  {
+    title: 'Manage Users',
+    Component: 'users',
   }
 ]
 
@@ -87,6 +92,8 @@ const AdminPanel = () => {
         return <AllStates states={states} />
       case 1: 
         return <AllCategories/>
+      case 2: 
+        return <ManageUsers states={states} />
       default:
         return <AllStates states={states} />
     }

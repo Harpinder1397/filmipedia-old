@@ -2,7 +2,7 @@ import TimeLineCard from "../../common/timeline-card";
 import React, { useEffect, useState } from "react";
 import { render } from "react-dom";
 import InfiniteScroll from "react-infinite-scroll-component";
-import { List, Spin } from "antd";
+import { Divider, List, Spin } from "antd";
 import { LoadingOutlined } from "@ant-design/icons";
 import { AWS_URL } from '../../../env.json';
 
@@ -17,6 +17,7 @@ const antIcon = (
 
 const InfiniteScrollTwo = () => {
   const [data, setData] = useState([])
+  // const [dataLength, setDataLength] = useState(0)
 
   const fetchMoreData = () => {
     fetch(`${AWS_URL}/user`)
@@ -25,7 +26,7 @@ const InfiniteScrollTwo = () => {
         console.log(body, 'bodybodybodybody')
         setTimeout(() => {
         setData([...data, ...body?.users]);
-
+        // setDataLength(body.length)
         }, 1500);
       })
       .catch(() => {
@@ -45,6 +46,7 @@ const InfiniteScrollTwo = () => {
           next={fetchMoreData}
           hasMore={true}
           loader={<div style={{textAlign: 'center', marginTop: '40px'}}><Spin indicator={antIcon} /></div>}
+          // endMessage={<Divider plain>It is all, nothing more 🤐</Divider>}
         >
         <List
           dataSource={data}

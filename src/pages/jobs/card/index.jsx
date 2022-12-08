@@ -11,8 +11,18 @@ import defaultThumbnail from '../../../assets/images/avatar.png'
 // styles
 import "./cardStyle.less";
 import { Popover } from "antd";
+import { useGetUserDataQuery, useGetUserQuery } from "../../../api/user";
 
-const JobCard = ({ userId, data, jobApplicationsList, allJobApplicationsList, handleShareDetails, handleUpdate, handleDelete, JobApplicationsLength }) => {
+const JobCard = ({ userId, data, allJobApplicationsList, handleShareDetails, handleUpdate, handleDelete }) => {
+
+  const { data: userInfo } = useGetUserDataQuery();
+  const {mutate: getUserQuery} = useGetUserQuery()
+
+  const handleNameMouseHover = (item) => {
+    if(item.postedById){
+      getUserQuery(item?.postedById)
+    }
+  }
 
   const renderApplyButton = (item) => {
    const alreadyApplyApplication = allJobApplicationsList?.find((job)=> job?.jobId == item?._id && job?.sharedById == userId)
@@ -37,7 +47,7 @@ const JobCard = ({ userId, data, jobApplicationsList, allJobApplicationsList, ha
    }
   }
 
-const content = (item) => {
+const content = () => {
   return (
   <div className="ant-popover-inner-content-section card-container">
   <div className="img-wrapper">
@@ -46,16 +56,16 @@ const content = (item) => {
   <div className='d-flex flex-col details'>
     <div>
       <div className="cursor-pointer" style={{fontSize: '16px'}}>
-          {item.postedByName}
+          {userInfo?.fullName}
       </div>
       <div className="sub-cat" style={{fontSize: '15px'}}>
-         {item.postedByCategory}
+         {userInfo?.category}
       </div>
       <div className="meta" style={{fontSize: '14px'}}>
-       7 Years
+        {userInfo?.city}
       </div>
-      <div className="meta" style={{fontSize: '14px'}}>
-        Available
+      <div className="meta" style={{fontSize: '13px'}}>
+        {userInfo?.experience} Years
       </div>
     </div>
     
@@ -98,7 +108,7 @@ const content = (item) => {
                     
                   </h1>
                   <b>
-                    <UserOutlined /> shared by-: <Popover className="top" placement="bottom" content={content(item)} ><i className="hover-user-name">{item.postedByName}</i></Popover>
+                    <UserOutlined /> shared by-: <Popover className="top" placement="bottom" content={content(item)} ><i className="hover-user-name" onMouseOver={()=>handleNameMouseHover(item)}>{item.postedByName}</i></Popover>
                   </b>
                   <p style={{ marginTop: "7px" }}>
                     <UsergroupAddOutlined style={{ marginRight: "5px" }} />

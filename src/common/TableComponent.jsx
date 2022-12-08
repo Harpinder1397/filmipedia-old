@@ -19,6 +19,7 @@ export default function TableComponent(props) {
     isListReadOnly,
     toShowSearchBar,
     className,
+    onChange
   } = props;
 
   return (
@@ -64,8 +65,8 @@ export default function TableComponent(props) {
         dataSource={data}
         bordered
         size="middle"
-        // onChange={onChange}
-        // pagination={paginationProp || false}
+        onChange={onChange}
+        pagination={paginationProp}
       />
       
     </div>

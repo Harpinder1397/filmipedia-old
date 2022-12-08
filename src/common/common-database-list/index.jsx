@@ -7,16 +7,20 @@ import { useUpdateUserNameMutation,  } from "../../api/user";
 import FilterMenu from "./FilterMenu";
 import { Spin } from "antd";
 import CommonPagination from "../../common/pagination/CommonPagination";
+import InfiniteScrollCard from "./InfiniteScrollCard";
 
 const CommonDataBaseList = ({ allUsers, isFav, loading }) => {
 	const [formData, setFormData] = useState({});
 	const [isloading, setIsloading] = useState(false);
+
+  console.log(formData, 'formData')
+
   const experienceFilter = [
     {
       key: 1,
       name: '0 - 5',
       objName: 'experience',
-      value: 5,
+      value: 5
     },
     {
       key: 2,
@@ -200,6 +204,7 @@ const CommonDataBaseList = ({ allUsers, isFav, loading }) => {
             isFav={isFav}
             isLoading={isLoading || loading || isloading}
           />
+          {/*<InfiniteScrollCard allUsers={allUsers} /> */}
           <div className="pagination-section">
          {allUsers?.total >= 9 && <CommonPagination total={allUsers?.total} onShowSizeChange={onShowSizeChange}/>}
           </div>

@@ -1,4 +1,4 @@
-import React, { useRef, useState, useCallback } from 'react';
+import React, { useRef, useState, useCallback, useEffect } from 'react';
 import {
   Form,
   Input,
@@ -8,7 +8,10 @@ import {
   message,
   Col,
   Row,
-  Spin
+  Spin,
+  Alert,
+  Select,
+  InputNumber
 } from 'antd';
 import './Registration.less';
 import { useHistory } from 'react-router';
@@ -19,6 +22,10 @@ import { UploadOutlined } from '@ant-design/icons';
 import FormInput from '../../common/inputs/FormInput';
 import FormSelect from '../../common/inputs/FormSelect';
 import { genderOptions } from '../../constant/common';
+import { Link } from 'react-router-dom';
+import { getCategoryApi } from '../../api/getCategories';
+import { useGetCountriesMutation, useGetCountriesQuery } from '../../api/getCountries';
+const { Option } = Select;
 
 const handleEmailValidation = (e, formDataErrors, setFormDataErrors) => {
   const {name, value} = e.target;
@@ -56,14 +63,21 @@ const RegistrationStep1 = (props) => {
   const [formData, setFormData] = useState({})
   const [formDataErrors, setFormDataErrors] = useState({})
   const [image, setImage] = useState(undefined);
+  const [categories, setCategories] = useState([]);
+  const [subCategoriesList, setSubCategoriesList] = useState([]);
+  const [errorMsg, setErrorMsg] = useState('');
+  const [selectCountry, setSelectCountry] = useState('+91');
+
+  const {data: countriesList } = useGetCountriesQuery();
+  const {mutate: getCountriesMutation } = useGetCountriesMutation();
 
   const handleSubmit = async () => {
     setIsLoading(true);
-    const { userName, fullName, password, gender, dateOfBirth } = formData;
-    if(!userName || !fullName || !password || !dateOfBirth || !gender) {
+    const { mobileNumber, fullName, password, category, subCategory, gender } = formData;
+    if(!mobileNumber || !fullName || !password || !category || !subCategory || !gender || !selectCountry) {
       setIsLoading(false);
-      return message.error('Please fill in mandatory fields.');
-      
+      setErrorMsg('Please fill in mandatory fields.');
+      return 
     }
 
     // if(confirmPassword !== password) return message.error('Please confirm the password.');
@@ -77,12 +91,17 @@ const RegistrationStep1 = (props) => {
     //   password: formData.password,
     //   email: formData.email
     // }
-    const loginResponse = await createUserApi(formData);
+    const payload = {
+      ...formData, mobileNumber: selectCountry+formData.mobileNumber
+    }
+    const loginResponse = await createUserApi(payload);
     if(loginResponse){
       history.push('/signin')
       setIsLoading(false);
+      setErrorMsg();
     }else {
       setIsLoading(false);
+      setErrorMsg();
     }
     // setImage(loginResponse);
     // return null;
@@ -112,12 +131,29 @@ const RegistrationStep1 = (props) => {
     onChangeInput(e, formData, setFormData);
   }
 
+  useEffect(() => {
+    getCategoryApi().then((data) => {
+      setCategories(data);
+    })
+    getCountriesMutation();
+  }, [])
+
   return (
     <div 
       className="form-container"
     >
     <Spin spinning={isLoading}>
     <h1>Register</h1>
+    {
+      errorMsg && 
+      <Alert
+        message={errorMsg}
+        showIcon
+        type="error"
+        closable
+        onClose={() => setErrorMsg('')}
+      />
+    }
     <FormInput 
       type="text"
       name="fullName"
@@ -126,22 +162,7 @@ const RegistrationStep1 = (props) => {
       onChange={onChange}
       required
     />
-    <Row gutter={[4,12]}>
-      
-      <Col span={12}>
-        <FormInput
-					type="date"
-					name="dateOfBirth"
-					label="Date of birth"
-					value={formData.dateOfBirth}
-					onChange={onChange}
-					validationError={formDataErrors.dateOfBirth}
-					required
-				// disabled
-				/>
-      </Col>
-      <Col span={12}>
-        <FormSelect
+    <FormSelect
           name="gender"
           label="Gender"
           value={formData.gender}
@@ -155,17 +176,86 @@ const RegistrationStep1 = (props) => {
           validationError={formDataErrors.states}
           width={"100%"}
         />
+    <Row gutter={[4,12]}>
+      
+      <Col span={12}>
+      {/*  <FormInput
+					type="date"
+					name="dateOfBirth"
+					label="Date of birth"
+					value={formData.dateOfBirth}
+					onChange={onChange}
+					validationError={formDataErrors.dateOfBirth}
+					required
+				// disabled
+  /> */}
+  <FormSelect
+          name="category"
+          label="Category"
+          value={formData.category}
+          onSelect={(cat, val) => {
+            const getSubCategories = categories.filter((item) => item._id === val.id)
+            setSubCategoriesList(getSubCategories[0].childern);
+            setFormData({...formData, category: val.children, subCategory: ''})
+          }}
+          options={categories}
+          showSearch
+          required
+          filterOption={(input, option) => option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0 }
+          validationError={formDataErrors.states}
+          width={"100%"}
+        />
+      </Col>
+      <Col span={12}>
+        <FormSelect
+          name="subCategory"
+          label="Sub Category"
+          value={formData.subCategory}
+          onSelect={(cat, val) => {
+            setFormData({...formData, subCategory: val.children})
+          }}
+          options={subCategoriesList}
+          showSearch
+          required
+          filterOption={(input, option) => option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0 }
+          validationError={formDataErrors.states}
+          width={"100%"}
+        />
       </Col>
     </Row>
-    <FormInput 
-      type="text"
-      name="userName"
-      label="Email or mobile number"
-      value={formData.userName}
-      onChange={onChange}
-      validationError={formDataErrors.userName}
-      required
-    />
+    <div className="label-container">
+				<span className="required">
+					*
+				</span>
+				<span className="label">
+        Mobile Number
+				</span>
+			</div>
+
+      <Input.Group compact>
+        <Select value={selectCountry} onChange={(e) => setSelectCountry(e)}>
+          {
+            countriesList?.map((item) => {
+             return <Option key={item?._id} value={item?.phone_code}>{item?.phone_code}</Option>
+              
+            })
+          }
+        </Select>
+        <InputNumber 
+          type="text"
+          name="mobileNumber"
+          label="Mobile Number"
+          value={formData.mobileNumber}
+          onChange={(val) => {
+            setFormData({...formData, mobileNumber: val})
+          }}
+          validationError={formDataErrors.mobileNumber}
+          required
+          width={"100%"}
+        />
+      </Input.Group>
+
+   
     {/* <FormInput 
       type="text"
       name="email"
@@ -202,11 +292,14 @@ const RegistrationStep1 = (props) => {
       validationError={formDataErrors.confirmPassword}
       required
     /> */}
-      <Form.Item> 
+      <Form.Item className='register-button'> 
         <Button type="primary" htmlType="submit" size="large" onClick={handleSubmit} block>
           Register
         </Button>
       </Form.Item>
+        <Link to="/signin" className='signIn-link'>
+          Sign in
+      </Link>
     </Spin>
     </div>
   );

@@ -43,6 +43,10 @@ export const useUpdateJobsMutation = () => {
 
 export const useCreateJobMutation = () => {
   // const queryClient = useQueryClient();
+  const userId = localStorage.getItem('user');
+  const payload = {
+    postedById: userId
+  };
   const url = `${API_URL}/jobs`
   const { mutate: fetchJobList } = useUpdateJobsMutation();
   return useMutation([`${API_URL}/jobs`],(payload) =>
@@ -61,7 +65,7 @@ export const useCreateJobMutation = () => {
       // },
       onSuccess: (newUser) => {
         //  console.log(newUser, 'newUser')
-        fetchJobList();
+        fetchJobList(payload);
         // queryClient.setQueryData(["jobs"], newUser);
       },
       // onError: (error, payload, { prevUserData }) => {
@@ -73,6 +77,10 @@ export const useCreateJobMutation = () => {
 
 export const useUpdateJobMutation = () => {
   // const queryClient = useQueryClient();
+  const userId = localStorage.getItem('user');
+  const payload = {
+    postedById: userId
+  };
   const { mutate: fetchJobList } = useUpdateJobsMutation();
   return useMutation(
     [`${API_URL}/jobs`],
@@ -91,7 +99,7 @@ export const useUpdateJobMutation = () => {
       // },
       onSuccess: (newUser) => {
         //  console.log(newUser, 'newUser')
-        fetchJobList();
+        fetchJobList(payload);
         // queryClient.setQueryData(["jobs"], newUser);
       },
       // onError: (error, payload, { prevUserData }) => {
@@ -103,6 +111,10 @@ export const useUpdateJobMutation = () => {
 
 export const useDeleteJobMutation = () => {
   // const queryClient = useQueryClient();
+  const userId = localStorage.getItem('user');
+  const payload = {
+    postedById: userId
+  };
   const { mutate: fetchJobList } = useUpdateJobsMutation();
   return useMutation(
     [`${API_URL}/jobs`],
@@ -122,7 +134,7 @@ export const useDeleteJobMutation = () => {
       onSuccess: (newUser) => {
         //  console.log(newUser, 'newUser')
         // queryClient.setQueryData(["jobs"], newUser);
-        fetchJobList();
+        fetchJobList(payload);
       },
       // onError: (error, payload, { prevUserData }) => {
       //   queryClient.setQueryData(["jobs"], prevUserData);

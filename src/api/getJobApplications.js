@@ -44,9 +44,9 @@ export const useJobAllApplicationsMutation = () => {
 
  export const useUpdateJobApplicationsMutation = () => {
    const queryClient = useQueryClient();
-   return useMutation([`${API_URL}/job/applications`],(id) =>
+   return useMutation([`${API_URL}/job/applications`],(payload) =>
     //  apiGet(`${API_URL}/job/applications/${id ? `?${qs.stringify(payload)}` : ''}`),
-     apiGet(`${API_URL}/job/applications/${id}`),
+     apiGet(`${API_URL}/job/applications/${payload ? `?${qs.stringify(payload)}` : ""}`),
     {
      // onMutate: async () => {
      //   await queryClient.cancelQueries("user");
