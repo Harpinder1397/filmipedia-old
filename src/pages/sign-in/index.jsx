@@ -1,28 +1,30 @@
 import React, { useRef, useState, useContext, useEffect} from 'react';
 import {
-  Card,
   Form,
   Input,
   Button,
-  Checkbox,
-  notification,
   Alert,
   Spin,
   InputNumber,
   Select,
 } from 'antd';
 import './SignIn.less';
-import { Link, useHistory } from 'react-router-dom';
+import { Link, useHistory, useLocation } from 'react-router-dom';
 import { LoginAPI } from '../../api/auth';
 import { FiltersContext } from '../../App';
-import FormInput from '../../common/inputs/FormInput';
 import { useGetCountriesMutation, useGetCountriesQuery } from '../../api/getCountries';
 
 const { Option } = Select;
 
+function useQuery() {
+  const { search } = useLocation();
+  return React.useMemo(() => new URLSearchParams(search), [search]);
+}
+
 const SignIn = (props) => {
   const history = useHistory();
   const formRef = useRef();
+  const query = useQuery();
   const [formData, setFormData] = useState({});
   const [selectCountry, setSelectCountry] = useState('+91');
   const [isLoading, setIsloading] = useState(false);
@@ -33,22 +35,25 @@ const SignIn = (props) => {
 
   const [errorMsg, setErrorMsg] = useState('')
 
-console.log(countriesList, 'countriesList')
-  
+  const callbackUrl = query.get("callbackUrl")
+
+
   const handleSubmit = async () => {
     setIsloading(true);
-    const { mobileNumber, password } = formRef.current.getFieldsValue();
+    const { password } = formRef.current.getFieldsValue();
 
     const payload = {
       mobileNumber: selectCountry+formData.mobileNumber,
       password,
     };
     const loginResponse = await LoginAPI(payload, setProfileCompleted);
-    console.log(loginResponse, 'loginResponse')
     if (loginResponse) {
-      // console.log
       setToken(loginResponse);
-      history.push("/database")
+      if(callbackUrl){
+        history.push(`/${callbackUrl}`)
+      }else {
+        history.push('/database')
+      }
       setIsloading(false);
     } else {
       setErrorMsg('Incorrect userName or password');

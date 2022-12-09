@@ -19,6 +19,7 @@ import MobileNavbar from "./MobileNavbar";
 
 const Navbar = ({setIsloading}) => {
   const history = useHistory();
+  const location = useLocation(); // React Hook
   const [collapsed, setCollapsed] = useState(false);
   const [formData, setFormData] = useState({});
   const [tags, setTags] = useState([]);
@@ -124,24 +125,25 @@ const Navbar = ({setIsloading}) => {
     if (token) {
       return (
         <React.Fragment>
-          <Button type="primary" onClick={() => history.push("/timeline")}>
+          <Button type="primary" className={location.pathname ==  '/timeline' ? "active-navbar-btn" : '' } onClick={() => history.push("/timeline")}>
             Timeline
           </Button>
-          <Button type="primary" onClick={() => history.push("/jobs")}>
+          <Button type="primary" className={location.pathname ==  '/jobs' ? "active-navbar-btn" : '' } onClick={() => history.push("/jobs")}>
             Jobs
           </Button>
           <Button
             type="primary"
+            className={location.pathname ==  '/job/applications' ? "active-navbar-btn" : '' }
             onClick={() => history.push("/job/applications")}
           >
             Applications
           </Button>
-          <Button type="primary" onClick={() => history.push("/database")}>
+          <Button className={location.pathname ==  '/database' ? "active-navbar-btn" : '' } type="primary" onClick={() => history.push("/database")}>
             Database
           </Button>
           {/* <Button type="primary" onClick={()=>history.push('/messages')}>Messages</Button> */}
           {/* <Button type="primary" onClick={()=>history.push('/my-profile')}>My Info</Button> */}
-          <Button type="primary" onClick={() => history.push("/shortlisted")}>
+          <Button className={location.pathname ==  '/shortlisted' ? "active-navbar-btn" : '' } type="primary" onClick={() => history.push("/shortlisted")}>
             Shortlisted
           </Button>
           {/* <Button type="primary" onClick={()=>history.push('/admin')}>Admin</Button> */}
@@ -151,13 +153,13 @@ const Navbar = ({setIsloading}) => {
     } else {
       return (
         <React.Fragment>
-          <Button type="primary" onClick={() => history.push("/database")}>
+          <Button className={location.pathname ==  '/database' ? "active-navbar-btn" : '' } type="primary" onClick={() => history.push("/database")}>
             Database
           </Button>
-          <Button type="primary" onClick={() => history.push("/register")}>
+          <Button className={location.pathname ==  '/register' ? "active-navbar-btn" : '' } type="primary" onClick={() => history.push("/register")}>
             Sign Up
           </Button>
-          <Button type="primary" onClick={() => history.push("/signin")}>
+          <Button className={location.pathname ==  '/signin' ? "active-navbar-btn" : '' } type="primary" onClick={() => history.push("/signin")}>
             Sign in
           </Button>
         </React.Fragment>

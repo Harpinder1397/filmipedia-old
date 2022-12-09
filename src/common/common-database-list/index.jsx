@@ -204,7 +204,7 @@ const CommonDataBaseList = ({ allUsers, isFav, loading }) => {
             isFav={isFav}
             isLoading={isLoading || loading || isloading}
           />
-          {/*<InfiniteScrollCard allUsers={allUsers} /> */}
+          {/*<InfiniteScrollCard formData={formData} userNameMutation={userNameMutation} />*/}
           <div className="pagination-section">
          {allUsers?.total >= 9 && <CommonPagination total={allUsers?.total} onShowSizeChange={onShowSizeChange}/>}
           </div>

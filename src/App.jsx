@@ -107,7 +107,7 @@ const App = () => {
     
   //  }, 3000);
   // }, [])
-  const pathFilter = ['/register', '/signin']
+  const pathFilter = ['/register', '/signin', '/signin/']
   const renderTopNavbar = () => {
     if(pathFilter.includes(location.pathname)){
       return null
@@ -150,6 +150,7 @@ const App = () => {
             <Switch>
               <Route exact path="/" component={Demo} />
               <Route exact path="/signin" component={RegistrationForms} />
+              <Route exact path="/signin/:callbackUrl" component={RegistrationForms} />
               <LoginRoute exact path="/my-profile" component={MyProfile} />
               <Route exact path="/timeline" component={TimeLine} />
               <LoginRoute exact path="/messages" component={Messages} />
