@@ -124,7 +124,7 @@ const Projects = () => {
     getCategoryApi().then((data) => {
       setCategories(data);
     })
-  }, [])
+  }, [window.location.pathname])
 
 
   return (
