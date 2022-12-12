@@ -4,11 +4,13 @@ import { Switch, Typography, Spin } from "antd";
 import './admin.less';
 import { updateUserApi, useUpdateUserNameMutation, useUserQuery } from "../../api/user";
 import CommonPagination from "../../common/pagination/CommonPagination";
+import { Link } from "react-router-dom";
 
 const { Title } = Typography;
 
 const ManageUsers = ({states }) => {
   const [isloading, setIsloading] = useState(false);
+  // const userType  = localStorage.getItem("userType");
 
   const { data: userList } = useUserQuery();
   const {mutate: fetchserNameMutation, isLoading} = useUpdateUserNameMutation()
@@ -44,11 +46,14 @@ const ManageUsers = ({states }) => {
         title: 'Full Name',
         key: 'fullName',
         dataIndex: 'fullName',
+        render: (text, row) => <Link to={`/profile/${row?._id}`}>{row?.fullName}</Link>
     },
     {
-        title: 'Id',
-        key: '_id',
-        dataIndex: '_id',
+        title: 'Mobile Number',
+        key: 'mobileNumber',
+        dataIndex: 'mobileNumber',
+        render: (text, row) => row?.mobileNumber || '-'
+        
     },
     {
       title: 'Action',

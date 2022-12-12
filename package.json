@@ -53,6 +53,7 @@
     "react-rte": "^0.16.3",
     "react-scripts": "4.0.1",
     "redux": "^4.2.0",
+    "tabler-icons-react": "^1.56.0",
     "use-local-storage": "^2.3.6",
     "web-vitals": "^0.2.4"
   },

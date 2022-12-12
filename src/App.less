@@ -14,13 +14,39 @@
 @font-md: 18px;
 @font-l: 22px;
 
+// Light Theme Color
+:root {
+  --font-color: #333;
+  --background-color: #fff;
+  --card-background-color: rgb(247, 245, 243);
+  --profile-card-background-color: #fff;
+  --profile-card-box-shadow: #CCCAC4;
+  --card-border-color: #fff;
+  --link-color: cornflowerblue;
+  --job-number-color: #333131;
+}
+
+// Dark Theme Color
+[data-theme="dark"] {
+  --font-color: #eee;
+  --background-color: rgb(26, 27, 30);
+  --card-background-color: rgb(37, 38, 43);
+  --profile-card-background-color:  rgb(37, 38, 43);
+  --profile-card-box-shadow: rgb(37, 38, 43);
+  --card-border-color: rgb(55, 58, 64);
+  --link-color: lightblue;
+  --job-number-color: #fff;
+
+}
+
 body {
   font-size: 16px;
   line-height: 19px;
   // background-image: url("./assets/images/texture.png");
   // background-blend-mode: hard-light;
   // background-attachment: fixed;
-  background-color: #fff;
+  background-color: var(--background-color) !important;
+  color: var(--font-color) !important;
   // background-size: cover;
 }
 #root {

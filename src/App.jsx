@@ -5,7 +5,6 @@ import { useHistory } from 'react-router';
 import { Layout, message, Row, Spin } from "antd";
 import "./App.less";
 // import Dashboard from './Dashboard';
-import useLocalStorage from "use-local-storage";
 import CompleteList from "./pages/complete-list";
 import Demo from "./Demo";
 import LoginRoute from "./routes/LoginRoute";
@@ -152,6 +151,7 @@ const App = () => {
               <Route exact path="/signin" component={RegistrationForms} />
               <Route exact path="/signin/:callbackUrl" component={RegistrationForms} />
               <LoginRoute exact path="/my-profile" component={MyProfile} />
+              <LoginRoute exact path="/profile/:Id" component={MyProfile} />
               <Route exact path="/timeline" component={TimeLine} />
               <LoginRoute exact path="/messages" component={Messages} />
               <LoginRoute

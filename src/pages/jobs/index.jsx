@@ -20,14 +20,14 @@ const Jobs = () => {
   const { data: userInfo, isLoading: loading8} = useGetUserDataQuery();  
   const { data: jobApplicationsList } = useJobApplicationsQuery();
   const { data: allJobApplicationsList } = useJobAllApplicationsQuery();
-  const { mutate: jobApplicationsMutation } = useUpdateJobApplicationsMutation();
-  const { mutate: getAllApplicationsMutation } = useJobAllApplicationsMutation();
+  const { mutate: jobApplicationsMutation, isLoading: loading9} = useUpdateJobApplicationsMutation();
+  const { mutate: getAllApplicationsMutation, isLoading: loading7} = useJobAllApplicationsMutation();
   const { mutate: fetchJobList, isLoading: loading2} = useUpdateJobsMutation();
   const { mutate: deleteJobMutation, isLoading: loading4} = useDeleteJobMutation();
-  const { mutate: createJobApplications} = useCreateJobApplicationsMutation()
+  const { mutate: createJobApplications, isLoading: loading5} = useCreateJobApplicationsMutation()
   const { mutate: getUserQuery, isLoading: loading6} = useGetUserQuery();
 
-  const mainLoader = loading1 || loading2 || loading4
+  const mainLoader = loading1 || loading2 || loading4 || loading5 || loading9 || loading7
 
 
   const handleShareDetails = (value) => {

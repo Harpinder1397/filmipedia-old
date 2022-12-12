@@ -1,11 +1,12 @@
 @import '../../assets/styles/variables.less';
 .card-container {
-  background: #fff;
+  background: var(--profile-card-background-color);
   padding: 10px;
   border-radius: 8px;
+  border: 1px solid var(--card-border-color);
   // min-width: 222px;
   margin: 0 0px 14px 14px;
-  box-shadow: 0px 0px 10px @theme-color;
+  box-shadow: 0px 0px 10px var(--profile-card-box-shadow);
   display: flex;
   flex-direction: row;
 
@@ -38,6 +39,14 @@
     display: flex;
     justify-content: space-between;
     // align-items: center;
+    .name-section {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      .icon {
+        cursor: pointer;
+      }
+    }
     .sub-cat {
       font-size: 16px;
       color: rgba(0, 0, 0, 0.4)

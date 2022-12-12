@@ -10,6 +10,7 @@ import ProjectModal from './ProjectModal';
 
 import './projectDetailsStyle.less'
 import { getCategoryApi } from '../../../api/getCategories';
+import { useParams } from 'react-router-dom';
 
 const Projects = () => {
 
@@ -20,7 +21,9 @@ const Projects = () => {
   const [isVisibleModal, setIsVisibleModal] = useState(false);
 	const [modalTitle, setModalTitle] = useState('Add');
   const [subCategoriesList, setSubCategoriesList] = useState([]);
-  const userId = localStorage.getItem('user');
+  const myUserId = localStorage.getItem('user');
+  const { Id } = useParams();
+  const userId = Id || myUserId;
   // GET PROJECTS LIST API
   const fetchProjects = async () => {
 		const res = await getProjectsApi(userId);

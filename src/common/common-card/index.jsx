@@ -2,8 +2,10 @@ import React from 'react'
 import { HeartFilled, HeartOutlined, VerifiedOutlined } from "@ant-design/icons"
 import { useHistory } from 'react-router';
 import defaultThumbnail from '../../assets/images/avatar.png'
+import { Checks } from 'tabler-icons-react';
 import './commonCard.less';
 import qs from "query-string";
+import { Tooltip } from 'antd';
 
 const CommonCard = ({user, favList, isFav, handleFavourite, handleRemoveFavourite}) => {
   const userId = localStorage.getItem('user');
@@ -37,6 +39,22 @@ const CommonCard = ({user, favList, isFav, handleFavourite, handleRemoveFavourit
     } 
   }
 
+const renderToptipTitle = (verify) => {
+  if(verify){
+    return "Verified"
+  }else {
+    return "Not Verified"
+  }
+}
+
+const renderIconCheckColor = (verify) => {
+  if(verify){
+    return "green"
+  }else {
+    return "#D3D3D3"
+  }
+}
+
   const getAge = birthDate => Math.floor((new Date() - new Date(birthDate).getTime()) / 3.15576e+10)
 
   const history = useHistory();
@@ -47,8 +65,14 @@ const CommonCard = ({user, favList, isFav, handleFavourite, handleRemoveFavourit
       </div>
       <div className='d-flex flex-col details'>
         <div>
+        <div className="name-section">
           <div className="cursor-pointer" onClick={() => handleNavigationUser(user)}>
               {user.fullName || user.favName}
+          </div>
+          <Tooltip className="icon" placement="bottom" title={renderToptipTitle(user?.verified)}>
+            <Checks size={16} color={renderIconCheckColor(user?.verified)} />
+          </Tooltip>
+         
           </div>
           <div className="sub-cat">
               {user.subCategory || user.favSubCategory}
@@ -62,7 +86,7 @@ const CommonCard = ({user, favList, isFav, handleFavourite, handleRemoveFavourit
         </div>
         
         <div className="action-btns">
-          {user?.verified ? <VerifiedOutlined style={{ color: 'green'}} /> : <VerifiedOutlined />}
+          <div />
           {token ?
             isFav || favList?.find((fav) => user._id === fav.favUserId)
             ? <HeartFilled style={{ color: 'red'}} onClick={() => handleRemoveFavourite(user.favUserId || user._id)}/>

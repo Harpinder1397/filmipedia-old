@@ -8,10 +8,11 @@ import BasicInfo from './basicInfo/BasicInfo';
 import Projects from './projectDetails/Projects';
 import MyImages from './gallery/MyImages';
 import './my-profile.less';
+import { useParams } from 'react-router-dom';
 
 
 const MyProfile = () => {
-  const userId = localStorage.getItem('user');
+  const myUserId = localStorage.getItem('user');
   const [userDetails, setUserDetails] = useState({});
   const getActiveTab = localStorage.getItem('activeTab');
   const [activeTab, setActiveTab] = useState(getActiveTab || 1);
@@ -21,7 +22,9 @@ const MyProfile = () => {
 	const [cities, setCities] = useState([]);
   const [files, setFiles] = useState({});
 	const { states } = useContext(FiltersContext)
-
+  const { Id } = useParams();
+  const userId = Id || myUserId;
+  
   const getUserDetails = async () => {
     setIsloading(true);
 		const data = await getUserApi(userId).then((data) => {
@@ -37,7 +40,7 @@ const MyProfile = () => {
 
   useEffect(() => {
     getUserDetails();
-  }, [])
+  }, [window.location.pathname])
 
   const onChangeRestOptions = (e) => {
     const {

@@ -8,6 +8,7 @@ import {
   Dropdown,
   Space,
   Avatar,
+  Switch,
 } from "antd";
 import { useHistory, useLocation } from "react-router-dom";
 // eslint-disable-next-line import/no-unresolved
@@ -24,6 +25,7 @@ const Navbar = ({setIsloading}) => {
   const [formData, setFormData] = useState({});
   const [tags, setTags] = useState([]);
   const [subCategoriesList, setSubCategoriesList] = useState([]);
+  const userType  = localStorage.getItem("userType");
   const {
     categories,
     setSubCategories,
@@ -48,6 +50,13 @@ const Navbar = ({setIsloading}) => {
 
   const { mutate: userNameMutation, isLoading } = useUpdateUserNameMutation();
 
+  const handleThemeMode = (e) => {
+    if(e){
+      document.documentElement.setAttribute("data-theme", "dark");
+    }else {
+      document.documentElement.setAttribute("data-theme", "light");
+    }
+  }
 
   useEffect(() => {
     if(formData){
@@ -76,48 +85,86 @@ const Navbar = ({setIsloading}) => {
     return () => clearTimeout(timeOutId);
   }, [formData?.fullName]);
 
+  
+
+  const userMenu = [
+    {
+      key: "1",
+      label: (
+        <div onClick={() => history.push("/my-profile")}> My Info</div>
+      ),
+    },
+    {
+      type: "divider",
+    },
+    {
+      key: "2",
+      label: (
+        <div onClick={() => history.push("/my/jobs")}> My Jobs</div>
+      ),
+    },
+    {
+      type: "divider",
+    },
+    {
+      key: "3",
+      label: (
+        <div onClick={() => history.push("/my/job/applications")}> My Applications</div>
+      ),
+    },
+    {
+      type: "divider",
+    },
+    {
+      key: "4",
+      label: <div onClick={() => handelLogout()}>Sign Out</div>,
+    },
+  ]
+
+  const AdminMenu = [
+    {
+      key: "1",
+      label: (
+        <div onClick={() => history.push("/my-profile")}> My Info</div>
+      ),
+    },
+    {
+      type: "divider",
+    },
+    {
+      key: "2",
+      label: (
+        <div onClick={() => history.push("/my/jobs")}> My Jobs</div>
+      ),
+    },
+    {
+      type: "divider",
+    },
+    {
+      key: "3",
+      label: (
+        <div onClick={() => history.push("/my/job/applications")}> My Applications</div>
+      ),
+    },
+    {
+      type: "divider",
+    },
+    {
+      key: "4",
+      label: <div onClick={() => history.push("/admin")}>Admin</div>,
+    },
+    {
+      type: "divider",
+    },
+    {
+      key: "5",
+      label: <div onClick={() => handelLogout()}>Sign Out</div>,
+    },
+  ]
+
   const menu = (
     <Menu
-      items={[
-        {
-          key: "1",
-          label: (
-            <div onClick={() => history.push("/my-profile")}> My Info</div>
-          ),
-        },
-        {
-          type: "divider",
-        },
-        {
-          key: "2",
-          label: (
-            <div onClick={() => history.push("/my/jobs")}> My Jobs</div>
-          ),
-        },
-        {
-          type: "divider",
-        },
-        {
-          key: "3",
-          label: (
-            <div onClick={() => history.push("/my/job/applications")}> My Applications</div>
-          ),
-        },
-        {
-          type: "divider",
-        },
-        {
-          key: "4",
-          label: <div onClick={() => history.push("/admin")}>Admin</div>,
-        },
-        {
-          type: "divider",
-        },
-        {
-          key: "5",
-          label: <div onClick={() => handelLogout()}>Sign Out</div>,
-        },
-      ]}
+      items={userType == 'admin' ? AdminMenu : userMenu}
     />
   );
 
@@ -146,6 +193,7 @@ const Navbar = ({setIsloading}) => {
           <Button className={location.pathname ==  '/shortlisted' ? "active-navbar-btn" : '' } type="primary" onClick={() => history.push("/shortlisted")}>
             Shortlisted
           </Button>
+          <Switch onChange={handleThemeMode} checkedChildren="light" unCheckedChildren="dark" />
           {/* <Button type="primary" onClick={()=>history.push('/admin')}>Admin</Button> */}
           {/*<Button type="primary" onClick={handelLogout} ghost>Sign Out</Button> */}
         </React.Fragment>
