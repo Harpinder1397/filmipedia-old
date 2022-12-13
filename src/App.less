@@ -17,25 +17,56 @@
 // Light Theme Color
 :root {
   --font-color: #333;
+  --border-color: #dcd9d9;
+  --navbar-table-background: #fff;
+  --button-background: #8080804f;
+  --card-font-color: #555151;
   --background-color: #fff;
   --card-background-color: rgb(247, 245, 243);
   --profile-card-background-color: #fff;
   --profile-card-box-shadow: #CCCAC4;
   --card-border-color: #fff;
-  --link-color: cornflowerblue;
+  --link-active-color: #1890ff;
   --job-number-color: #333131;
+  --border-color: #f0f0f0;
+  --pagination-background: #CCCAC4;
+  --pagination-active-background: rgb(12, 133, 153);
+  --table-background: #fff;
+  --table-cell-background: #CCCAC4;
+  --table-border-color: #f0f0f0;
+  --table-text-color: #333;
+  --input-field-color: #CCCAC4; 
+  --input-border-color: #d9d9d9;
+  --checkbox-background-color: #eee;
+  --ant-descriptions-item-label: #fafafa;
+
 }
 
 // Dark Theme Color
 [data-theme="dark"] {
-  --font-color: #eee;
+  --font-color: #cccac4;
+  --button-background: #8080804f;
+  --border-color: rgb(55, 58, 64);
+  --navbar-table-background: #1a1b1e;
+  --card-font-color: #ffffffa6;
   --background-color: rgb(26, 27, 30);
   --card-background-color: rgb(37, 38, 43);
   --profile-card-background-color:  rgb(37, 38, 43);
   --profile-card-box-shadow: rgb(37, 38, 43);
   --card-border-color: rgb(55, 58, 64);
-  --link-color: lightblue;
+  --link-active-color: #1890ff;
   --job-number-color: #fff;
+  --border-color: #373a40;
+  --pagination-background: rgb(37, 38, 43);
+  --pagination-active-background: rgb(12, 133, 153);
+  --table-cell-background: rgb(26, 27, 30);
+  --table-background: rgb(37, 38, 43);
+  --table-border-color: rgb(55, 58, 64);
+  --table-text-color: #CCCAC4;
+  --input-field-color: rgb(37, 38, 43);
+  --input-border-color: rgb(55, 58, 64);
+  --checkbox-background-color: #1a1b1e;
+  --ant-descriptions-item-label: #25262b;
 
 }
 
@@ -49,7 +80,21 @@ body {
   color: var(--font-color) !important;
   // background-size: cover;
 }
+
 #root {
+  div, h1, span, h3, h4, a {
+    color: var(--font-color);
+  }
+  div, h1, h3 {
+    color: var(--font-color) !important;
+  }
+  
+  .ant-popover-inner-content-section {
+    color: var(--font-color) ;
+    div, .sub-cat {
+      color: var(--font-color);
+    }
+  }
   .ant-layout {
     background: none;
     min-height: 100vh !important;
@@ -76,8 +121,16 @@ body {
     background: @selected-color;
     border: none;
   }
-  .ant-tabs-tab.ant-tabs-tab-active .ant-tabs-tab-btn {
-    color: @text-color;
+  .tab-active-color {
+    color: var(--link-active-color) !important;
+}
+  .ant-tabs-tab-btn {
+    color: var(--font-color);
+  }
+  .ant-tabs-tab.ant-tabs-tab-active{
+    .ant-tabs-tab-btn {
+     color: var(--link-active-color) !important;
+    }
   }
   .ant-checkbox-inner {
     border-radius: 4px;
@@ -120,30 +173,32 @@ body {
   }
   
   .ant-select-selector {
-    background-color: @theme-color !important;
+    border-color: var(--input-border-color) !important;
+    background-color: var(--input-field-color) !important;
+    color: var(--font-color) !important;
     padding: 0 10px !important;
   }
-  .ant-input, .ant-input-number-input {
-    background-color: @theme-color !important;
-    
+  .ant-input, .ant-input-number-input, .ant-input-group-addon {
+    border-color: var(--input-border-color) !important;
+    color: var(--font-color) !important;
+    background-color: var(--input-field-color) !important;  
   }
   .ant-table-pagination {
     gap: 6px !important;
   }
-  .ant-pagination-item {
-    background: @theme-color !important;
+  .ant-pagination-item, .ant-pagination-item-link {
+    background: var(--pagination-background) !important;
     border: none;
-    color: @text-color;
     min-width: 30px !important;
     height: 30px !important;
     line-height: 30px !important;
+    a {
+      color: var(--font-color) !important;
+    }
   }
   .ant-pagination-item-active {
-    background: @selected-color !important;
+    background: var(--pagination-active-background) !important;
     color: @text-color !important;
-    a {
-      color: #fff !important;
-    }
   }   
   .ant-input, .ant-input-password {
     border-radius: 8px;
@@ -154,11 +209,61 @@ body {
     font-size: 16px;
     line-height: 26px;
   }
+  .ant-table-container {
+    background: var(--table-background);
+    border-color: var(--table-border-color);
+    table {
+      background: var(--table-background);
+      border-color: var(--table-border-color);
+      .ant-table-cell {
+        border-color: var(--table-border-color);
+      }
+      .ant-table-thead {
+        .ant-table-cell {
+          background: var(--table-cell-background);
+          color: var(--table-text-color);
+          border-color: var(--table-border-color);
+        }
+      }
+      .ant-table-tbody {
+        .ant-table-cell {
+          background: var(--table-background);
+          color: var(--table-text-color);
+          border-color: var(--table-border-color);
+        }
+      }
+    }
+  }
+
+  .ant-pagination-options {
+    .ant-select-selector {
+      height: 32px;
+      border-color: var(--table-border-color);
+      color: var(--table-text-color);
+    }
+    .ant-select-selection-item {
+      line-height: 30px;
+    }
+  }
+  .ant-select-dropdown {
+    // background: red !important;
+    
+  }
+  .ant-checkbox-inner {
+    background: var(--checkbox-background-color);
+  }
+  .navbar__right {
+    span {
+      color: #fff;
+    }
+    .active-navbar-btn {
+      color: var(--link-active-color) !important;
+    }
+  }
   h1 {
     font-size: 38px;
     line-height: 46px;
     text-align: center;
-    color: @theme-color;
   }
   h3 {
     font-size: 20px;
@@ -207,4 +312,33 @@ body {
       overflow: scroll;
     }
   }
+}
+
+.ant-modal-header {
+  background-color: var(--background-color) !important;
+  .ant-modal-title {
+    color: var(--font-color) !important;
+
+  }
+}
+.ant-modal-body {
+  background-color: var(--background-color) !important;
+  .label {
+    color: var(--font-color) !important;
+  }
+  .ant-select-selector {
+    border-color: var(--input-border-color) !important;
+    background-color: var(--input-field-color) !important;
+    color: var(--font-color) !important;
+    padding: 0 10px !important;
+  }
+  .ant-input, .ant-input-number-input, .ant-input-group-addon {
+    border-color: var(--input-border-color) !important;
+    color: var(--font-color) !important;
+    background-color: var(--input-field-color) !important;  
+  }
+ 
+}
+.ant-modal-footer {
+  background-color: var(--background-color) !important;
 }

@@ -7,7 +7,7 @@ const AdminSideBar = ({tabs, setActiveTab, activeTab}) => {
       {
         tabs.map((tab, idx) => (
           <div 
-            className={`${activeTab === idx ? 'selected-tab' : ''} tab-content`}
+            className={`tab-content ${activeTab === idx ? 'selected-tab' : ''}`}
             onClick={() => setActiveTab(idx)}
           >
             {tab.title}

@@ -6,7 +6,8 @@
     width: 20%;
 
     .admin-tabs {
-      background: #fff;
+      border-right: 1px solid var(--border-color);
+      // background: #001529;
       min-height: 100vh;
       position: fixed;
       overflow: scroll;
@@ -20,7 +21,7 @@
       }
 
       .selected-tab {
-        background-color: @selected-color;
+        background-color: var(--button-background);
       }
     }
   }
@@ -39,7 +40,7 @@
 
       .category-container {
         width: 33%;
-        background-color: #fff;
+        background-color: var(--background-color);
         min-height: 100vh;
         padding: 20px;
 
@@ -83,10 +84,10 @@
 
       .sub-category-container {
         width: 33%;
-        background-color: #fff;
+        background-color: var(--background-color);
         min-height: 100vh;
-        border-left: 1px solid black;
-        border-right: 1px solid black;
+        border-left: 1px solid var(--border-color);
+        border-right: 1px solid var(--border-color);
         padding: 20px;
 
         .title {
@@ -123,7 +124,7 @@
 
       .tags-container {
         width: 33%;
-        background-color: #fff;
+        background-color: var(--background-color);
         min-height: 100vh;
         padding: 20px;
 
@@ -163,7 +164,7 @@
 }
 
 .all-states {
-  background: white;
+  // background: white;
   .pagination-section {
     text-align: end;
     margin-top: 20px;
@@ -196,7 +197,8 @@
         .city-search-input {
           width: 250px;
           border-radius: 0 8px 8px 0 !important;
-          background-color: #CCCACd;
+          background: var(--input-field-color) !important;
+          border-color: var(--border-color) !important;
         }
         .city-search-input::placeholder {
           color: white;
@@ -250,7 +252,7 @@
     .admin-tabs {
       display: flex !important;
       flex-direction: row !important;
-      background: #fff;
+      // background: #fff;
       position: unset !important;
       min-height: unset !important;
      

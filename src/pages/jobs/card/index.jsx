@@ -108,7 +108,7 @@ const content = () => {
                     
                   </h1>
                   <b>
-                    <UserOutlined /> shared by-: <Popover className="top" placement="bottom" content={content(item)} ><i className="hover-user-name" onMouseOver={()=>handleNameMouseHover(item)}>{item.postedByName}</i></Popover>
+                    <UserOutlined /> shared by : <Popover className="top" placement="bottom" content={content(item)} ><i className="hover-user-name" onMouseOver={()=>handleNameMouseHover(item)}>{item.postedByName}</i></Popover>
                   </b>
                   <p style={{ marginTop: "7px" }}>
                     <UsergroupAddOutlined style={{ marginRight: "5px" }} />

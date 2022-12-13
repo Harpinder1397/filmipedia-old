@@ -46,7 +46,7 @@ const ManageUsers = ({states }) => {
         title: 'Full Name',
         key: 'fullName',
         dataIndex: 'fullName',
-        render: (text, row) => <Link to={`/profile/${row?._id}`}>{row?.fullName}</Link>
+        render: (text, row) => <Link to={`/user/profile/${row?._id}`}>{row?.fullName}</Link>
     },
     {
         title: 'Mobile Number',

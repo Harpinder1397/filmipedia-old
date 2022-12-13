@@ -19,7 +19,7 @@
             height: 284px;
             background: aqua;
             z-index: 8;
-            border: 1px solid #dcd9d9 !important;
+            border:  1px solid var(--border-color) !important;
 
             img {
                 width: 100%;
@@ -80,16 +80,16 @@
             display: flex;
             padding: 20px;
             // background: grey;
-            border-bottom: 1px solid #dcd9d9;
+            border-bottom:  1px solid var(--border-color);
             // border-radius: 20px 20px 0 0;
             justify-content: end;
             // padding-right: 50px;
             position: sticky;
             top: 0;
-            background: #fff;
+            background: var(--navbar-table-background);
             z-index: 1;
             .tab-active-color {
-                color: #0857ff;
+                color: var(--link-active-color) !important;
             }
             .vertical-line {
                 height: 100%;
@@ -106,26 +106,42 @@
 
     .profile-first-section {
         height: 500px;
-        // border: 1px solid #dcd9d9;
+        // border:  1px solid var(--border-color);
         border-radius: 6px;
         position: sticky !important;
         top: 98px !important;
         // padding: 20px;
         overflow: scroll;
         .meta-details-container {
-            border: 1px solid #dcd9d9 !important;
+            border:  1px solid var(--border-color) !important;
             border-radius: 6px;
         }
     }
 
     .profile-second-section {
         height: 568px;
-        border: 1px solid #dcd9d9;
+        border:  1px solid var(--border-color);
         border-radius: 6px;
         position: sticky !important;
         top: 98px !important;
         // padding: 20px;
         overflow: scroll;
+        .ant-descriptions-view {
+            border-color: var(--border-color) !important;
+
+        }
+        .ant-descriptions-item-label {
+            background: var(--ant-descriptions-item-label);
+            border-right-color: var(--border-color) !important;
+        }
+        .ant-descriptions-item-content {
+            border-right-color: var(--border-color) !important;
+            
+        }
+        .ant-descriptions-row {
+            border-bottom-color: var(--border-color) !important;
+            
+        }
         .ant-descriptions  {
             width: 100%;
         }
@@ -149,13 +165,22 @@
                 flex-direction: column;
                 width: 100%;
                 gap: 10px;
+                .ant-card-bordered {
+                    border-color: var(--border-color);
+                }
+                .ant-card-body {
+                    border-top: 1px solid var(--border-color) !important;
+                }
+                .ant-card-head, .ant-card-body {
+                    background: var(--navbar-table-background) !important;
+                }
             }
         }
     }
 
     .profile-thrid-section {
         height: 500px;
-        border: 1px solid #dcd9d9;
+        border:  1px solid var(--border-color);
         border-radius: 6px;
         position: sticky;
         top: 98px;

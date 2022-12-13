@@ -23,6 +23,9 @@ const Navbar = ({setIsloading}) => {
   const location = useLocation(); // React Hook
   const [collapsed, setCollapsed] = useState(false);
   const [formData, setFormData] = useState({});
+ const getThemeType = localStorage.getItem('themeType')
+ const defalutThemeType = getThemeType == 'dark' ? true : false
+  const [themeType, setThemeType] = useState(defalutThemeType || false);
   const [tags, setTags] = useState([]);
   const [subCategoriesList, setSubCategoriesList] = useState([]);
   const userType  = localStorage.getItem("userType");
@@ -52,9 +55,11 @@ const Navbar = ({setIsloading}) => {
 
   const handleThemeMode = (e) => {
     if(e){
-      document.documentElement.setAttribute("data-theme", "dark");
+      setThemeType(e);
+      localStorage.setItem('themeType', 'dark');
     }else {
-      document.documentElement.setAttribute("data-theme", "light");
+      setThemeType(e);
+      localStorage.setItem('themeType', 'light');
     }
   }
 
@@ -63,6 +68,15 @@ const Navbar = ({setIsloading}) => {
       setIsloading(isLoading);
     }
   }, [isLoading])
+
+  useEffect(() => {
+    if(themeType){
+      document.documentElement.setAttribute("data-theme", 'dark');
+    }else {
+      document.documentElement.setAttribute("data-theme", 'light');
+    }
+  }, [themeType, getThemeType])
+  
 
   useEffect(() => {
       const payload = formData;
@@ -193,7 +207,7 @@ const Navbar = ({setIsloading}) => {
           <Button className={location.pathname ==  '/shortlisted' ? "active-navbar-btn" : '' } type="primary" onClick={() => history.push("/shortlisted")}>
             Shortlisted
           </Button>
-          <Switch onChange={handleThemeMode} checkedChildren="light" unCheckedChildren="dark" />
+          <Switch checked={themeType} onChange={handleThemeMode} checkedChildren="light" unCheckedChildren="dark" />
           {/* <Button type="primary" onClick={()=>history.push('/admin')}>Admin</Button> */}
           {/*<Button type="primary" onClick={handelLogout} ghost>Sign Out</Button> */}
         </React.Fragment>
