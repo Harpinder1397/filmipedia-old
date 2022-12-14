@@ -36,6 +36,7 @@ export default function CommonList({ users, isFav, isLoading }) {
         userId: userId,
         favUserId: userInfo._id,
         favName: userInfo?.fullName || '',
+        experience: userInfo?.experience || '',
         favSubCategory: userInfo?.subCategory || '',
         favThumbnail: userInfo.thumbnails.find((thumbnail) => thumbnail.dp)?.url || ''
     }

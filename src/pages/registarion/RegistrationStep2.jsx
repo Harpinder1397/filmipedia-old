@@ -62,6 +62,7 @@ const RegistrationStep2 = (props) => {
 						label="you are"
 						value={formData.category}
 						onSelect={(id, val) => {
+							console.log(val, 'qqqqqqq')
 							setSubCategories(id);
 							setFormData({...formData, category: val.children, subCategory: null})
 						}}
@@ -94,7 +95,7 @@ const RegistrationStep2 = (props) => {
 				}}
 				options={
 					[
-						{id: 1, value: 'English'},	{id: 2, value: 'Hindi'}
+						{id: 1, value: 'english'},	{id: 2, value: 'hindi'}
 					]
 				}
 				showSearch
@@ -181,7 +182,7 @@ const RegistrationStep2 = (props) => {
 				}}
 				options={
 					[
-						{id: 1, value: 'English'},	{id: 2, value: 'Hindi'}
+						{id: 1, value: 'english'},	{id: 2, value: 'hindi'}
 					]
 				}
 				showSearch

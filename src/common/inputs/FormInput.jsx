@@ -1,4 +1,4 @@
-import { Input } from "antd";
+import { Input, InputNumber, Select } from "antd";
 import './formFields.less';
 
 const FormInput = ({
@@ -28,7 +28,12 @@ const FormInput = ({
 				</span>
 			</div>
 			<div className="input-field-container">
-				<Input
+				{type == "num" ? (
+					<Input.Group compact>
+					<InputNumber value={value} name={name} onChange={onChange} placeholder="Mobile Number" />
+				</Input.Group>
+				): ( 
+					<Input
 					type={type}
 					addonBefore={addonBefore}
 					name={name}
@@ -41,7 +46,9 @@ const FormInput = ({
 					className={`input-field ${validationError && 'error'}`}
 					maxLength={maxLength}
 					minLength={minLength}
-				/>				
+				/>
+				)}
+					
 				<div className="error-msg">
 					{
 						validationError ? validationError : null 

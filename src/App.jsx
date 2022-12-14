@@ -152,6 +152,8 @@ const App = () => {
               <Route exact path="/signin/:callbackUrl" component={RegistrationForms} />
               <LoginRoute exact path="/my-profile" component={MyProfile} />
               <LoginRoute exact path="/user/profile/:Id" component={MyProfile} />
+              <LoginRoute exact path="/user/create/profile" component={MyProfile} />
+              
               <Route exact path="/timeline" component={TimeLine} />
               <LoginRoute exact path="/messages" component={Messages} />
               <LoginRoute

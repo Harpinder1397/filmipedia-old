@@ -1,4 +1,4 @@
-import { Row, Col, Button } from 'antd';
+import { Row, Col, Button, Form, Input, Select, InputNumber } from 'antd';
 import FormInput from '../../../common/inputs/FormInput';
 import FormSelect from '../../../common/inputs/FormSelect';
 import { genderOptions } from '../../../constant/common';
@@ -12,6 +12,7 @@ import { useStateQuery } from '../../../api/getStatesQuery';
 const BasicInfo = ({
   userDetails,
   onChangeRestOptions,
+  onChangeRestNumberOptions,
   setUserDetails,
   updateBasicDetails
 }) => {
@@ -85,11 +86,11 @@ console.log(selectedState, 'selectedState')
         </Col>
         <Col xs={24} sm={12} md={8} lg={6} xxl={6} xl={6}>
           <FormInput 
-            type="text"
+            type="num"
             name="userName"
-            label="Email or mobile number"
-            value={userDetails?.rest?.userName}
-            onChange={onChangeRestOptions}
+            label="Mobile Number"
+            value={userDetails?.rest?.mobileNumber}
+            onChange={onChangeRestNumberOptions}
             // validationError={formDataErrors.userName}
             required
           />
@@ -125,7 +126,7 @@ console.log(selectedState, 'selectedState')
             label="change your language"
             value={userDetails?.rest?.languages}
             onSelect={(cat, val) => {
-              // console.log('language', val, cat)
+              console.log('language', val, cat)
               const data = {...userDetails, rest: {...userDetails.rest, languages: userDetails?.rest?.languages?.length ? [...userDetails.rest.languages, val.value]: [val.value]}}
 							setUserDetails(data)
             }}
@@ -135,7 +136,7 @@ console.log(selectedState, 'selectedState')
             }}
             options={
               [
-                {id: 1, value: 'English'},	{id: 2, value: 'Hindi'}
+                {id: 1, value: 'english'},	{id: 2, value: 'hindi'}
               ]
             }
             showSearch
@@ -221,7 +222,7 @@ console.log(selectedState, 'selectedState')
 						value={userDetails?.rest?.state}
             onSelect={(cat, val) => {
               setSelectedState(val.value)
-              const data = {...userDetails, rest: {...userDetails.rest, state: val.value}}
+              const data = {...userDetails, rest: {...userDetails.rest, state: val.value,  city: ''}}
 							setUserDetails(data)
             }}
 						options={location && Object.keys(location).map((item, idx) => {
@@ -243,7 +244,7 @@ console.log(selectedState, 'selectedState')
 						label="Select your city"
 						value={userDetails?.rest?.city}
             onSelect={(cat, val) => {
-              const data = {...userDetails, rest: {...userDetails.rest, city: cat.value}}
+              const data = {...userDetails, rest: {...userDetails.rest, city: val.value}}
 							setUserDetails(data)
             }}
 						options={cities}

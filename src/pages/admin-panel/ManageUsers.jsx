@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
 import TableComponent from "../../common/TableComponent";
-import { Switch, Typography, Spin } from "antd";
+import { Switch, Typography, Spin, Button } from "antd";
 import './admin.less';
 import { updateUserApi, useUpdateUserNameMutation, useUserQuery } from "../../api/user";
 import CommonPagination from "../../common/pagination/CommonPagination";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 
 const { Title } = Typography;
 
@@ -14,7 +14,7 @@ const ManageUsers = ({states }) => {
 
   const { data: userList } = useUserQuery();
   const {mutate: fetchserNameMutation, isLoading} = useUpdateUserNameMutation()
-
+  const history = useHistory();
   console.log(userList, 'userList')
 
   const onShowSizeChange = (page, limit) => {
@@ -85,6 +85,7 @@ const ManageUsers = ({states }) => {
     <Spin spinning={isLoading || isloading}>
     <div className="all-states">
     <Title level={3}>Users</Title>
+    <Button onClick={() => history.push('/user/create/profile')}>Add</Button>
       <TableComponent
         columns={userCol}
         data={userList?.users || []}

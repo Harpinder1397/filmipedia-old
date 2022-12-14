@@ -11,10 +11,10 @@ const GroupCheckbox = ({options,onChange}) => {
       >
         <Row>
           {
-            options.map((option) => {
+            options?.map((option) => {
               return (
                 <Col span={12}>
-                  <Checkbox value={option.value}>{option.name}</Checkbox>
+                  <Checkbox value={option?.value}>{option?.name}</Checkbox>
                 </Col>
               )
             })

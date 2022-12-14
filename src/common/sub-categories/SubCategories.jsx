@@ -43,9 +43,9 @@ const SubCategoryComponent = ({
             onSelect={(cat, val) => {
               // console.log(val, cat, 'val')
               setSelectedState(val.value)
-              setFormData({...formData, state: val.value})
+              setFormData({...formData, state: val.value, city: ''})
             }}
-            onClear={() => setFormData({...formData, state: ''})}
+            onClear={() => setFormData({...formData, state: '', city: ''})}
             options={location && Object.keys(location).map((item, idx) => {
 							return {
 								id: idx,
@@ -79,24 +79,126 @@ const SubCategoryComponent = ({
     );
   };
 
+  const experienceFun = () => {
+      return (
+        <div className="location-filter experience-filter">
+          <FormSelect
+            className="state-search-input"
+            name="state"
+            allowClear={true}
+            placeholder="Select Minimum"
+              value={formData?.experienceMinimum}
+              onSelect={(cat, val) => {
+                // console.log(val, cat, 'val')
+                setFormData({...formData, experienceMinimum: val.value, experienceMaximum: val.value})
+              }}
+              onClear={() => setFormData({...formData, experienceMinimum: '', experienceMaximum: ''})}
+              options={subCategoryFilter && Object.keys(subCategoryFilter).map((item, idx) => {
+                return {
+                  id: idx,
+                  value: item
+                }
+              })}
+            showSearch
+            required
+            filterOption={(input, option) =>
+              option.children.indexOf(input) >= 0
+            }
+            // validationError={formDataErrors.states}
+            width="100%"
+          />
+          <FormSelect
+              name="cities"
+              placeholder="Select Maximum"
+              className="city-search-input"
+              value={formData?.experienceMaximum}
+              showFilterValue={formData?.experienceMinimum}
+              onSelect={(cat, val) => {
+                setFormData({...formData, experienceMaximum: val.value})
+              }}
+              options={subCategoryFilter && Object.keys(subCategoryFilter).map((item, idx) => {
+                return {
+                  id: idx,
+                  value: item
+                }
+              })}
+              showSearch
+              required
+              filterOption={(input, option) => option.children.indexOf(input) >= 0 }
+              // validationError={formDataErrors.city}
+              width={"100%"}
+              disabled={formData?.experienceMinimum ? false : true}
+            />
+        </div>
+      );
+    };
+  const ageFun = () => {
+    return (
+      <div className="location-filter experience-filter">
+        <FormSelect
+          className="state-search-input"
+          name="state"
+          allowClear={true}
+          placeholder="Select Minimum"
+            value={formData?.ageMinimum}
+            onSelect={(cat, val) => {
+              // console.log(val, cat, 'val')
+              setFormData({...formData, ageMinimum: val.value, ageMaximum: val.value})
+            }}
+            onClear={() => setFormData({...formData, ageMinimum: '', ageMaximum: ''})}
+            options={subCategoryFilter && Object.keys(subCategoryFilter).map((item, idx) => {
+							return {
+								id: idx,
+								value: item
+							}
+						})}
+          showSearch
+          required
+          filterOption={(input, option) =>
+            option.children.indexOf(input) >= 0
+          }
+          // validationError={formDataErrors.states}
+          width="100%"
+        />
+        <FormSelect
+            name="cities"
+            placeholder="Select Maximum"
+            className="city-search-input"
+						value={formData?.ageMaximum}
+            showFilterValue={formData?.ageMinimum}
+            onSelect={(cat, val) => {
+              setFormData({...formData, ageMaximum: val.value})
+            }}
+						options={subCategoryFilter && Object.keys(subCategoryFilter).map((item, idx) => {
+							return {
+								id: idx,
+								value: item
+							}
+						})}
+            filterOption={(input, option) =>
+              option.children.indexOf(input) >= 0
+            }
+						showSearch
+						required
+						// validationError={formDataErrors.city}
+						width={"100%"}
+            disabled={formData?.ageMinimum ? false : true}
+					/>
+      </div>
+    );
+  };
+
+
   const checkboxFun = (title) => {
     console.log(title === 'Experience', 'title');
     return (
       <GroupCheckbox
         options={subCategoryFilter}
         onChange={(e) => {
-          if(title == 'Experience'){
             setFormData({
               ...formData,
-              [name]: e 
+              [name]: e
             })
-          }else {
-            // setFormData({
-            //   ...formData,
-            //   [name]: e
-            // })
-          }
-          console.log(e, 'val')
         }}
       />
     );
@@ -106,6 +208,10 @@ const SubCategoryComponent = ({
     switch (title) {
       case "Location":
         return locationFun();
+      case "Experience" : 
+        return experienceFun()
+      case "Age" : 
+        return ageFun()
       default:
         return checkboxFun(title);
     }

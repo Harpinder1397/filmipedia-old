@@ -14,72 +14,25 @@ const CommonDataBaseList = ({ allUsers, isFav, loading }) => {
 	const [isloading, setIsloading] = useState(false);
 
   console.log(formData, 'formData')
-
-  const experienceFilter = [
-    {
-      key: 1,
-      name: '0 - 5',
+// Initialize a for statement with 5 iterations
+  const experienceFilter = [...Array(21)].map((item, idx) => {
+    return {
+      key: idx,
+      name: idx,
       objName: 'experience',
-      value: 5
-    },
-    {
-      key: 2,
-      name: '6 - 10',
-      value: 10,
-      objName: 'experience'
-    },
-    {
-      key: 3,
-      name: '11 - 15',
-      value: 15,
-      objName: 'experience'
-    },
-    {
-      key: 4,
-      name: '16 - 20',
-      value: 20,
-      objName: 'experience'
-    },
-    {
-      key: 5,
-      name: '21 - 25',
-      value: 25,
-      objName: 'experience'
+      value: idx
     }
-  ]
+  })
 
-  const ageFilter = [
-    {
-      key: 1,
-      name: 'Baby (0 - 3)',
+
+  const ageFilter = [...Array(101)].map((item, idx) => {
+    return {
+      key: idx,
+      name: idx,
       objName: 'age',
-      value: 'baby',
-    },
-    {
-      key: 2,
-      name: 'Child (4 - 12)',
-      value: 'child',
-      objName: 'age'
-    },
-    {
-      key: 3,
-      name: 'Teenager (13 - 19)',
-      value: 'teenager',
-      objName: 'age'
-    },
-    {
-      key: 4,
-      name: 'Adult (20 - 59)',
-      value: 'adult',
-      objName: 'age'
-    },
-    {
-      key: 5,
-      name: 'Senior (60 and Up)',
-      value: 'senior',
-      objName: 'age'
+      value: idx
     }
-  ]
+  })
 
   const genderFilter = [
     {
@@ -181,7 +134,7 @@ const CommonDataBaseList = ({ allUsers, isFav, loading }) => {
         />
         <SubCategoryComponent
           title='Language'
-          name='language'
+          name='languages'
           subCategoryFilter={languageFilter}
           formData={formData}
           setFormData={setFormData}
@@ -206,7 +159,7 @@ const CommonDataBaseList = ({ allUsers, isFav, loading }) => {
           />
           {/*<InfiniteScrollCard formData={formData} userNameMutation={userNameMutation} />*/}
           <div className="pagination-section">
-         {allUsers?.total >= 9 && <CommonPagination total={allUsers?.total} onShowSizeChange={onShowSizeChange}/>}
+         {allUsers?.total >= 9 && allUsers?.users?.length >= 9 && <CommonPagination total={allUsers?.total} current={allUsers?.users?.length} onShowSizeChange={onShowSizeChange}/>}
           </div>
         </div>
 

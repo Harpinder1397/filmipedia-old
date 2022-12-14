@@ -21,7 +21,8 @@ const FormSelect = ({
 	onChange = () => { },
 	onClear = () => { },
 	className,
-	allowClear
+	allowClear,
+	showFilterValue
 }) => {
 
 	return (
@@ -56,10 +57,17 @@ const FormSelect = ({
 					allowClear={allowClear}
 				>
 					{
-						options.map((option) => (
-							<Option key={option._id} id={option._id} value={option.value}>
-								{option.value}
-							</Option>
+						options?.map((option) => (
+							showFilterValue ? option.value >= showFilterValue ? (
+								<Option key={option?._id} id={option?._id} value={option?.value}>
+									{option?.value}
+								</Option>
+								)
+							: null : (
+								<Option key={option?._id} id={option?._id} value={option?.value}>
+									{option?.value}
+								</Option>
+							)
 						))
 					}
 				</Select>
