@@ -1,60 +1,43 @@
-import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
-import { getCategoryApi, useGetCategoryApiQuery , useFetchCategoryApiQuery} from '../../api/getCategories';
-// import { getStatesApi } from '../../api/getStates';
 import React, {useEffect, useState} from 'react';
 import './admin.less';
 import AdminSideBar from './AdminSideBar';
 import AllCategories from './AllCategories';
 import AllStates from './AllStates';
-import { useUpdateStateMutation } from '../../api/getStatesQuery';
 import { Spin } from 'antd';
 import ManageUsers from './ManageUsers';
+import { adminTabs } from '../../constant/common';
+import ManageFilters from './ManageFilters';
 
-const tabs = [
-  {
-    title: 'Manage States',
-    Component: 'state',
-  },
-  {
-    title: 'Manage Categories',
-    Component: 'categories',
-  },
-  {
-    title: 'Manage Users',
-    Component: 'users',
-  }
-]
-
-const categoryCol = [
-  {
-    title: 'Category',
-    key: 'value',
-    dataIndex: 'value',
-  },
-  {
-    title: 'Sub category',
-    key: 'children',
-    dataIndex: 'children',
-    render: (text, row) => 'sub categories'
-  },
-  {
-    title: 'Tags',
-    key: 'tags',
-    dataIndex: 'tags',
-    render: (text, row) => 'tags'
-  },
-  {
-    title: 'action',
-    key: 'action',
-    dataIndex: 'action',
-    render: (text, row) => 
-    <>
-      <EditOutlined />
-      <DeleteOutlined />
-    </>
+// const categoryCol = [
+//   {
+//     title: 'Category',
+//     key: 'value',
+//     dataIndex: 'value',
+//   },
+//   {
+//     title: 'Sub category',
+//     key: 'children',
+//     dataIndex: 'children',
+//     render: (text, row) => 'sub categories'
+//   },
+//   {
+//     title: 'Tags',
+//     key: 'tags',
+//     dataIndex: 'tags',
+//     render: (text, row) => 'tags'
+//   },
+//   {
+//     title: 'action',
+//     key: 'action',
+//     dataIndex: 'action',
+//     render: (text, row) => 
+//     <>
+//       <EditOutlined />
+//       <DeleteOutlined />
+//     </>
     
-  }
-]
+//   }
+// ]
 
 const AdminPanel = () => {
   const [categories, setCategories] = useState([]);
@@ -94,6 +77,8 @@ const AdminPanel = () => {
         return <AllCategories/>
       case 2: 
         return <ManageUsers states={states} />
+      case 3: 
+        return <ManageFilters states={states} />
       default:
         return <AllStates states={states} />
     }
@@ -103,7 +88,7 @@ const AdminPanel = () => {
     <Spin spinning={false}>
     <div className="admin-panel">
       <div className="side-bar">
-        <AdminSideBar tabs={tabs} setActiveTab={setActiveTab} activeTab={activeTab} />
+        <AdminSideBar tabs={adminTabs} setActiveTab={setActiveTab} activeTab={activeTab} />
       </div>
       <div className="content-area">
         {renderComponent()}

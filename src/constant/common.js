@@ -78,3 +78,24 @@ export const ageFilter = [...Array(101)].map((item, idx) => {
     value: idx
   }
 })
+
+
+
+export const adminTabs = [
+  {
+    title: 'Manage States',
+    Component: 'state',
+  },
+  {
+    title: 'Manage Categories',
+    Component: 'categories',
+  },
+  {
+    title: 'Manage Users',
+    Component: 'users',
+  },
+  {
+    title: 'Manage Filters',
+    Component: 'filters',
+  }
+]
