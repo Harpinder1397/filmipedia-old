@@ -29,7 +29,6 @@ const CommonDataBaseList = ({ allUsers, isFav, loading }) => {
   }
 
   useEffect(() => {
-    console.log([...Array(10).keys()], '[...Array(10).keys()]')
     const payload = formData;
     Object.keys(formData).forEach(key => {
       if(!formData[key])

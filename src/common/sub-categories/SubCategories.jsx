@@ -89,7 +89,6 @@ const SubCategoryComponent = ({
             placeholder="Select Minimum"
               value={formData?.experienceMinimum}
               onSelect={(cat, val) => {
-                // console.log(val, cat, 'val')
                 setFormData({...formData, experienceMinimum: val.value, experienceMaximum: val.value})
               }}
               onClear={() => setFormData({...formData, experienceMinimum: '', experienceMaximum: ''})}
