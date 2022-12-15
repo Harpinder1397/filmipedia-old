@@ -17,9 +17,9 @@ const ManageFilters = ({states }) => {
   const [isVisible, setIsVisible] = useState(false);
   const [isEditModal, setIsEditModal] = useState('add');
   const { data } = useFiltersQuery();
-  const { mutate: fetchFilterMutation, isLoading2 } = useUpdateFilterMutation();
-  const { mutate: deleteFilterMutation, isLoading3 } = useDeleteFilterMutation();
-  const { mutate: updateFilterMutation, isLoading4 } = UpdateFilterMutation();
+  const { mutate: fetchFilterMutation, isLoading: isLoading2 } = useUpdateFilterMutation();
+  const { mutate: deleteFilterMutation, isLoading : isLoading3 } = useDeleteFilterMutation();
+  const { mutate: updateFilterMutation, isLoading : isLoading4 } = UpdateFilterMutation();
   const { mutate: createFilterMutation, isLoading , isError} = useCreateFilterMutation();
     console.log(formData, 'formData')
   // States Table Columns
