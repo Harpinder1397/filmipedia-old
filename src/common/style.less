@@ -194,7 +194,12 @@ span.icon-label {
   height: 80vh;
   // height: 100vh;
   left: 0;
-  overflow: scroll;
+  overflow-y: scroll;
+}
+
+.left-side-bar {
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: 1px;  /* Firefox */
 }
 .database-right-side-section {
   display: flex;
@@ -268,7 +273,7 @@ span.icon-label {
     flex-direction: column;
     flex-flow: wrap;
     height: 80px;
-    overflow: scroll;
+    // overflow: scroll;
     .ant-checkbox-wrapper {
       flex: 50%;
       margin-top: 10px !important;
