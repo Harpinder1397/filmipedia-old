@@ -123,7 +123,7 @@ const ManageFilters = ({states }) => {
   }
 
   return (
-    <Spin spinning={isLoading}>
+    <Spin spinning={isLoading || isLoading2 || isLoading3 || isLoading4}>
     <div className="all-states">
       <div className="">
         <Title level={3}>Manage Filters</Title>
