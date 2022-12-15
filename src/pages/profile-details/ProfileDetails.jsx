@@ -85,7 +85,7 @@ const ProfileDetails = () => {
 									<CheckCircleFilled style={{ color: 'green' }} /> <span>{userDetails?.userName}</span>
 								</div>
 								<div className="designation">
-									<span>{userDetails?.category}</span>
+									<span>{userDetails?.subCategory}</span>
 								</div>
 
 								<div className="bottom-info">

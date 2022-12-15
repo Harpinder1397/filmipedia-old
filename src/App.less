@@ -17,11 +17,14 @@
 // Light Theme Color
 :root {
   --font-color: #333;
+  --button-font-color: #fff;
   --border-color: #dcd9d9;
+  --tag-background-color: gray;
   --navbar-table-background: #fff;
   --button-background: #8080804f;
   --card-font-color: #555151;
   --background-color: #fff;
+  --navbar-tags-background-color: #CCCAC4;
   --card-background-color: rgb(247, 245, 243);
   --profile-card-background-color: #fff;
   --profile-card-box-shadow: #CCCAC4;
@@ -45,11 +48,14 @@
 // Dark Theme Color
 [data-theme="dark"] {
   --font-color: #cccac4;
+  --button-font-color: #cccac4;
   --button-background: #8080804f;
+  --tag-background-color: rgb(52, 58, 64);
   --border-color: rgb(55, 58, 64);
   --navbar-table-background: #1a1b1e;
   --card-font-color: #ffffffa6;
   --background-color: rgb(26, 27, 30);
+  --navbar-tags-background-color: rgb(26, 27, 30);
   --card-background-color: rgb(37, 38, 43);
   --profile-card-background-color:  rgb(37, 38, 43);
   --profile-card-box-shadow: rgb(37, 38, 43);
@@ -111,7 +117,7 @@ body {
   }
   .ant-btn-primary {
     color: @text-color !important;
-    border-radius: 8px;
+    border-radius: 4px;
     background: @theme-color;
     border: none;
   }
@@ -166,10 +172,10 @@ body {
   }
   .ant-select-selection-placeholder,
   .ant-input::placeholder {
-    color: #fff !important;
+    color: var(--font-color) !important;
   }
   .ant-input-number-input::placeholder {
-    color: #fff !important;
+    color: var(--font-color) !important;
   }
   
   .ant-select-selector {
@@ -201,7 +207,7 @@ body {
     color: @text-color !important;
   }   
   .ant-input, .ant-input-password {
-    border-radius: 8px;
+    border-radius: 4px;
     // padding: 6px;
   }
   .ant-form-item-required {
@@ -245,10 +251,7 @@ body {
       line-height: 30px;
     }
   }
-  .ant-select-dropdown {
-    // background: red !important;
-    
-  }
+
   .ant-checkbox-inner {
     background: var(--checkbox-background-color);
   }
@@ -342,3 +345,11 @@ body {
 .ant-modal-footer {
   background-color: var(--background-color) !important;
 }
+
+// .ant-select-dropdown {
+//     .ant-select-item {
+//       .ant-select-item-option-content {
+//         text-transform: capitalize !important;
+//       }
+//     }    
+//   }

@@ -7,74 +7,11 @@ import { useUpdateUserNameMutation,  } from "../../api/user";
 import FilterMenu from "./FilterMenu";
 import { Spin } from "antd";
 import CommonPagination from "../../common/pagination/CommonPagination";
-import InfiniteScrollCard from "./InfiniteScrollCard";
+import { languageFilter, genderFilter, experienceFilter, ageFilter } from "../../constant/common";
 
 const CommonDataBaseList = ({ allUsers, isFav, loading }) => {
 	const [formData, setFormData] = useState({});
 	const [isloading, setIsloading] = useState(false);
-
-  console.log(formData, 'formData')
-// Initialize a for statement with 5 iterations
-  const experienceFilter = [...Array(21)].map((item, idx) => {
-    return {
-      key: idx,
-      name: idx,
-      objName: 'experience',
-      value: idx
-    }
-  })
-
-
-  const ageFilter = [...Array(101)].map((item, idx) => {
-    return {
-      key: idx,
-      name: idx,
-      objName: 'age',
-      value: idx
-    }
-  })
-
-  const genderFilter = [
-    {
-      key: 1,
-      name: 'Male',
-      objName: 'gender',
-      value: 'male',
-    },
-    {
-      key: 2,
-      name: 'Female',
-      value: 'female',
-      objName: 'gender'
-    },
-    {
-      key: 3,
-      name: 'Other',
-      value: 'other',
-      objName: 'gender'
-    }
-  ]
-
-  const languageFilter = [
-    {
-      key: 1,
-      name: 'Hindi',
-      objName: 'languages',
-      value: 'hindi',
-    },
-    {
-      key: 2,
-      name: 'English',
-      value: 'english',
-      objName: 'languages'
-    },
-    {
-      key: 3,
-      name: 'Spanish',
-      value: 'spanish',
-      objName: 'languages'
-    }
-  ]
 
   const { mutate: userNameMutation, isLoading } = useUpdateUserNameMutation();
 
