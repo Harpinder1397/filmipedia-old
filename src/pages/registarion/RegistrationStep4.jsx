@@ -30,7 +30,6 @@ const RegistrationStep4 = (props) => {
 		onChangeInput(e, formData, setFormData)
 	}
 
-  console.log('formData', formData);
 	return (
 		<div
 			className="form-container"

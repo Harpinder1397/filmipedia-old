@@ -27,6 +27,7 @@ const Navbar = ({setIsloading}) => {
  const defalutThemeType = getThemeType == 'dark' ? true : false
   const [themeType, setThemeType] = useState(defalutThemeType || false);
   const [tags, setTags] = useState([]);
+  const [activeTag, setActiveTag] = useState('');
   const [subCategoriesList, setSubCategoriesList] = useState([]);
   const userType  = localStorage.getItem("userType");
   const {
@@ -43,14 +44,12 @@ const Navbar = ({setIsloading}) => {
   };
 
   const handleOnClick = (e) => {
-    console.log("click", e.key);
     history.push(e.key);
     if (e.key == "/signOut") {
       handelLogout();
     }
     setCollapsed(false);
   };
-
   const { mutate: userNameMutation, isLoading } = useUpdateUserNameMutation();
 
   const handleThemeMode = (e) => {
@@ -262,7 +261,6 @@ const Navbar = ({setIsloading}) => {
               placeholder="Please select"
               className="navbar__category-selector"
               onSelect={(id, val) => {
-                console.log(id, val, 'ddddd')
                 const getSubCategories = categories.filter(
                   (item) => item._id == val.id
                 );
@@ -331,9 +329,10 @@ const Navbar = ({setIsloading}) => {
         <Row className="navbar__tags-container">
           {tags?.map((tag) => (
             <div
-              className="nav-subBar"
+              className={`nav-subBar ${tag.value == activeTag && "active-navbar-subBar"}`}
               onClick={() => {
                 setFormData({...formData, tags: [tag.value]})
+                setActiveTag(tag.value);
               }}
             >
               {tag.value}

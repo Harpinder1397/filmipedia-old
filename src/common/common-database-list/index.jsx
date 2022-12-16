@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import 'react-calendar/dist/Calendar.css';
 import SubCategoryComponent from "../sub-categories/SubCategories";
 import CommonList from "../../common/CommonList";
@@ -7,14 +7,15 @@ import { useUpdateUserNameMutation,  } from "../../api/user";
 import FilterMenu from "./FilterMenu";
 import { Spin } from "antd";
 import CommonPagination from "../../common/pagination/CommonPagination";
-import { languageFilter, genderFilter, experienceFilter, ageFilter } from "../../constant/common";
+import { languageFilter, genderFilter, experienceFilter, ageFilter, bestInOptions } from "../../constant/common";
+
+import { FiltersContext } from "../../App";
 
 const CommonDataBaseList = ({ allUsers, isFav, loading }) => {
 	const [formData, setFormData] = useState({});
 	const [isloading, setIsloading] = useState(false);
-
+  const { filters } = useContext(FiltersContext);
   const { mutate: userNameMutation, isLoading } = useUpdateUserNameMutation();
-
   const onShowSizeChange = (page, limit) => {
     const payload = {
       ...formData,
@@ -39,18 +40,11 @@ const CommonDataBaseList = ({ allUsers, isFav, loading }) => {
 
   const renderLeftSideFilter = () => {
     return (
-      <>
+<>
         <SubCategoryComponent
           title='Experience'
           name='experience'
           subCategoryFilter={experienceFilter}
-          formData={formData}
-          setFormData={setFormData}
-        />
-        <SubCategoryComponent
-          title='Location'
-          name='location'
-          subCategoryFilter={ageFilter}
           formData={formData}
           setFormData={setFormData}
         />
@@ -68,21 +62,92 @@ const CommonDataBaseList = ({ allUsers, isFav, loading }) => {
           formData={formData}
           setFormData={setFormData}
         />
-        <SubCategoryComponent
+    </>
+    )
+      
+    }
+
+  const renderFilterComponent = (key) => {
+    switch (key) {
+      case 'experience':
+        return (
+          <SubCategoryComponent
+            title='Experience'
+            name='experience'
+            subCategoryFilter={experienceFilter}
+            formData={formData}
+            setFormData={setFormData}
+          />
+      );
+      case 'location':
+        return (
+          <SubCategoryComponent
+            title='Location'
+            name='location'
+            subCategoryFilter={ageFilter}
+            formData={formData}
+            setFormData={setFormData}
+          />
+      );
+      case 'gender':
+        return (
+          <SubCategoryComponent
+          title='Gender'
+          name='gender'
+          subCategoryFilter={genderFilter}
+          formData={formData}
+          setFormData={setFormData}
+        />
+      );
+      case 'age':
+        return (
+          <SubCategoryComponent
+            title='Age'
+            name='age'
+            subCategoryFilter={ageFilter}
+            formData={formData}
+            setFormData={setFormData}
+          />
+      );
+      case 'language':
+        return (
+          <SubCategoryComponent
           title='Language'
           name='languages'
           subCategoryFilter={languageFilter}
           formData={formData}
           setFormData={setFormData}
         />
-    </>
-    )
+      );
+      case 'best-in':
+        return (
+          <SubCategoryComponent
+            title='Best In'
+            name='bestIn'
+            value={formData?.bestIn}
+            formData={formData}
+            setFormData={setFormData}
+            onSelect={(cat, val) => {
+              // console.log(val, cat, 'val')
+              setFormData({...formData, bestIn: val.value})
+            }}
+            onClear={() => setFormData({...formData, bestIn: ''})}
+            options={bestInOptions}
+          />
+        );
+      default:  return null
+    }
   }
-
   return (
     <div className="list-con">
       <div className='left-side-bar'>
-        {renderLeftSideFilter()}
+        {
+          filters?.length ? filters.map((item) => {
+            return renderFilterComponent(item.key)
+          }) : (
+            renderLeftSideFilter()
+          )
+        }
       </div>
 
       <div className="database-right-side-section">

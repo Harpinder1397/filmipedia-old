@@ -51,7 +51,6 @@ const MyProfile = () => {
     }
   }, [window.location.pathname]);
 
-  console.log(userDetails, "userDetails userDetails");
 
   const onChangeRestOptions = (e) => {
     const { name, value } = e.target;
@@ -104,7 +103,6 @@ const MyProfile = () => {
       };
       const loginResponse = await createUserApi(payload);
       if (loginResponse) {
-        console.log(loginResponse, "loginResponse");
         history.push(`/user/profile/${loginResponse?._id}`);
         // setIsLoading(false);
         // setErrorMsg();

@@ -73,7 +73,6 @@ export const FileUploaderWithImageCropper = (props) => {
     let files;
     if (acceptedFiles) {
       if(acceptedFiles[0].size > 300000) {
-        console.log('acceptedFiles', acceptedFiles[0].size)
         return alert('Please upload pic of size less than 300Kb')
       }
       files = acceptedFiles;

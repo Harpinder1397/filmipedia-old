@@ -23,7 +23,6 @@ const SideBar = () => {
   
   useEffect(()=>{
     let href=window.location.href.split('/');
-    console.log('href', href)
     if(href.length <= 4){
       setOpenKeys(['1']);
       setKeys(9);
@@ -42,7 +41,6 @@ const SideBar = () => {
       }
     }
   },[])
-  console.log('keys', keys)
 
   return (
     <div style={{ 

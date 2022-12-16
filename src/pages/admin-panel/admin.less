@@ -42,7 +42,7 @@
         width: 33%;
         background-color: var(--background-color);
         min-height: 100vh;
-        padding: 20px;
+        padding: 20px 0;
 
         .title {
           display: flex;
@@ -159,6 +159,25 @@
           }
         }
       }
+
+      .filters-container {
+        border-left: 1px solid var(--border-color);
+      }
+    }
+  }
+}
+
+.filters-modal-container {
+  .select-container {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    .label-container {
+      padding-bottom: 0;
+    }
+    .input-field-container {
+      overflow: auto;
+      width: 100%;
     }
   }
 }

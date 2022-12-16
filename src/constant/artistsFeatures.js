@@ -46,3 +46,26 @@ export const eyeColors = [
     value: 'Dark brown' 
   },
 ]
+
+export const extraTalent = [
+  {
+    id: 1,
+    value: 'Horse riding' 
+  },
+  {
+    id: 2,
+    value: 'Martial art' 
+  },
+  {
+    id: 3,
+    value: 'Singing' 
+  },
+  {
+    id: 4,
+    value: 'Driving' 
+  },
+  {
+    id: 5,
+    value: 'Boxing' 
+  },
+]

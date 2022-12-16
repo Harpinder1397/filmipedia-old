@@ -30,7 +30,6 @@ const ImageUploaderComponent = (props) => {
   
 
   const handleChange = (event) => {
-    console.log(event, "event")
     const file = event.target.files[0];
     if (file) {
       setFile(file);

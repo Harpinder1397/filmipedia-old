@@ -31,7 +31,6 @@ export const useUpdateJobsMutation = () => {
       //   return { prevUserData };
       // },
       onSuccess: (newUser) => {
-        console.log(newUser, "newUser");
         queryClient.setQueryData(["jobs"], newUser);
       },
       onError: (error, payload, { prevUserData }) => {

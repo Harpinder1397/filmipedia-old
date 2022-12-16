@@ -46,16 +46,15 @@ const App = () => {
   const [categories, setCategories] = useState([]);
   const [selectedSubCategories, setSelectedSubCategories] = useState([]);
   const [tags, setTags] = useState([]);
+  const [filters, setFilters] = useState([]);
   const [token, setToken] = useState(false);
   const [category, setSelectedCategory] = useState(undefined);
   const [subCategory, setSubCategory] = useState(undefined);
   const history = useHistory();
   const location = useLocation(); // React Hook
-  console.log(location.pathname, 'ddddddd');
 
   // loading
   const [isloading, setIsloading] = useState(false);
-  console.log(isloading, 'isloading')
   const getCategories = async () => {
     const data = await getCategoryApi();
 
@@ -73,12 +72,11 @@ const App = () => {
   // };
 
   const setSubCategories = (id) => {
-    console.log(id, "id 1");
     const data = categories?.find((cat) => cat._id === id);
-    console.log(data, "data");
     setSelectedCategory(data?.value);
     setSelectedSubCategories(data?.childern);
     setTags(data?.tags);
+    setFilters(data?.filters)
   };
 
   useEffect(() => {
@@ -123,8 +121,6 @@ const App = () => {
     }
   }
 
-  console.log(history.location.pathname , 'history.location.pathname')
-
   return (
     <Spin 
     spinning={false}
@@ -139,6 +135,7 @@ const App = () => {
             token,
             setToken,
             tags,
+            filters,
             subCategory,
             setSubCategory,
           }}

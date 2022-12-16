@@ -1,6 +1,5 @@
 /* eslint-disable*/
 export const checkFieldType = (type, typeList) => {
-  console.log('type, typeList', type, typeList, typeList.includes(type));
   if (typeList.includes(type)) {
     return true;
   }

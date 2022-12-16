@@ -125,7 +125,6 @@ const RegistrationStep1 = (props) => {
     }
   }, []);
 
-  console.log('formData', formData);
 
   const onChange = (e) => {
     onChangeInput(e, formData, setFormData);

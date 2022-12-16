@@ -49,7 +49,6 @@ const ProfileDetails = () => {
     //   setIsLoading(false);
     }
 	}
-	console.log(userDetails?.category, 'userDetails')
 	useEffect(() => {
 		getUserQuery(id);
 		fetchProjects();

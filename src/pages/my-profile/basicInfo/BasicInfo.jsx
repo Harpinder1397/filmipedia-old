@@ -1,4 +1,4 @@
-import { Row, Col, Button, Form, Input, Select, InputNumber } from "antd";
+import { Row, Col, Button, Form, Input, Select, Divider } from "antd";
 import FormInput from "../../../common/inputs/FormInput";
 import FormSelect from "../../../common/inputs/FormSelect";
 import { bestInOptions, genderOptions, languageOptions } from "../../../constant/common";
@@ -6,6 +6,7 @@ import { FiltersContext } from "../../../App";
 import {
   eyeColors,
   hairColors,
+  extraTalent,
   skinColors,
 } from "../../../constant/artistsFeatures";
 import { mapStates, mapCities } from "../../../common/utils";
@@ -24,15 +25,13 @@ const BasicInfo = ({
   const [location, setLocation] = useState(undefined);
   const [selectedState, setSelectedState] = useState(null);
   const [cities, setCities] = useState([]);
-  const { categories, setSubCategories, selectedSubCategories } =
+  const { tags, categories, setSubCategories, selectedSubCategories } =
     useContext(FiltersContext);
-  console.log(selectedState, "selectedState");
   const { data } = useStateQuery();
 
   const {data: countriesList } = useGetCountriesQuery();
   const {mutate: getCountriesMutation } = useGetCountriesMutation();
   
-  console.log(countriesList, 'countriesLists')
 
   useEffect(() => {
     const states = mapStates(data);
@@ -56,63 +55,55 @@ const BasicInfo = ({
   // ));
 
   return (
+    <>
     <Row gutter={[12, 12]} className="basic-info-ant-row">
-      <Col xs={24} sm={12} md={8} lg={6} xxl={6} xl={6}>
-        <FormInput
-          type="text"
-          name="fullName"
-          label="Full name"
-          value={userDetails?.rest?.fullName}
-          onChange={onChangeRestOptions}
-          required
-        />
-      </Col>
-      <Col xs={24} sm={12} md={8} lg={6} xxl={6} xl={6}>
-        <FormSelect
-          name="category"
-          label="you are"
-          value={userDetails?.rest?.category}
-          onSelect={(id, val) => {
-            console.log(id, val, "aaaaaaaa");
-            setSubCategories(val.id);
-            const data = {
-              ...userDetails,
-              rest: { ...userDetails.rest, category: val.value },
-            };
-            setUserDetails(data);
-          }}
-          options={categories}
-          required
-          showSearch
-          filterOption={(input, option) =>
-            option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
-          }
-        />
-      </Col>
-      <Col xs={24} sm={12} md={8} lg={6} xxl={6} xl={6}>
-        <FormSelect
-          name="subCategory"
-          label="sub-category"
-          value={userDetails?.rest?.subCategory}
-          onSelect={(cat, val) => {
-            const data = {
-              ...userDetails,
-              rest: { ...userDetails.rest, subCategory: val.value },
-            };
-            setUserDetails(data);
-          }}
-          options={selectedSubCategories}
-          showSearch
-          required
-          filterOption={(input, option) =>
-            option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
-          }
-        />
-      </Col>
-      <Col xs={24} sm={12} md={8} lg={6} xxl={6} xl={6}>
+
+    <Col xs={24} sm={12} md={8} lg={6} xxl={6} xl={6}>
+    <FormSelect
+      name="category"
+      label="you are"
+      value={userDetails?.rest?.category}
+      onSelect={(id, val) => {
+        setSubCategories(val.id);
+        const data = {
+          ...userDetails,
+          rest: { ...userDetails.rest, category: val.value },
+        };
+        setUserDetails(data);
+      }}
+      options={categories}
+      required
+      showSearch
+      filterOption={(input, option) =>
+        option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+      }
+    />
+  </Col>
+  <Col xs={24} sm={12} md={8} lg={6} xxl={6} xl={6}>
+    <FormSelect
+      name="subCategory"
+      label="sub-category"
+      value={userDetails?.rest?.subCategory}
+      onSelect={(cat, val) => {
+        const data = {
+          ...userDetails,
+          rest: { ...userDetails.rest, subCategory: val.value },
+        };
+        setUserDetails(data);
+      }}
+      options={selectedSubCategories}
+      showSearch
+      required
+      filterOption={(input, option) =>
+        option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+      }
+    />
+  </Col>
+  <Col xs={24} sm={12} md={8} lg={6} xxl={6} xl={6}>
         <FormSelect
           name="tags"
           label="Tags"
+          mode="tags"
           value={userDetails?.rest?.tags}
           onSelect={(cat, val) => {
             const data = {
@@ -133,10 +124,7 @@ const BasicInfo = ({
               rest: { ...userDetails.rest, tags: tags },
             });
           }}
-          options={[
-            { id: 1, value: "English" },
-            { id: 2, value: "Hindi" },
-          ]}
+          options={tags}
           showSearch
           required
           filterOption={(input, option) =>
@@ -144,44 +132,20 @@ const BasicInfo = ({
           }
           // validationError={formDataErrors.languages}
           width={"100%"}
-          mode="multiple"
         />
       </Col>
+
+    </Row>
+    <Divider></Divider>
+    <Row gutter={[12, 12]} className="basic-info-ant-row">
       <Col xs={24} sm={12} md={8} lg={6} xxl={6} xl={6}>
-        <FormSelect
-          name="bestIn"
-          label="Best in"
-          value={userDetails?.rest?.bestIn}
-          onSelect={(cat, val) => {
-            const data = {
-              ...userDetails,
-              rest: {
-                ...userDetails.rest,
-                bestIn: userDetails?.rest?.bestIn?.length
-                  ? [...userDetails.rest.bestIn, val.value]
-                  : [val.value],
-              },
-            };
-            setUserDetails(data);
-          }}
-          onDeselect={(val) => {
-            const bestIn = userDetails.rest.bestIn.filter(
-              (item) => item !== val
-            );
-            setUserDetails({
-              ...userDetails,
-              rest: { ...userDetails.rest, bestIn: bestIn },
-            });
-          }}
-          options={bestInOptions}
-          showSearch
+        <FormInput
+          type="text"
+          name="fullName"
+          label="Full name"
+          value={userDetails?.rest?.fullName}
+          onChange={onChangeRestOptions}
           required
-          filterOption={(input, option) =>
-            option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
-          }
-          // validationError={formDataErrors.languages}
-          width={"100%"}
-          mode="multiple"
         />
       </Col>
       <Col xs={24} sm={12} md={8} lg={6} xxl={6} xl={6}>
@@ -229,6 +193,78 @@ const BasicInfo = ({
         />
       </Col>
       <Col xs={24} sm={12} md={8} lg={6} xxl={6} xl={6}>
+        <FormSelect
+          name="extraTalent"
+          label="Extra Talent"
+          mode="tags"
+          value={userDetails?.rest?.extraTalent}
+          onSelect={(cat, val) => {
+            const data = {
+              ...userDetails,
+              rest: {
+                ...userDetails.rest,
+                extraTalent: userDetails?.rest?.extraTalent?.length
+                  ? [...userDetails.rest.extraTalent, val.value]
+                  : [val.value],
+              },
+            };
+            setUserDetails(data);
+          }}
+          onDeselect={(val) => {
+            const extraTalent = userDetails.rest.extraTalent.filter((item) => item !== val);
+            setUserDetails({
+              ...userDetails,
+              rest: { ...userDetails.rest, extraTalent: extraTalent },
+            });
+          }}
+          options={extraTalent}
+          showSearch
+          required
+          filterOption={(input, option) =>
+            option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+          }
+          // validationError={formDataErrors.languages}
+          width={"100%"}
+        />
+      </Col>
+      <Col xs={24} sm={12} md={8} lg={6} xxl={6} xl={6}>
+        <FormSelect
+          name="bestIn"
+          label="Best in"
+          mode="tags"
+          value={userDetails?.rest?.bestIn}
+          onSelect={(cat, val) => {
+            const data = {
+              ...userDetails,
+              rest: {
+                ...userDetails.rest,
+                bestIn: userDetails?.rest?.bestIn?.length
+                  ? [...userDetails.rest.bestIn, val.value]
+                  : [val.value],
+              },
+            };
+            setUserDetails(data);
+          }}
+          onDeselect={(val) => {
+            const bestIn = userDetails.rest.bestIn.filter(
+              (item) => item !== val
+            );
+            setUserDetails({
+              ...userDetails,
+              rest: { ...userDetails.rest, bestIn: bestIn },
+            });
+          }}
+          options={bestInOptions}
+          showSearch
+          required
+          filterOption={(input, option) =>
+            option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+          }
+          // validationError={formDataErrors.languages}
+          width={"100%"}
+        />
+      </Col>
+      <Col xs={24} sm={12} md={8} lg={6} xxl={6} xl={6}>
         {/* <FormSelect
             name="languages"
             label="change your language"
@@ -256,10 +292,10 @@ const BasicInfo = ({
           /> */}
         <FormSelect
           name="languages"
+          mode="tags"
           label="change your language"
           value={userDetails?.rest?.languages}
           onSelect={(cat, val) => {
-            console.log("language", val, cat);
             const data = {
               ...userDetails,
               rest: {
@@ -288,7 +324,6 @@ const BasicInfo = ({
           }
           // validationError={formDataErrors.languages}
           width={"100%"}
-          mode="multiple"
         />
       </Col>
       <Col xs={24} sm={12} md={8} lg={6} xxl={6} xl={6}>
@@ -440,6 +475,7 @@ const BasicInfo = ({
             <FormSelect
               name="eyes"
               label="Eyes color"
+              mode="tags"
               value={userDetails?.rest?.eyes}
               onSelect={(cat, val) => {
                 const data = {
@@ -466,6 +502,7 @@ const BasicInfo = ({
             <FormSelect
               name="skin"
               label="Skin color"
+              mode="tags"
               value={userDetails?.rest?.skin}
               onSelect={(cat, val) => {
                 const data = {
@@ -491,6 +528,7 @@ const BasicInfo = ({
             <FormSelect
               name="hair"
               label="Hair color"
+              mode="tags"
               value={userDetails?.rest?.hair}
               // onSelect={(cat, val) => {
               // 	setFormData({...formData, hair: val.children})
@@ -528,6 +566,7 @@ const BasicInfo = ({
         </Button>
       </Col>
     </Row>
+    </>
   );
 };
 

@@ -23,7 +23,6 @@ const InfiniteScrollTwo = () => {
     fetch(`${AWS_URL}/user`)
       .then((res) => res.json())
       .then((body) => {
-        console.log(body, 'bodybodybodybody')
         setTimeout(() => {
         setData([...data, ...body?.users]);
         // setDataLength(body.length)

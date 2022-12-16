@@ -11,7 +11,11 @@ const SubCategoryComponent = ({
   formData,
   setFormData,
   title,
-  name
+  name,
+  onSelect,
+  onClear,
+  options,
+  value
 }) => {
 
   const { data } = useStateQuery();
@@ -30,6 +34,8 @@ const SubCategoryComponent = ({
 			setCities(cities);
 		}
 	},[selectedState])
+
+
 
   const locationFun = () => {
     return (
@@ -75,6 +81,30 @@ const SubCategoryComponent = ({
 						// validationError={formDataErrors.city}
 						width={"100%"}
 					/>
+      </div>
+    );
+  };
+
+  const dropdownSingleFun = () => {
+    return (
+      <div className="location-filter">
+        <FormSelect
+          className="state-search-input"
+          name={name}
+          allowClear={true}
+          placeholder="Select"
+          value={value}
+          onSelect={onSelect}
+          onClear={onClear}
+          options={options}
+          showSearch
+          required
+          filterOption={(input, option) =>
+            option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+          }
+          // validationError={formDataErrors.states}
+          width="100%"
+        />
       </div>
     );
   };
@@ -189,7 +219,6 @@ const SubCategoryComponent = ({
 
 
   const checkboxFun = (title) => {
-    console.log(title === 'Experience', 'title');
     return (
       <GroupCheckbox
         options={subCategoryFilter}
@@ -211,6 +240,7 @@ const SubCategoryComponent = ({
         return experienceFun()
       case "Age" : 
         return ageFun()
+      case "Best In" : return dropdownSingleFun()
       default:
         return checkboxFun(title);
     }
@@ -224,7 +254,6 @@ const SubCategoryComponent = ({
   </Typography.Title
       </div>> */}
       <Divider orientation="left">{title}</Divider>
-
       <div className="filter-container">{renderFilter()}</div>
     </div>
   );

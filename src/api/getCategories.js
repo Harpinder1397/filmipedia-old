@@ -71,6 +71,17 @@ export const updateTagsApi = (id, payload) => {
     });
 };
 
+export const updateFiltersApi = (id, payload) => {
+  const url = `${API_URL}/categories/${id}/filters`;
+  return apiPost(url, payload)
+    .then((res) => {
+      return res;
+    })
+    .catch((error) => {
+      return error;
+    });
+};
+
 
 export const useGetCategoryApiQuery = () => {
   return useQuery(["categories"], [`${API_URL}/categories`], () =>

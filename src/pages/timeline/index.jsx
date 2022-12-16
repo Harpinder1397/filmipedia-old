@@ -46,7 +46,6 @@ const TimeLine = () => {
     .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
   // setAllUsers(timeLineArray);
   // }
-  console.log(timeLineArray, 'timeLineArray')
 
   return (
     <Spin spinning={false}>

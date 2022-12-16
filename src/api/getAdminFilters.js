@@ -60,7 +60,6 @@ export const useCreateFilterMutation = () => {
       //   return { prevUserData };
       // },
       onSuccess: (newUser) => {
-        //  console.log(newUser, 'newUser')
         fetchFiltersList();
         // queryClient.setQueryData(["filters"], newUser);
       },

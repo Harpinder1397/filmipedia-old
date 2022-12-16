@@ -1,21 +1,25 @@
 import React, { useEffect, useState } from "react";
 import { Input, Modal, Form, Spin } from "antd";
 import { DeleteOutlined, EditOutlined, FileAddOutlined } from "@ant-design/icons";
-import { createCategoryApi, deleteCategoryApi, updateCategoryApi, updateSubCategoryApi, updateTagsApi, useFetchCategoryApiQuery, useGetCategoryApiQuery } from "../../api/getCategories";
+import { createCategoryApi, deleteCategoryApi, updateCategoryApi, updateSubCategoryApi, updateTagsApi, updateFiltersApi, useFetchCategoryApiQuery, useGetCategoryApiQuery } from "../../api/getCategories";
 import PopConfirm from "../../common/pop-confirm";
 import EmptyMessage from "../../common/emptyMessage/EmptyMessage";
+import FormSelect from "../../common/inputs/FormSelect";
+import { useFiltersQuery, useUpdateFilterMutation } from "../../api/getAdminFilters";
 
 
 const renderMethod = (payload, title, id) => {
   if (title === 'category') return createCategoryApi(payload);
   if (title === 'Sub-category') return updateSubCategoryApi(id, payload);
   if (title === 'tags') return updateTagsApi(id, payload);
+  if (title === 'filters') return updateFiltersApi(id, payload);
 }
 const AllCategories = () => {
 
   const { data: categories } = useGetCategoryApiQuery();
-  console.log(categories, 'categories')
   const { mutate: getCategories, isLoading } = useFetchCategoryApiQuery();
+  const { data: filtersList } = useFiltersQuery();
+  const { mutate: fetchFilterMutation, isLoading: isLoading2 } = useUpdateFilterMutation();
   const [title, setTitle] = useState('');
   const [isVisible, setIsVisible] = useState(false);
   const [formData, setFormData] = useState({});
@@ -23,7 +27,6 @@ const AllCategories = () => {
   const [isEditOptions, setIsEditOptions] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState(categories?.length && categories[0]);
   // const [isLoading, setIsLoading] = useState(false);
-
 
   const fetchCategoriesList = () => {
     const updateSelectedCategory = categories?.filter((item) => item?._id == selectedCategory?._id)
@@ -45,7 +48,6 @@ const AllCategories = () => {
     }
   }
 
-  console.log(selectedCategory, 'selectedCategory')
 
   const updateCategoryListApi = async(payload) => {
     const res = await updateCategoryApi(formData?._id, payload);
@@ -58,6 +60,7 @@ const AllCategories = () => {
     let payload = {};
     if ( title === 'category' ) {
       payload = {
+        key: formData['category'].toLowerCase().replace(' ', '-'),
         value: formData['category']
       }
     }
@@ -65,7 +68,7 @@ const AllCategories = () => {
       if (isEditOptions) {
         payload = selectedCategory?.childern?.map((item) => 
         item.key === formData.key
-          ? {...item, value: formData[title]}
+          ? {...item, key: formData['Sub-category'].toLowerCase().replace(' ', '-'), value: formData[title]}
           : {...item}
         )
       } else {
@@ -80,13 +83,31 @@ const AllCategories = () => {
       if (isEditOptions) {
         payload = selectedCategory?.tags.map((item) => 
         item.key === formData.key
-          ? {...item, value: formData[title]}
+          ? {...item, key: formData['tags'].toLowerCase().replace(' ', '-'), value: formData[title]}
           : {...item}
         )
       } else {
         payload = [
           ...selectedCategory?.tags,
           {key: formData['tags'].toLowerCase().replace(' ', '-'), _id: new Date().valueOf(), value: formData[title]}
+        ]
+      } 
+    } 
+
+    if (title === 'filters') {
+      if (isEditOptions) {
+        payload = selectedCategory?.filters.map((item) => 
+        item.key === formData.key
+          ? {...item, key: formData['filters'].toLowerCase().replace(' ', '-'), value: formData[title]}
+          : {...item}
+        )
+      } else {
+        const newPayload = formData['filters'].map((item) => {
+          return { key: item.toLowerCase().replace(' ', '-'), value: item}
+        })
+        payload = [
+          ...selectedCategory?.filters,
+          ...newPayload
         ]
       } 
     } 
@@ -110,7 +131,7 @@ const AllCategories = () => {
       setIsEditOptions(false);
       setIsEdit(true);
     }
-    if (type == 'Sub-category' || type == 'tags') {
+    if (type == 'Sub-category' || type == 'tags' || type == 'filters') {
       
       setFormData({...entity, [type]: entity.value})
       setTitle(type);
@@ -154,6 +175,13 @@ const AllCategories = () => {
         fetchCategories();
       }
     }
+    if(type == 'filters') {
+      const updateFilters = selectedCategory?.filters?.filter((item) => item?.key != id)
+      const res = await updateFiltersApi(selectedCategory?._id, updateFilters)
+      if(res){
+        fetchCategories();
+      }
+    }
    
 
   }
@@ -171,6 +199,7 @@ const AllCategories = () => {
   useEffect(() => {
     fetchCategoriesList();
     getCategories();
+    fetchFilterMutation();
   },[]);
 
   return (
@@ -289,6 +318,44 @@ const AllCategories = () => {
           )) : <EmptyMessage /> 
         }
       </div>
+
+      <div className="tags-container filters-container">
+      <div className="title">
+        <div>Filters</div>
+        <FileAddOutlined
+          onClick={() => handleAdd('filters')}
+        />
+      </div>
+      {
+        categories?.find((cat) => cat?._id === selectedCategory?._id)?.filters?.length ? categories?.find((cat) => cat?._id === selectedCategory?._id)?.filters?.map((filter, idx) => (
+          <div className="single-tag">
+            <div className="name-container">
+              <div className="serial-number">
+                {idx + 1}.
+              </div>
+              <div
+                className="cat-name"
+                onClick={() => null}
+              >
+                {filter.value}
+              </div>
+            </div>
+            <div className="action">
+              <EditOutlined onClick={() => handleEdit(filter, 'filters')}/>
+              <PopConfirm
+                title='Are you sure?'
+                onConfirm={() => {
+                  handleDelete(filter?.key, 'filters')
+                }}
+                body={
+                  <DeleteOutlined />
+                }
+              />
+            </div>
+          </div>
+        )) : <EmptyMessage /> 
+      }
+    </div>
       <AddCatContentModal
         isVisible={isVisible}
         handleSave={handleSave}
@@ -297,6 +364,8 @@ const AllCategories = () => {
         formData={formData}
         field={title}
         title={isEdit ? `Edit ${title}` : `Add ${title}`}
+        filtersList={filtersList}
+        isEditOptions={isEditOptions}
       />
     </div>
     </Spin>
@@ -314,7 +383,9 @@ export const AddCatContentModal = (props) => {
     setFormData,
     formData,
     field,
-    title
+    title,
+    filtersList,
+    isEditOptions
   } = props;
 
   return (
@@ -323,14 +394,35 @@ export const AddCatContentModal = (props) => {
       onOk={handleSave}
       onCancel={handleCancel}
       title={title}
+      className="filters-modal-container"
     >
-      <Form.Item label={field}>
-        <Input
-          onChange={(e) => setFormData({...formData, [field]: e.target.value})}
-          value={formData[field]}
+        {field == 'filters' && !isEditOptions ? (
+          <FormSelect
           name={field}
+          label="Filters"
+          mode="tags"
+          value={formData[field]}
+          onChange={(e) => setFormData({...formData, [field]: e})}
+          options={filtersList}
+          showSearch
+          required
+          filterOption={(input, option) =>
+            option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+          }
+          // validationError={formDataErrors.languages}
+          width={"100%"}
         />
-      </Form.Item>
+        ) : (
+          <Form.Item label={field}>
+              <Input
+              onChange={(e) => setFormData({...formData, [field]: e.target.value})}
+              value={formData[field]}
+              name={field}
+            />
+          </Form.Item>
+        )
+      }
+       
     </Modal>
   )
 }

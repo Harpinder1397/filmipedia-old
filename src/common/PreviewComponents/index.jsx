@@ -13,7 +13,6 @@ const PreviewComponents = (props) => {
 
 
     const checkFileType = (type) => {
-      console.log("pdf, '''")
         const fileTypeKey = type.split('.');
         const typeString = fileTypeKey[fileTypeKey.length - 1]
         const validImageTypes = ['pdf'];

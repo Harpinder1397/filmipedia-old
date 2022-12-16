@@ -53,7 +53,6 @@ const InfiniteScrollCard = ({formData, userNameMutation}) => {
     
   };
 
-  console.log(dataAdd, 'dataAdddataAdddataAdd')
 
   useEffect(() => {
     fetchMoreData();

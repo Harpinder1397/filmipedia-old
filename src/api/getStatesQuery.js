@@ -31,7 +31,6 @@ export const useUpdateStateMutation = () => {
       //   return { prevUserData };
       // },
       onSuccess: (newUser) => {
-        console.log(newUser, "newUser");
         queryClient.setQueryData(["states"], newUser);
       },
       onError: (error, payload, { prevUserData }) => {

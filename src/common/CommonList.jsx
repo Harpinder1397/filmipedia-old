@@ -52,8 +52,6 @@ export default function CommonList({ users, isFav, isLoading }) {
     removeFromFavouritesApi(payload);
   }
 
-  console.log(users, 'users');
-
   useEffect(() => {
     getFavList()
   }, []);

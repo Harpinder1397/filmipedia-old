@@ -22,7 +22,8 @@ const FormSelect = ({
 	onClear = () => { },
 	className,
 	allowClear,
-	showFilterValue
+	showFilterValue,
+	defaultValue
 }) => {
 
 	return (
@@ -40,7 +41,7 @@ const FormSelect = ({
 			}
 
 			<div className="input-field-container" >
-				<Select
+				 <Select
 					name={name}
 					placeholder={placeholder}
 					value={value}

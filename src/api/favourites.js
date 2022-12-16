@@ -17,7 +17,6 @@ export const useGetMyFavouritesQuery = () => {
     apiGet(`${API_URL}/favourites/${userId}`),
    {
       onSuccess: (newUser) => {
-        //  console.log(newUser, 'newUser')
         queryClient.setQueryData(["MyFavourites"], newUser);
       },
       onError: (error, payload, { prevUserData }) => {

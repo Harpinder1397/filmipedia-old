@@ -38,8 +38,6 @@ const MyJobs = () => {
 
   const mainLoader = loading1 || loading2 || loading3 || loading4 || loading5
 
- 
-  console.log(allJobApplicationsList, 'allJobApplicationsList')
 
   const showModal = () => {
     setModalTitle("Add");
@@ -155,7 +153,6 @@ const MyJobs = () => {
     getAllApplicationsMutation();
   }, []);
 
-  console.log(jobApplicationsList, 'jobApplicationsList')
 
   return (
     <Spin spinning={mainLoader}>
@@ -262,7 +259,6 @@ const MyJobs = () => {
             placeholder={formData?.postedTill}
             onChange={(e, value) => {
               setFormData({...formData, postedTill: e?._d})
-              console.log(e, 'e?._d')
             }}
           />*/}
           <FormInput

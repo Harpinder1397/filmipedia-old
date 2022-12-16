@@ -12,7 +12,6 @@ const MyImages = ({
   files
 }) => {
 
-  console.log('files', files);
   return (
     <>
      <Row justify="center">

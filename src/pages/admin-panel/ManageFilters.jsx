@@ -20,8 +20,8 @@ const ManageFilters = ({states }) => {
   const { mutate: fetchFilterMutation, isLoading: isLoading2 } = useUpdateFilterMutation();
   const { mutate: deleteFilterMutation, isLoading : isLoading3 } = useDeleteFilterMutation();
   const { mutate: updateFilterMutation, isLoading : isLoading4 } = UpdateFilterMutation();
-  const { mutate: createFilterMutation, isLoading , isError} = useCreateFilterMutation();
-    console.log(formData, 'formData')
+  const { mutate: createFilterMutation, isLoading } = useCreateFilterMutation();
+    // console.log(error, error?.message, 'errorerrorerror')
   // States Table Columns
   const stateCol = [
     {

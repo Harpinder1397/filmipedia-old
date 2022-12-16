@@ -15,7 +15,6 @@ const ManageUsers = ({states }) => {
   const { data: userList } = useUserQuery();
   const {mutate: fetchserNameMutation, isLoading} = useUpdateUserNameMutation()
   const history = useHistory();
-  console.log(userList, 'userList')
 
   const onShowSizeChange = (page, limit) => {
     const payload = {

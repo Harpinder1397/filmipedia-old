@@ -5,7 +5,6 @@ import EmptyMessage from '../../../common/emptyMessage/EmptyMessage';
 const { Text, Link } = Typography;
 
 const Links = ({projects}) => {
-    console.log(projects, 'projects')
     return (
   <div className='links-container'>
     {/*<Link href="https://ant.design" target="_blank">
