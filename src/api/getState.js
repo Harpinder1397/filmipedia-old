@@ -1,19 +1,20 @@
 import { useMutation, useQuery, useQueryClient } from "react-query";
 import { apiGet } from "../utils/api";
 import { AWS_URL } from '../../env.json';
+import qs from "query-string";
 
 const API_URL =
  AWS_URL
 
-export const useGetCountriesQuery = () => {
-  return useQuery(["country"], [`${API_URL}/country`], () =>
-    apiGet(`${API_URL}/country`)
+export const useGetStateQuery = () => {
+  return useQuery(["state"], [`${API_URL}/state`], () =>
+    apiGet(`${API_URL}/state`)
    )}
  
-export const useGetCountriesMutation = () => {
+export const useGetStateMutation = () => {
   const queryClient = useQueryClient();
-  return useMutation([`${API_URL}/country`],() =>
-    apiGet(`${API_URL}/country`),
+  return useMutation([`${API_URL}/state`],(payload) =>
+    apiGet(`${API_URL}/state?${qs.stringify(payload)}`),
     {
     // onMutate: async () => {
     //   await queryClient.cancelQueries("user");
@@ -27,10 +28,10 @@ export const useGetCountriesMutation = () => {
     //   return { prevUserData };
     // },
     onSuccess: (newUser) => {
-      queryClient.setQueryData(["country"], newUser);
+      queryClient.setQueryData(["state"], newUser);
     },
     onError: (error, payload, { prevUserData }) => {
-      queryClient.setQueryData(["country"], prevUserData);
+      queryClient.setQueryData(["state"], prevUserData);
     },
   });
 };

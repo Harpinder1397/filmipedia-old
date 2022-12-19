@@ -138,8 +138,8 @@ const SignIn = (props) => {
         <Input.Group compact>
         <Select value={selectCountry} onChange={(e) => setSelectCountry(e)}>
           {
-            countriesList?.map((item) => {
-             return <Option key={item?._id} value={item?.phone_code}>{item?.phone_code}</Option>
+            countriesList?.data?.map((item, idx) => {
+             return <Option key={idx} value={`+${item?.calling_codes[0]}`}>{`${item?.emoji} +${item?.calling_codes[0]}`}</Option>
               
             })
           }

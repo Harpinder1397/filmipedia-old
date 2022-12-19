@@ -14,6 +14,7 @@ import { useState, useContext, useEffect } from "react";
 import "./basicInfoStyle.less";
 import { useStateQuery } from "../../../api/getStatesQuery";
 import { useGetCountriesQuery, useGetCountriesMutation } from "../../../api/getCountries";
+import { useGetStateMutation, useGetStateQuery } from "../../../api/getState";
 
 const BasicInfo = ({
   userDetails,
@@ -30,14 +31,21 @@ const BasicInfo = ({
   const { data } = useStateQuery();
 
   const {data: countriesList } = useGetCountriesQuery();
+  const {data: statesList } = useGetStateQuery();
   const {mutate: getCountriesMutation } = useGetCountriesMutation();
+  const {mutate: getStateMutation } = useGetStateMutation();
   
+console.log(statesList?.data?.subdivision, 'statesList.subdivision.name')
+  useEffect(() => {
+    const states = mapStates(data);
+    setLocation(states);
+  }, [data]);
 
   useEffect(() => {
     const states = mapStates(data);
     setLocation(states);
     getCountriesMutation();
-  }, [data]);
+  }, []);
 
   useEffect(() => {
     if (selectedState) {
@@ -67,7 +75,7 @@ const BasicInfo = ({
         setSubCategories(val.id);
         const data = {
           ...userDetails,
-          rest: { ...userDetails.rest, category: val.value },
+          rest: { ...userDetails.rest, category: val.value, subCategory: '', tags: []},
         };
         setUserDetails(data);
       }}
@@ -345,18 +353,26 @@ const BasicInfo = ({
         value={userDetails?.rest?.country}
         onSelect={(cat, val) => {
           setSelectedState(val.value);
+          const payload = {
+            country: val?.code
+          }
           const data = {
             ...userDetails,
-            rest: { ...userDetails.rest, country: val.value},
+            rest: { ...userDetails.rest, country: val.value, state: "", city: ""},
           };
           setUserDetails(data);
+          getStateMutation(payload);
         }}
         options={
-          countriesList &&
-          countriesList.map((item, idx) => {
+          countriesList?.data &&
+          countriesList?.data?.map((item, idx) => {
+            const list = `${item?.emoji} ${item?.value}`
             return {
+              _id: idx,
               id: idx,
-              value: item?.country_name,
+              key: idx,
+              code: item.key,
+              value: list 
             };
           })
         }
@@ -383,11 +399,10 @@ const BasicInfo = ({
             setUserDetails(data);
           }}
           options={
-            location &&
-            Object.keys(location).map((item, idx) => {
+            statesList?.data?.subdivision?.map((item, idx) => {
               return {
-                id: idx,
-                value: item,
+                _id: idx,
+                value: item?.name,
               };
             })
           }

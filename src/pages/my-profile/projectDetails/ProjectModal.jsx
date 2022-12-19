@@ -65,7 +65,7 @@ const ProjectModal = (props) => {
         <Col span={24}>
           <FormInput
             type="text"
-            addonBefore={'https://'}
+            // addonBefore={'https://'}
             name={'links'}
             label={'Add Suitable link'}
             value={createProject?.links}

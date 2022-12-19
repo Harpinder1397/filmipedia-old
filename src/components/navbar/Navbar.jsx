@@ -29,6 +29,7 @@ const Navbar = ({setIsloading}) => {
   const [tags, setTags] = useState([]);
   const [activeTag, setActiveTag] = useState('');
   const [subCategoriesList, setSubCategoriesList] = useState([]);
+  const databasePath = location.pathname == '/database' 
   const userType  = localStorage.getItem("userType");
   const {
     categories,
@@ -83,6 +84,9 @@ const Navbar = ({setIsloading}) => {
         if(!formData[key])
           delete formData[key]
       });
+      if(formData?.category || formData?.subCategory || formData?.tags && !databasePath) {
+        history.push("/database");
+      }
       userNameMutation(payload);
   }, [formData?.category, formData?.subCategory, formData?.tags])
 
@@ -93,11 +97,13 @@ const Navbar = ({setIsloading}) => {
           if(!formData[key])
             delete formData[key]
         });
+        if(formData?.fullName && !databasePath){
+          history.push("/database");
+        }
         userNameMutation(payload);
     }, 1000);
     return () => clearTimeout(timeOutId);
   }, [formData?.fullName]);
-
   
 
   const userMenu = [

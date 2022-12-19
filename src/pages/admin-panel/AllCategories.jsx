@@ -137,7 +137,7 @@ const AllCategories = () => {
       setTitle(type);
       setIsEditOptions(true);
       // setIsVisible(true);
-      setIsEdit(false);
+      setIsEdit(true);
     }
     // setFormData({...entity, 'category': entity.value})
     setTitle(type);

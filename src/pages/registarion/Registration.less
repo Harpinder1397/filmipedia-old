@@ -5,8 +5,7 @@
     // border-radius: 20px;
     // margin: 80px auto;
     height: 100vh;
-    background: rgba(0,0,0, 0.4);
-    border: 1px solid white;
+    background: var(--login-modal-background)!important;
     display: flex;
     .guidance-container {
         width: 50%;
@@ -46,7 +45,8 @@
         .ant-input-number {
             width: 100%;
             border-radius: 4px;
-            background: #CCCAC4 !important;
+            border-color: var(--border-color);
+            background: var(--input-field-color) !important;
             .ant-input-number-handler-wrap {
                 display: none;
             }
@@ -55,9 +55,13 @@
             height: 36px!important;
             border-radius: 4px;
         }
+        .ant-input-number-input {
+            height: 34px!important;
+            border-radius: 4px;
+        }
         .ant-input-password {
             height: 36px !important;
-            background: #CCCAC4 !important;
+            background: var(--input-field-color) !important;
             .ant-input {
                 height: unset !important;
             }
@@ -77,21 +81,21 @@
     .form-container {
         width: 500px;
         padding: 24px;
-        box-shadow: grey 0px 4px 10px, grey 0px 2px 11px;
+        box-shadow: #00000059 0 5px 15px;
         border-radius: 4px;
         .ant-input-group {
             display: flex;
             .ant-select-selector {
-                height: 42px;
+                height: 36px;
                 width: 90px;
-                border-radius: 8px 0 0 8px !important;
+                border-radius: 4px 0 0 4px !important;
             }
             .ant-select-selection-item {
-                line-height: 40px !important;
+                line-height: 36px !important;
             }
         }
         .ant-input-number {
-            border-radius: 0 8px 8px 0 !important;
+            border-radius: 0 4px 4px 0 !important;
         }
     }
 }

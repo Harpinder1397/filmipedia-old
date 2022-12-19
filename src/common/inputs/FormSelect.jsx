@@ -67,7 +67,7 @@ const FormSelect = ({
 									: null
 									
 							}else {
-								return ( <Option key={option?._id} id={option?._id} value={option?.value}>
+								return ( <Option key={option?._id} code={option.code} id={option?._id} value={option?.value}>
 									{option?.value}
 								</Option>
 							)}
