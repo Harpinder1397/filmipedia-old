@@ -6,14 +6,14 @@ const API_URL =
  AWS_URL
 
 export const useGetCountriesQuery = () => {
-  return useQuery(["country"], [`${API_URL}/country`], () =>
-    apiGet(`${API_URL}/country`)
+  return useQuery(["country"], [`${API_URL}/dictionary/countries`], () =>
+    apiGet(`${API_URL}/dictionary/countries`)
    )}
  
 export const useGetCountriesMutation = () => {
   const queryClient = useQueryClient();
-  return useMutation([`${API_URL}/country`],() =>
-    apiGet(`${API_URL}/country`),
+  return useMutation([`${API_URL}/dictionary/countries`],() =>
+    apiGet(`${API_URL}/dictionary/countries`),
     {
     // onMutate: async () => {
     //   await queryClient.cancelQueries("user");
