@@ -11,6 +11,7 @@ import {
 } from '@ant-design/icons';
 import { Button, Menu } from 'antd';
 import { useHistory } from 'react-router-dom';
+import FormSelect from '../../common/inputs/FormSelect';
 function getItem(label, key, icon, children, type) {
   return {
     key,
@@ -65,6 +66,60 @@ const MobileNavbar = ({collapsed, setCollapsed, handleOnClick}) => {
       }}
       className="mobile-navbar-container"
     >
+       {/*<div className='input-field-mobile-screen'>
+      <div className="d-flex">
+     <FormSelect
+        allowClear={true}
+        showSearch
+        placeholder="Please select"
+        className="navbar__category-selector"
+        // onSelect={(id, val) => {
+        //   const getSubCategories = categories.filter(
+        //     (item) => item._id == val.id
+        //   );
+        //   setSubCategoriesList(getSubCategories[0].childern);
+        //   setSubCategories(val.id);
+        //   // HandlenewChnage()
+        //   setFormData({
+        //     ...formData,
+        //     category: val.value,
+        //     subCategory: "",
+        //     tags: ''
+        //   });
+        //   setTags(getSubCategories[0].tags)
+        // }}
+        // onClear={() => {
+        //   setFormData({ ...formData, category: "", subCategory: "" });
+        //   setSubCategories("");
+        //   setSubCategoriesList([])
+        //   setTags([]);
+        // }}
+        // options={categories}
+        // filterOption={(input, option) =>
+        //   option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+        // }
+        // value={formData?.category}
+      />
+      <FormSelect
+        allowClear={true}
+        showSearch
+        placeholder="Please select"
+        className="navbar__tag-selector"
+        // onSelect={(id, val) => {
+        //   // selectedSubCategories(id);
+        //   // setSubCategory(val.key)
+        //   setFormData({ ...formData, subCategory: val.value });
+        // }}
+        // onClear={() => setFormData({ ...formData, subCategory: "" })}
+        // options={subCategoriesList}
+        // filterOption={(input, option) =>
+        //   option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+        // }
+        // // width={'50%'}
+        // value={formData?.subCategory}
+      />
+    </div>
+      </div>*/}
       <Button
         type="primary"
         className='menu-icon-button'

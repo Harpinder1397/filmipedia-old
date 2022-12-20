@@ -1,19 +1,31 @@
 import React, { useState, useEffect, useContext } from "react";
-import 'react-calendar/dist/Calendar.css';
+import "react-calendar/dist/Calendar.css";
 import SubCategoryComponent from "../sub-categories/SubCategories";
 import CommonList from "../../common/CommonList";
-import banner from '../../assets/images/banner.png';
-import { useUpdateUserNameMutation,  } from "../../api/user";
+import banner from "../../assets/images/banner.png";
+import { useUpdateUserNameMutation } from "../../api/user";
 import FilterMenu from "./FilterMenu";
-import { Spin } from "antd";
+import { Spin, Collapse } from "antd";
 import CommonPagination from "../../common/pagination/CommonPagination";
-import { languageFilter, genderFilter, experienceFilter, ageFilter, bestInOptions } from "../../constant/common";
+import {
+  languageFilter,
+  skinColors,
+  hairColors,
+  eyeColors,
+  extraTalent,
+  genderFilter,
+  languageOptions,
+  experienceFilter,
+  ageFilter,
+  bestInOptions,
+} from "../../constant/common";
 
 import { FiltersContext } from "../../App";
+const { Panel } = Collapse;
 
 const CommonDataBaseList = ({ allUsers, isFav, loading }) => {
-	const [formData, setFormData] = useState({});
-	const [isloading, setIsloading] = useState(false);
+  const [formData, setFormData] = useState({});
+  const [isloading, setIsloading] = useState(false);
   const { filters } = useContext(FiltersContext);
   const { mutate: userNameMutation, isLoading } = useUpdateUserNameMutation();
   const onShowSizeChange = (page, limit) => {
@@ -22,137 +34,256 @@ const CommonDataBaseList = ({ allUsers, isFav, loading }) => {
       page: page,
       // limit: limit
     };
-    Object.keys(formData).forEach(key => {
-      if(!formData[key])
-        delete formData[key]
+    Object.keys(formData).forEach((key) => {
+      if (!formData[key]) delete formData[key];
     });
-    userNameMutation(payload)
-  }
+    userNameMutation(payload);
+  };
 
   useEffect(() => {
     const payload = formData;
-    Object.keys(formData).forEach(key => {
-      if(!formData[key])
-        delete formData[key]
+    Object.keys(formData).forEach((key) => {
+      if (!formData[key]) delete formData[key];
     });
-    userNameMutation(payload)
-  }, [formData])
+    userNameMutation(payload);
+  }, [formData]);
 
   const renderLeftSideFilter = () => {
     return (
-<>
-        <SubCategoryComponent
-          title='Experience'
-          name='experience'
-          subCategoryFilter={experienceFilter}
-          formData={formData}
-          setFormData={setFormData}
-        />
-        <SubCategoryComponent
-          title='Age'
-          name='age'
-          subCategoryFilter={ageFilter}
-          formData={formData}
-          setFormData={setFormData}
-        />
-        <SubCategoryComponent
-          title='Gender'
-          name='gender'
-          subCategoryFilter={genderFilter}
-          formData={formData}
-          setFormData={setFormData}
-        />
-    </>
-    )
-      
-    }
+      <>
+        <Collapse defaultActiveKey={[""]}>
+          <Panel header="Experience" key="1">
+            <SubCategoryComponent
+              title="Experience"
+              name="experience"
+              options={experienceFilter}
+              formData={formData}
+              setFormData={setFormData}
+            />
+          </Panel>
+        </Collapse>
+
+        <Collapse defaultActiveKey={[""]}>
+          <Panel header="Age" key="2">
+            <SubCategoryComponent
+              title="Age"
+              name="age"
+              options={ageFilter}
+              formData={formData}
+              setFormData={setFormData}
+            />
+          </Panel>
+        </Collapse>
+
+        <Collapse defaultActiveKey={[""]}>
+          <Panel header="Gender" key="3">
+            <SubCategoryComponent
+              title="Gender"
+              name="gender"
+              options={genderFilter}
+              formData={formData}
+              setFormData={setFormData}
+            />
+          </Panel>
+        </Collapse>
+      </>
+    );
+  };
 
   const renderFilterComponent = (key) => {
+    console.log(key, "keykey");
     switch (key) {
-      case 'experience':
+      case "experience":
         return (
           <SubCategoryComponent
-            title='Experience'
-            name='experience'
-            subCategoryFilter={experienceFilter}
+            title="Experience"
+            name="experience"
+            options={experienceFilter}
             formData={formData}
             setFormData={setFormData}
           />
-      );
-      case 'location':
+        );
+      case "location":
         return (
           <SubCategoryComponent
-            title='Location'
-            name='location'
-            subCategoryFilter={ageFilter}
+            title="Location"
+            name="location"
+            options={ageFilter}
             formData={formData}
             setFormData={setFormData}
           />
-      );
-      case 'gender':
+        );
+      case "gender":
         return (
           <SubCategoryComponent
-          title='Gender'
-          name='gender'
-          subCategoryFilter={genderFilter}
-          formData={formData}
-          setFormData={setFormData}
-        />
-      );
-      case 'age':
-        return (
-          <SubCategoryComponent
-            title='Age'
-            name='age'
-            subCategoryFilter={ageFilter}
+            title="Gender"
+            name="gender"
+            options={genderFilter}
             formData={formData}
             setFormData={setFormData}
           />
-      );
-      case 'language':
+        );
+      case "age":
         return (
           <SubCategoryComponent
-          title='Language'
-          name='languages'
-          subCategoryFilter={languageFilter}
-          formData={formData}
-          setFormData={setFormData}
-        />
-      );
-      case 'best-in':
+            title="Age"
+            name="age"
+            options={ageFilter}
+            formData={formData}
+            setFormData={setFormData}
+          />
+        );
+      case "weight":
         return (
           <SubCategoryComponent
-            title='Best In'
-            name='bestIn'
+            title="Weight"
+            name="weight"
+            options={ageFilter}
+            formData={formData}
+            setFormData={setFormData}
+          />
+        );
+      case "height":
+        return (
+          <SubCategoryComponent
+            title="Height"
+            name="height"
+            options={ageFilter}
+            formData={formData}
+            setFormData={setFormData}
+          />
+        );
+      case "budget":
+        return (
+          <SubCategoryComponent
+            title="Budget"
+            name="budget"
+            options={ageFilter}
+            formData={formData}
+            setFormData={setFormData}
+          />
+        );
+      case "language":
+        return (
+          <SubCategoryComponent
+            title="Language"
+            name="languages"
+            options={languageFilter}
+            formData={formData}
+            setFormData={setFormData}
+          />
+        );
+      case "best-in":
+        return (
+          <SubCategoryComponent
+            title="Best In"
+            name="bestIn"
             value={formData?.bestIn}
             formData={formData}
             setFormData={setFormData}
             onSelect={(cat, val) => {
               // console.log(val, cat, 'val')
-              setFormData({...formData, bestIn: val.value})
+              setFormData({ ...formData, bestIn: val.value });
             }}
-            onClear={() => setFormData({...formData, bestIn: ''})}
+            onClear={() => setFormData({ ...formData, bestIn: "" })}
             options={bestInOptions}
           />
         );
-      default:  return null
+      case "extra-talent":
+        return (
+          <SubCategoryComponent
+            title="Extra Talent"
+            name="extraTalent"
+            value={formData?.extraTalent}
+            formData={formData}
+            setFormData={setFormData}
+            onSelect={(cat, val) => {
+              // console.log(val, cat, 'val')
+              setFormData({ ...formData, extraTalent: val.value });
+            }}
+            onClear={() => setFormData({ ...formData, extraTalent: "" })}
+            options={extraTalent}
+          />
+        );
+      case "eye-color":
+        return (
+          <SubCategoryComponent
+            title="Eye Color"
+            name="eyeColor"
+            value={formData?.eyeColor}
+            formData={formData}
+            setFormData={setFormData}
+            onSelect={(cat, val) => {
+              // console.log(val, cat, 'val')
+              setFormData({ ...formData, eyeColor: val.value });
+            }}
+            onClear={() => setFormData({ ...formData, eyeColor: "" })}
+            options={eyeColors}
+          />
+        );
+      case "hair-color":
+        return (
+          <SubCategoryComponent
+            title="Hair Color"
+            name="hairColor"
+            value={formData?.hairColor}
+            formData={formData}
+            setFormData={setFormData}
+            onSelect={(cat, val) => {
+              // console.log(val, cat, 'val')
+              setFormData({ ...formData, hairColor: val.value });
+            }}
+            onClear={() => setFormData({ ...formData, hairColor: "" })}
+            options={hairColors}
+          />
+        );
+      case "skin-tone":
+        return (
+          <SubCategoryComponent
+            title="Skin Tone"
+            name="skinTone"
+            value={formData?.skinTone}
+            formData={formData}
+            setFormData={setFormData}
+            onSelect={(cat, val) => {
+              // console.log(val, cat, 'val')
+              setFormData({ ...formData, skinTone: val.value });
+            }}
+            onClear={() => setFormData({ ...formData, skinTone: "" })}
+            options={skinColors}
+          />
+        );
+      default:
+        return null;
     }
-  }
+  };
+
+  const renderConditionFilter = () => {
+    return filters?.length
+      ? filters.map((item, idx) => {
+          return (
+            <>
+              <Collapse defaultActiveKey={[""]}>
+                <Panel header={item.value} key={idx}>
+                  {renderFilterComponent(item.key)}
+                </Panel>
+              </Collapse>
+            </>
+          );
+        })
+      : renderLeftSideFilter();
+  };
+
   return (
     <div className="list-con">
-      <div className='left-side-bar'>
-        {
-          filters?.length ? filters.map((item) => {
-            return renderFilterComponent(item.key)
-          }) : (
-            renderLeftSideFilter()
-          )
-        }
-      </div>
+      <div className="left-side-bar">{renderConditionFilter()}</div>
 
       <div className="database-right-side-section">
-      <FilterMenu renderLeftSideFilter={renderLeftSideFilter} setIsloading={setIsloading} />
-        <div className='database-container'>
+        <FilterMenu
+          renderLeftSideFilter={renderConditionFilter}
+          setIsloading={setIsloading}
+        />
+        <div className="database-container">
           <CommonList
             users={allUsers?.users || allUsers}
             isFav={isFav}
@@ -160,16 +291,22 @@ const CommonDataBaseList = ({ allUsers, isFav, loading }) => {
           />
           {/*<InfiniteScrollCard formData={formData} userNameMutation={userNameMutation} />*/}
           <div className="pagination-section">
-         {allUsers?.total >= 9 && allUsers?.users?.length >= 9 && <CommonPagination total={allUsers?.total} current={allUsers?.users?.length} onShowSizeChange={onShowSizeChange}/>}
+            {allUsers?.total >= 9 && allUsers?.users?.length >= 9 && (
+              <CommonPagination
+                total={allUsers?.total}
+                current={allUsers?.users?.length}
+                onShowSizeChange={onShowSizeChange}
+              />
+            )}
           </div>
         </div>
 
-        <div className='banner-container'>
-          <img src={banner} alt="ad" width={'100%'}/>
+        <div className="banner-container">
+          <img src={banner} alt="ad" width={"100%"} />
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
 export default CommonDataBaseList;

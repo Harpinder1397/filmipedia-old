@@ -159,10 +159,6 @@
           }
         }
       }
-
-      .filters-container {
-        border-left: 1px solid var(--border-color);
-      }
     }
   }
 }
@@ -235,6 +231,10 @@
   }
 }
 
+.filters-container {
+  border-left: 1px solid var(--border-color);
+}
+
 
 @media screen and (max-width: 456px) {
   .admin-panel {
@@ -262,11 +262,15 @@
       width: 100% !important;
       min-height: unset !important;
     }
+    .filters-container {
+      border-left: none;
+      border-top: 1px solid var(--border-color);
+    }
     .sub-category-container {
       border-right: none !important;
       border-left: none !important;
-      border-top: 1px solid black !important;
-      border-bottom: 1px solid black !important;
+      border-top: 1px solid var(--border-color) !important;
+      border-bottom: 1px solid var(--border-color) !important;
     }
   }
   .side-bar {

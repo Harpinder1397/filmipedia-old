@@ -195,6 +195,24 @@ span.icon-label {
   // height: 100vh;
   left: 0;
   overflow-y: scroll;
+  .ant-collapse {
+    background: var(--background-color);
+    border-color: var(--border-color);
+  }
+  .ant-collapse-content {
+    border-color: var(--border-color);
+  }
+  .ant-collapse-item {
+    border: none !important;
+  }
+  .ant-collapse-content-box {
+    padding: 0 !important;
+  }
+  .ant-collapse:last-child  {
+    .ant-collapse-item {
+      border-bottom: 1px solid var(--border-color) !important;
+    }
+  }
 }
 
 .left-side-bar {

@@ -1,6 +1,9 @@
 .filter-menu-container {
     display: none !important;
 }
+// .basic-left-dashboard-drawer {
+//     display: none !important;
+// }
 
 @media screen and (max-width: 456px) {
 .filter-menu-container {
@@ -12,10 +15,23 @@
     }
 }
 
+// .basic-left-dashboard-drawer{
+//     display: block !important;
+// }
+
 .button-menu-filter {
     margin: 0 0 14px auto !important;
 }
 .basic-left-dashboard-drawer {
+    .ant-drawer-title {
+        color: var(--font-color) !important;
+    }
+    .ant-drawer-content {
+        background-color: var(--background-color);
+    }
+    .ant-drawer-header {
+        border-color: var(--border-color);
+    }
     .ant-drawer-header-title {
         display: flex !important;
         flex-direction: row-reverse !important;
@@ -23,9 +39,39 @@
             margin: 0 !important;
             padding: 0 !important;
         }
+        .anticon-close {
+            svg {
+                fill: var(--font-color);
+            }
+        }
     }
     .ant-drawer-body {
         padding: 0 !important;
+        .sub-categories-container {
+            .ant-divider-inner-text {
+                color: var(--font-color) !important;
+            }
+            .ant-select-selector {
+                border-color: var(--input-border-color) !important;
+                background-color: var(--input-field-color) !important;
+                color: var(--font-color) !important;
+            }
+            .ant-checkbox-wrapper {
+                .ant-checkbox {
+                    color: var(--font-color) !important;
+                    .ant-checkbox-inner {
+                        background-color: var(--input-field-color) !important;
+                        border-color: var(--input-border-color) !important;
+                    }
+                }
+                span {
+                    color: var(--font-color) !important;
+                }
+            }
+        }
+        .ant-select-selection-placeholder {
+            color: var(--font-color) !important;
+        }
     }
     .ant-drawer-content-wrapper {
         width: 280px !important;

@@ -240,10 +240,25 @@
     right: 20px !important;
   }
   .mobile-navbar-container {
-    display: unset !important;
+    display: flex !important;
     .ant-menu {
       margin-top: 63px !important;
       text-align: center !important;
+      background: var(--background-color) !important;
+      border: 1px solid var(--border-color) !important;
+      .ant-menu-item {
+        border-top: 1px solid var(--border-color) !important;
+      }
+      .ant-menu-item:first-child {
+        border: none !important;
+      }
     }
   }
+  .navbar__tags-container {
+    margin-top: 60px;
+  }
+  .input-field-mobile-screen {
+    margin-top: 30px;
+    margin-right: 20px;
+  } 
 }

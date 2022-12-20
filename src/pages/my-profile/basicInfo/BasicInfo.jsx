@@ -4,11 +4,11 @@ import FormSelect from "../../../common/inputs/FormSelect";
 import { bestInOptions, genderOptions, languageOptions } from "../../../constant/common";
 import { FiltersContext } from "../../../App";
 import {
+  extraTalent,
   eyeColors,
   hairColors,
-  extraTalent,
   skinColors,
-} from "../../../constant/artistsFeatures";
+} from "../../../constant/common"
 import { mapStates, mapCities } from "../../../common/utils";
 import { useState, useContext, useEffect } from "react";
 import "./basicInfoStyle.less";
@@ -490,7 +490,7 @@ console.log(statesList?.data?.subdivision, 'statesList.subdivision.name')
             <FormSelect
               name="eyes"
               label="Eyes color"
-              mode="tags"
+              // mode="tags"
               value={userDetails?.rest?.eyes}
               onSelect={(cat, val) => {
                 const data = {
@@ -517,7 +517,7 @@ console.log(statesList?.data?.subdivision, 'statesList.subdivision.name')
             <FormSelect
               name="skin"
               label="Skin color"
-              mode="tags"
+              // mode="tags"
               value={userDetails?.rest?.skin}
               onSelect={(cat, val) => {
                 const data = {
@@ -543,7 +543,7 @@ console.log(statesList?.data?.subdivision, 'statesList.subdivision.name')
             <FormSelect
               name="hair"
               label="Hair color"
-              mode="tags"
+              // mode="tags"
               value={userDetails?.rest?.hair}
               // onSelect={(cat, val) => {
               // 	setFormData({...formData, hair: val.children})
