@@ -76,6 +76,17 @@ export const eyeColors = [
   },
 ]
 
+export const availableOptions = [
+  {
+    id: 1,
+    value: 'Available' 
+  },
+  {
+    id: 2,
+    value: 'Not Available' 
+  }
+]
+
 export const hairColors = [
   {
     id: 1,

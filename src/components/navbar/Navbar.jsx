@@ -17,6 +17,7 @@ import { FiltersContext } from "../../App";
 import FormSelect from "../../common/inputs/FormSelect";
 import { useUpdateUserNameMutation } from "../../api/user";
 import MobileNavbar from "./MobileNavbar";
+import { CloseCircleOutlined } from "@ant-design/icons";
 
 const Navbar = ({setIsloading}) => {
   const history = useHistory();
@@ -268,10 +269,10 @@ const Navbar = ({setIsloading}) => {
               placeholder="Please select"
               className="navbar__category-selector"
               onSelect={(id, val) => {
-                const getSubCategories = categories.filter(
+                const getSubCategories = categories.find(
                   (item) => item._id == val.id
                 );
-                setSubCategoriesList(getSubCategories[0].childern);
+                setSubCategoriesList(getSubCategories?.childern);
                 setSubCategories(val.id);
                 // HandlenewChnage()
                 setFormData({
@@ -280,14 +281,14 @@ const Navbar = ({setIsloading}) => {
                   subCategory: "",
                   tags: ''
                 });
-                setTags(getSubCategories[0].tags)
+                setTags(getSubCategories?.tags)
               }}
-              onClear={() => {
-                setFormData({ ...formData, category: "", subCategory: "" });
-                setSubCategories("");
-                setSubCategoriesList([])
-                setTags([]);
-              }}
+              // onClear={() => {
+              //   setFormData({ ...formData, category: "", subCategory: "" });
+              //   setSubCategories("");
+              //   setSubCategoriesList([])
+              //   setTags([]);
+              // }}
               options={categories}
               filterOption={(input, option) =>
                 option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
@@ -334,6 +335,7 @@ const Navbar = ({setIsloading}) => {
       </Row>
       {tags?.length ? (
         <Row className="navbar__tags-container">
+          <div className="tag-list">
           {tags?.map((tag) => (
             <div
               className={`nav-subBar ${tag.value == activeTag && "active-navbar-subBar"}`}
@@ -345,6 +347,11 @@ const Navbar = ({setIsloading}) => {
               {tag.value}
             </div>
           ))}
+          </div>
+          {activeTag && <CloseCircleOutlined className="close-circle-outline" onClick={() => {
+            setFormData({...formData, tags: []})
+            setActiveTag('');
+          }} />}
         </Row>
       ) : null}
     </Layout.Header>

@@ -44,7 +44,7 @@ export const FilterProvider = FiltersContext.Provider;
 const App = () => {
   const [profileCompleted, setProfileCompleted] = useState(false);
   const [categories, setCategories] = useState([]);
-  const [formData, setFormData] = useState({});
+  const [formData, setFormData] = useState({category: 'Cast'});
   const [selectedSubCategories, setSelectedSubCategories] = useState([]);
   const [tags, setTags] = useState([]);
   const [filters, setFilters] = useState([]);

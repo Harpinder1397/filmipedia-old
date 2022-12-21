@@ -1,4 +1,4 @@
-import { Row, Col, Button, Form, Input, Select, Divider } from "antd";
+import { Row, Col, Button, Form, Input, Select, Divider, Switch } from "antd";
 import FormInput from "../../../common/inputs/FormInput";
 import FormSelect from "../../../common/inputs/FormSelect";
 import { bestInOptions, genderOptions, languageOptions } from "../../../constant/common";
@@ -25,6 +25,7 @@ const BasicInfo = ({
 }) => {
   const [location, setLocation] = useState(undefined);
   const [selectedState, setSelectedState] = useState(null);
+  const [collapsed, setCollapsed] = useState(false);
   const [cities, setCities] = useState([]);
   const { tags, categories, setSubCategories, selectedSubCategories } =
     useContext(FiltersContext);
@@ -36,6 +37,18 @@ const BasicInfo = ({
   const {mutate: getStateMutation } = useGetStateMutation();
   
 console.log(statesList?.data?.subdivision, 'statesList.subdivision.name')
+
+const handleThemeMode = (e) => {
+  const data = {
+    ...userDetails,
+    rest: {
+      ...userDetails.rest,
+      available : e ? 'Available' : 'Not Available'
+    },
+  };
+  setUserDetails(data)
+}
+
   useEffect(() => {
     const states = mapStates(data);
     setLocation(states);
@@ -145,6 +158,14 @@ console.log(statesList?.data?.subdivision, 'statesList.subdivision.name')
 
     </Row>
     <Divider></Divider>
+    <Col xs={24} sm={24} md={24} lg={24} xxl={24} xl={24}>
+      <div className="checkbox-mode-available">
+      <span>Available :</span>
+      <Switch checked={userDetails?.rest?.available == 'Available' ? true : false} onChange={handleThemeMode}  checkedChildren="no" unCheckedChildren="yes" />
+      </div>
+    </Col>
+    <Divider></Divider>
+
     <Row gutter={[12, 12]} className="basic-info-ant-row">
       <Col xs={24} sm={12} md={8} lg={6} xxl={6} xl={6}>
         <FormInput

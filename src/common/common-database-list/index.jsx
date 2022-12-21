@@ -18,6 +18,7 @@ import {
   experienceFilter,
   ageFilter,
   bestInOptions,
+  availableOptions,
 } from "../../constant/common";
 
 import { FiltersContext } from "../../App";
@@ -90,8 +91,23 @@ const CommonDataBaseList = ({ allUsers, isFav, loading }) => {
   };
 
   const renderFilterComponent = (key) => {
-    console.log(key, "keykey");
     switch (key) {
+      case "available":
+        return (
+          <SubCategoryComponent
+            title="Available"
+            name="available"
+            value={formData?.available}
+            formData={formData}
+            setFormData={setFormData}
+            onSelect={(cat, val) => {
+              // console.log(val, cat, 'val')
+              setFormData({ ...formData, available: val.value });
+            }}
+            onClear={() => setFormData({ ...formData, available: "" })}
+            options={availableOptions}
+          />
+        );
       case "experience":
         return (
           <SubCategoryComponent

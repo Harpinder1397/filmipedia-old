@@ -423,6 +423,8 @@ const SubCategoryComponent = ({
         return dropdownSingleFun()
       case "Skin Tone":
         return dropdownSingleFun()
+      case "Available":
+        return dropdownSingleFun()
       default:
         return checkboxFun(title);
     }
