@@ -36,7 +36,7 @@ const BasicInfo = ({
   const {mutate: getCountriesMutation } = useGetCountriesMutation();
   const {mutate: getStateMutation } = useGetStateMutation();
   
-console.log(statesList?.data?.subdivision, 'statesList.subdivision.name')
+console.log(cities, 'statesList.subdivision.name')
 
 const handleThemeMode = (e) => {
   const data = {
@@ -374,26 +374,26 @@ const handleThemeMode = (e) => {
         value={userDetails?.rest?.country}
         onSelect={(cat, val) => {
           setSelectedState(val.value);
-          const payload = {
-            country: val?.code
-          }
+          // const payload = {
+          //   country: val?.code
+          // }
           const data = {
             ...userDetails,
             rest: { ...userDetails.rest, country: val.value, state: "", city: ""},
           };
           setUserDetails(data);
-          getStateMutation(payload);
+          // getStateMutation(payload);
         }}
         options={
-          countriesList?.data &&
-          countriesList?.data?.map((item, idx) => {
+          countriesList &&
+          countriesList?.map((item, idx) => {
             const list = `${item?.emoji} ${item?.value}`
             return {
               _id: idx,
               id: idx,
               key: idx,
-              code: item.key,
-              value: list 
+              code: item?.phone_code,
+              value: item?.country_name 
             };
           })
         }
@@ -420,10 +420,10 @@ const handleThemeMode = (e) => {
             setUserDetails(data);
           }}
           options={
-            statesList?.data?.subdivision?.map((item, idx) => {
+            location && Object.keys(location)?.map((item, idx) => {
               return {
                 _id: idx,
-                value: item?.name,
+                value: item
               };
             })
           }
@@ -448,7 +448,15 @@ const handleThemeMode = (e) => {
             };
             setUserDetails(data);
           }}
-          options={cities}
+          options={
+            cities && cities?.map((item, idx) => {
+              return {
+                _id: idx,
+                value: item?.value
+              };
+            })
+          }
+          // options={cities}
           showSearch
           required
           filterOption={(input, option) =>

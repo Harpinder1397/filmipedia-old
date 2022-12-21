@@ -7,14 +7,14 @@ const API_URL =
  AWS_URL
 
 export const useGetStateQuery = () => {
-  return useQuery(["state"], [`${API_URL}/state`], () =>
-    apiGet(`${API_URL}/state`)
+  return useQuery(["state"], [`${API_URL}/states`], () =>
+    apiGet(`${API_URL}/states`)
    )}
  
 export const useGetStateMutation = () => {
   const queryClient = useQueryClient();
-  return useMutation([`${API_URL}/state`],(payload) =>
-    apiGet(`${API_URL}/state?${qs.stringify(payload)}`),
+  return useMutation([`${API_URL}/states`],() =>
+    apiGet(`${API_URL}/states`),
     {
     // onMutate: async () => {
     //   await queryClient.cancelQueries("user");

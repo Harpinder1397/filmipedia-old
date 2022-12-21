@@ -139,7 +139,7 @@ const SignIn = (props) => {
         <Select value={selectCountry} onChange={(e) => setSelectCountry(e)}>
           {
             countriesList?.data?.map((item, idx) => {
-             return <Option key={idx} value={`+${item?.calling_codes[0]}`}>{`${item?.emoji} +${item?.calling_codes[0]}`}</Option>
+             return <Option key={idx} value={`${item?.phone_code}`}>{`${item?.country_name}`}</Option>
               
             })
           }

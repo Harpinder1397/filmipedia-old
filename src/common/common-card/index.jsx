@@ -78,10 +78,11 @@ const renderIconCheckColor = (verify) => {
               {user.subCategory || user.favSubCategory}
           </div>
           <div className="meta">
-            {user.experience ? `${user.experience} years` : ''}
+            {/* user.experience ? `${user.experience} years` : '' */}
+            {user?.city && `${user?.city}, `}{user?.state && `${user?.state}`}{user?.country && `, ${user?.country}`}
           </div>
-          <div className="meta">
-            Available
+          <div className="meta available-meta">
+            {user?.available}
           </div>
         </div>
         

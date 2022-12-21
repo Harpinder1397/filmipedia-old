@@ -108,6 +108,11 @@ const Navbar = ({setIsloading}) => {
   }, [formData?.fullName]);
   
 
+  useEffect(() => {
+    setSubCategories('639823ebcac41f6a64632c69');
+  }, []);
+
+
   const userMenu = [
     {
       key: "1",
@@ -269,6 +274,7 @@ const Navbar = ({setIsloading}) => {
               placeholder="Please select"
               className="navbar__category-selector"
               onSelect={(id, val) => {
+                console.log(val.id, 'val')
                 const getSubCategories = categories.find(
                   (item) => item._id == val.id
                 );
@@ -283,12 +289,12 @@ const Navbar = ({setIsloading}) => {
                 });
                 setTags(getSubCategories?.tags)
               }}
-              // onClear={() => {
-              //   setFormData({ ...formData, category: "", subCategory: "" });
-              //   setSubCategories("");
-              //   setSubCategoriesList([])
-              //   setTags([]);
-              // }}
+              onClear={() => {
+                setFormData({ ...formData, category: "", subCategory: "" });
+                setSubCategories("");
+                setSubCategoriesList([])
+                setTags([]);
+              }}
               options={categories}
               filterOption={(input, option) =>
                 option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
