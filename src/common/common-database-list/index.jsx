@@ -22,12 +22,17 @@ import {
 } from "../../constant/common";
 
 import { FiltersContext } from "../../App";
+import { useGetCountriesMutation, useGetCountriesQuery } from "../../api/getCountries";
+import { CloseCircleOutlined } from "@ant-design/icons";
 const { Panel } = Collapse;
 
 const CommonDataBaseList = ({ allUsers, isFav, loading }) => {
   const [isloading, setIsloading] = useState(false);
   const { filters, formData, setFormData } = useContext(FiltersContext);
   const { mutate: userNameMutation, isLoading } = useUpdateUserNameMutation();
+  const {data: countriesList } = useGetCountriesQuery();
+  const {mutate: getCountriesMutation } = useGetCountriesMutation();
+
   const onShowSizeChange = (page, limit) => {
     const payload = {
       ...formData,
@@ -47,6 +52,10 @@ const CommonDataBaseList = ({ allUsers, isFav, loading }) => {
     });
     userNameMutation(payload);
   }, [formData]);
+
+  useEffect(() => {
+    getCountriesMutation()
+  }, []);
 
   const renderLeftSideFilter = () => {
     return (
@@ -123,7 +132,19 @@ const CommonDataBaseList = ({ allUsers, isFav, loading }) => {
           <SubCategoryComponent
             title="Location"
             name="location"
-            options={ageFilter}
+            options={
+              countriesList &&
+              countriesList?.map((item, idx) => {
+                const list = `${item?.emoji} ${item?.value}`
+                return {
+                  _id: idx,
+                  id: idx,
+                  key: idx,
+                  code: item?.phone_code,
+                  value: item?.country_name 
+                };
+              })
+            }
             formData={formData}
             setFormData={setFormData}
           />
@@ -279,9 +300,14 @@ const CommonDataBaseList = ({ allUsers, isFav, loading }) => {
           return (
             <>
               <Collapse defaultActiveKey={[""]}>
+              {item.key == 'age' && JSON.stringify(formData).match(item.key) ? <div className="active-filters">{formData?.ageMinimum} - {formData?.ageMaximum} <CloseCircleOutlined onClick={() => {
+                setFormData({...formData, ageMinimum: '', ageMaximum: ''})
+              }} className="close-icon" /></div> : ''}
+
                 <Panel header={item.value} key={idx}>
                   {renderFilterComponent(item.key)}
                 </Panel>
+
               </Collapse>
             </>
           );

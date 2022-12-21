@@ -161,7 +161,7 @@ const handleThemeMode = (e) => {
     <Col xs={24} sm={24} md={24} lg={24} xxl={24} xl={24}>
       <div className="checkbox-mode-available">
       <span>Available :</span>
-      <Switch checked={userDetails?.rest?.available == 'Available' ? true : false} onChange={handleThemeMode}  checkedChildren="no" unCheckedChildren="yes" />
+      <Switch checked={userDetails?.rest?.available == 'Available' ? true : false} onChange={handleThemeMode} />
       </div>
     </Col>
     <Divider></Divider>

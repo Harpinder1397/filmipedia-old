@@ -8,6 +8,7 @@ import { mapCities, mapStates } from "../../common/utils";
 
 const SubCategoryComponent = ({
   options,
+  optionsCountries,
   formData,
   setFormData,
   title,
@@ -39,6 +40,27 @@ const SubCategoryComponent = ({
   const locationFun = () => {
     return (
       <div className="location-filter">
+      <FormSelect
+          className="state-search-input"
+          name="country"
+          allowClear={true}
+          placeholder="Select Country"
+            value={formData?.country}
+            onSelect={(cat, val) => {
+              // console.log(val, cat, 'val')
+              setSelectedState(val.value)
+              setFormData({...formData, country: val.value, state: '', city: ''})
+            }}
+            onClear={() => setFormData({...formData, country: '', state: '', city: ''})}
+            options={options}
+          showSearch
+          required
+          filterOption={(input, option) =>
+            option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+          }
+          // validationError={formDataErrors.states}
+          width="100%"
+        />
         <FormSelect
           className="state-search-input"
           name="state"
@@ -118,7 +140,7 @@ const SubCategoryComponent = ({
             placeholder="Select Minimum"
               value={formData?.experienceMinimum}
               onSelect={(cat, val) => {
-                setFormData({...formData, experienceMinimum: val.value, experienceMaximum: val.value})
+                setFormData({...formData, experienceMinimum: val.value, experienceMaximum: (Number(val.value) + 5)})
               }}
               onClear={() => setFormData({...formData, experienceMinimum: '', experienceMaximum: ''})}
               options={options && Object.keys(options).map((item, idx) => {
@@ -171,7 +193,7 @@ const SubCategoryComponent = ({
             value={formData?.ageMinimum}
             onSelect={(cat, val) => {
               // console.log(val, cat, 'val')
-              setFormData({...formData, ageMinimum: val.value, ageMaximum: val.value})
+              setFormData({...formData, ageMinimum: val.value, ageMaximum: (Number(val.value) + 5)})
             }}
             onClear={() => setFormData({...formData, ageMinimum: '', ageMaximum: ''})}
             options={options && Object.keys(options).map((item, idx) => {
@@ -227,7 +249,7 @@ const SubCategoryComponent = ({
             value={formData?.weightMinimum}
             onSelect={(cat, val) => {
               // console.log(val, cat, 'val')
-              setFormData({...formData, weightMinimum: val.value, weightMaximum: val.value})
+              setFormData({...formData, weightMinimum: val.value, weightMaximum: (Number(val.value) + 5)})
             }}
             onClear={() => setFormData({...formData, weightMinimum: '', weightMaximum: ''})}
             options={options && Object.keys(options).map((item, idx) => {
@@ -283,7 +305,7 @@ const SubCategoryComponent = ({
             value={formData?.heightMinimum}
             onSelect={(cat, val) => {
               // console.log(val, cat, 'val')
-              setFormData({...formData, heightMinimum: val.value, heightMaximum: val.value})
+              setFormData({...formData, heightMinimum: val.value, heightMaximum: (Number(val.value) + 5)})
             }}
             onClear={() => setFormData({...formData, heightMinimum: '', heightMaximum: ''})}
             options={options && Object.keys(options).map((item, idx) => {
@@ -339,7 +361,7 @@ const SubCategoryComponent = ({
             value={formData?.budgetMinimum}
             onSelect={(cat, val) => {
               // console.log(val, cat, 'val')
-              setFormData({...formData, budgetMinimum: val.value, budgetMaximum: val.value})
+              setFormData({...formData, budgetMinimum: val.value, budgetMaximum: (Number(val.value) + 5)})
             }}
             onClear={() => setFormData({...formData, budgetMinimum: '', budgetMaximum: ''})}
             options={options && Object.keys(options).map((item, idx) => {
