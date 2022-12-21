@@ -24,9 +24,8 @@ import { FiltersContext } from "../../App";
 const { Panel } = Collapse;
 
 const CommonDataBaseList = ({ allUsers, isFav, loading }) => {
-  const [formData, setFormData] = useState({});
   const [isloading, setIsloading] = useState(false);
-  const { filters } = useContext(FiltersContext);
+  const { filters, formData, setFormData } = useContext(FiltersContext);
   const { mutate: userNameMutation, isLoading } = useUpdateUserNameMutation();
   const onShowSizeChange = (page, limit) => {
     const payload = {
@@ -290,15 +289,6 @@ const CommonDataBaseList = ({ allUsers, isFav, loading }) => {
             isLoading={isLoading || loading || isloading}
           />
           {/*<InfiniteScrollCard formData={formData} userNameMutation={userNameMutation} />*/}
-          <div className="pagination-section">
-            {allUsers?.total >= 9 && allUsers?.users?.length >= 9 && (
-              <CommonPagination
-                total={allUsers?.total}
-                current={allUsers?.users?.length}
-                onShowSizeChange={onShowSizeChange}
-              />
-            )}
-          </div>
         </div>
 
         <div className="banner-container">

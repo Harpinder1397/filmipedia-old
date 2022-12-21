@@ -22,7 +22,6 @@ const Navbar = ({setIsloading}) => {
   const history = useHistory();
   const location = useLocation(); // React Hook
   const [collapsed, setCollapsed] = useState(false);
-  const [formData, setFormData] = useState({});
  const getThemeType = localStorage.getItem('themeType')
  const defalutThemeType = getThemeType == 'dark' ? true : false
   const [themeType, setThemeType] = useState(defalutThemeType || false);
@@ -36,6 +35,8 @@ const Navbar = ({setIsloading}) => {
     setSubCategories,
     token,
     setToken,
+    formData,
+    setFormData,
   } = useContext(FiltersContext);
 
   const handelLogout = () => {
