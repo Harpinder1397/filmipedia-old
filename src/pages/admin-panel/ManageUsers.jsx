@@ -28,12 +28,20 @@ const ManageUsers = ({states }) => {
     fetchserNameMutation(payload);
   }
 
-  const handleOnChange = async (checked, row) => {
+  const handleOnChange = async (checked, row, name) => {
     setIsloading(true);
-    const payload = {...row, verified: checked}
-    await updateUserApi(row?._id, payload).then(() => {
+    if(name == 'available') {
+      const payload = {...row, [name]: checked ? 'Available' : "Not Available"}
+      await updateUserApi(row?._id, payload).then(() => {
         setIsloading(false);
       })
+    }else {
+      const payload = {...row, [name]: checked}
+      await updateUserApi(row?._id, payload).then(() => {
+        setIsloading(false);
+      })
+    }
+   
     setIsloading(false);
     fetchserNameMutation();
 
@@ -48,18 +56,39 @@ const ManageUsers = ({states }) => {
         render: (text, row) => <Link to={`/user/profile/${row?._id}`}>{row?.fullName}</Link>
     },
     {
-        title: 'Mobile Number',
+      title: 'Sub Category',
+      key: 'subcategory',
+      dataIndex: 'subcategory',
+      render: (text, row) => row?.subCategory || '-'
+      
+    },
+    {
+        title: 'Mobile Number / Username',
         key: 'mobileNumber',
         dataIndex: 'mobileNumber',
         render: (text, row) => row?.mobileNumber || '-'
         
     },
     {
-      title: 'Action',
-      key: 'action',
-      dataIndex: 'action',
+      title: 'Email',
+      key: 'email',
+      dataIndex: 'email',
+      render: (text, row) => row?.email || '-'
+      
+  },
+    {
+      title: 'Available Status',
+      key: 'available',
+      dataIndex: 'available',
+      render: (text, row) => 
+      <Switch checked={row?.available == 'Available' ? true : false} onChange={(e) => handleOnChange(e,row, 'available')} />
+    },
+    {
+      title: 'Verification',
+      key: 'verification',
+      dataIndex: 'verification',
       render: (text, row) =>
-      <Switch checked={row?.verified} onChange={(e) => handleOnChange(e,row)} />
+      <Switch checked={row?.verified} onChange={(e) => handleOnChange(e,row, 'verified')} />
     }
   ]
 

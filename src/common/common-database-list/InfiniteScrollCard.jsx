@@ -18,21 +18,22 @@ const antIcon = (
 );
 
 const InfiniteScrollCard = ({formData, userNameMutation}) => {
-  const [page, setPage] = useState(1)
+  const [page, setPage] = useState(0)
   const { data: userList, isLoading } = useUserQuery();
   const [data, setData] = useState(userList?.users || [])
   const [dataAdd, setDataAdd] = useState([])
-
-
+  const [updateData, setUpdateData] = useState(userList.users)
+console.log(updateData, 'updateDataupdateData')
   const fetchMoreData = () => {
     setPage(page + 1)
-    const payload = {...formData, page: page};
+    const payload = {...formData, page: page + 1};
     Object.keys(payload).forEach(key => {
       if(!payload[key])
         delete payload[key]
     });
     setTimeout(() => {
       userNameMutation(payload)
+      setUpdateData([...updateData, ...userList.users])
       // setData(userList?.users);
       setDataAdd([...dataAdd, ...userList?.users])
     }, 1500);
@@ -61,14 +62,14 @@ const InfiniteScrollCard = ({formData, userNameMutation}) => {
 
     return (
         <InfiniteScroll
-          dataLength={dataAdd?.length}
+          dataLength={updateData?.length}
           next={fetchMoreData}
-          hasMore={dataAdd?.length}
+          hasMore={updateData?.length}
           loader={<div style={{textAlign: 'center', marginTop: '40px'}}><Spin indicator={antIcon} /></div>}
           endMessage={<Divider plain>It is all, nothing more 🤐</Divider>}
         >
         <List
-          dataSource={dataAdd}
+          dataSource={updateData}
           renderItem={(item) => (
             <CommonCard
               user={item}

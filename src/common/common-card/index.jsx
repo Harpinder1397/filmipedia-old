@@ -7,7 +7,7 @@ import './commonCard.less';
 import qs from "query-string";
 import { Tooltip } from 'antd';
 
-const CommonCard = ({user, favList, isFav, handleFavourite, handleRemoveFavourite}) => {
+const CommonCard = ({key, user, favList, isFav, handleFavourite, handleRemoveFavourite}) => {
   const userId = localStorage.getItem('user');
   const token = localStorage.getItem('token');
 
@@ -59,7 +59,7 @@ const renderIconCheckColor = (verify) => {
 
   const history = useHistory();
   return (
-    <div className="card-container">
+    <div  key={key} className="card-container">
       <div className="img-wrapper">
         <img src={isFav ? (user.favThumbnail || defaultThumbnail) : (user.thumbnails?.find((thumbnail) => thumbnail.dp)?.url || defaultThumbnail)} alt="dp" />
       </div>

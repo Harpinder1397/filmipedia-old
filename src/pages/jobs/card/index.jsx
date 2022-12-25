@@ -121,7 +121,7 @@ const content = () => {
                       width={"12px"}
                       style={{ marginRight: "5px" }}
                     />
-                    Ludhiana (Punjab)
+                    {item.city}{item.state && `, ${item.state}`} {item.country && `(${item.country})`}
                   </p>
 
                   <p style={{ margin: "11px 0 16px" }}>

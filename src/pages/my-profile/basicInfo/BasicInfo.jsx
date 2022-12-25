@@ -212,6 +212,23 @@ const handleThemeMode = (e) => {
       </Col>
       <Col xs={24} sm={12} md={8} lg={6} xxl={6} xl={6}>
         <FormInput
+          type="text"
+          name="email"
+          label="Email"
+          value={userDetails?.rest?.email}
+          onChange={(e) => {
+            
+            setUserDetails({
+              ...userDetails,
+              rest: { ...userDetails.rest, email: e.target.value },
+            });
+          }}
+          // validationError={formDataErrors.userName}
+          required
+        />
+      </Col>
+      <Col xs={24} sm={12} md={8} lg={6} xxl={6} xl={6}>
+        <FormInput
           type="num"
           name="userName"
           label="Mobile Number"

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Typography, Checkbox, Input, Row, Col, Divider } from "antd";
+import { Typography, Checkbox, Input, Row, Col, Divider, InputNumber } from "antd";
 import FormSelect from "../inputs/FormSelect";
 import './subCategoriesStyle.less';
 import GroupCheckbox from "../group-checkbox/GroupCheckbox";
@@ -48,10 +48,9 @@ const SubCategoryComponent = ({
             value={formData?.country}
             onSelect={(cat, val) => {
               // console.log(val, cat, 'val')
-              setSelectedState(val.value)
-              setFormData({...formData, country: val.value, state: '', city: ''})
+              setFormData({...formData, country: val.value, state: null, city: null})
             }}
-            onClear={() => setFormData({...formData, country: '', state: '', city: ''})}
+            onClear={() => setFormData({...formData, country: null, state: null, city: null})}
             options={options}
           showSearch
           required
@@ -70,9 +69,14 @@ const SubCategoryComponent = ({
             onSelect={(cat, val) => {
               // console.log(val, cat, 'val')
               setSelectedState(val.value)
-              setFormData({...formData, state: val.value, city: ''})
+              setFormData({...formData, state: val.value, city: null})
             }}
-            onClear={() => setFormData({...formData, state: '', city: ''})}
+            onClear={() => {
+              setFormData({...formData, state: null, city: null});
+              setSelectedState('');
+              setCities([]);
+              
+            }}
             options={location && Object.keys(location).map((item, idx) => {
 							return {
 								id: idx,
@@ -353,6 +357,7 @@ const SubCategoryComponent = ({
   const budgetFun = () => {
     return (
       <div className="location-filter experience-filter">
+
         <FormSelect
           className="state-search-input"
           name="budget"
@@ -361,15 +366,10 @@ const SubCategoryComponent = ({
             value={formData?.budgetMinimum}
             onSelect={(cat, val) => {
               // console.log(val, cat, 'val')
-              setFormData({...formData, budgetMinimum: val.value, budgetMaximum: (Number(val.value) + 5)})
+              setFormData({...formData, budgetMinimum: val.value, budgetMaximum: (Number(val.value) + 500)})
             }}
             onClear={() => setFormData({...formData, budgetMinimum: '', budgetMaximum: ''})}
-            options={options && Object.keys(options).map((item, idx) => {
-							return {
-								id: idx,
-								value: item
-							}
-						})}
+            options={options}
           showSearch
           required
           filterOption={(input, option) =>
@@ -387,12 +387,7 @@ const SubCategoryComponent = ({
             onSelect={(cat, val) => {
               setFormData({...formData, budgetMaximum: val.value})
             }}
-						options={options && Object.keys(options).map((item, idx) => {
-							return {
-								id: idx,
-								value: item
-							}
-						})}
+						options={options}
             filterOption={(input, option) =>
               option.children.indexOf(input) >= 0
             }

@@ -162,6 +162,70 @@ export const ageFilter = [...Array(101)].map((item, idx) => {
   }
 })
 
+export const budgetFilter = [
+  {
+    key: 500,
+    name: 500,
+    objName: 'budget',
+    value: 500
+  },
+  {
+    key: 1000,
+    name: 1000,
+    objName: 'budget',
+    value: 1000
+  },
+  {
+    key: 1500,
+    name: 1500,
+    objName: 'budget',
+    value: 1500
+  },
+  {
+    key: 2000,
+    name: 2000,
+    objName: 'budget',
+    value: 2000
+  },
+  {
+    key: 2500,
+    name: 2500,
+    objName: 'budget',
+    value: 2500
+  },
+  {
+    key: 3000,
+    name: 3000,
+    objName: 'budget',
+    value: 3000
+  },
+  {
+    key: 3500,
+    name: 3500,
+    objName: 'budget',
+    value: 3500
+  },
+  {
+    key: 4000,
+    name: 4000,
+    objName: 'budget',
+    value: 4000
+  },
+  {
+    key: 4500,
+    name: 4500,
+    objName: 'budget',
+    value: 4500
+  },
+  {
+    key: 5000,
+    name: 5000,
+    objName: 'budget',
+    value: 5000
+  }
+]
+
+
 
 
 export const adminTabs = [

@@ -11,6 +11,11 @@ import EmptyMessage from "../../common/emptyMessage/EmptyMessage";
 // styles
 import "./card/cardStyle.less";
 import CommonPagination from "../../common/pagination/CommonPagination";
+import FormSelect from "../../common/inputs/FormSelect";
+import { mapCities, mapStates } from "../../common/utils";
+import { useStateQuery } from "../../api/getStatesQuery";
+import { useGetStateMutation } from "../../api/getState";
+import { useGetCountriesMutation, useGetCountriesQuery } from "../../api/getCountries";
 // import moment from "moment";
 
 const MyJobs = () => {
@@ -18,10 +23,14 @@ const MyJobs = () => {
   const [formData, setFormData] = useState({});
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalTitle, setModalTitle] = useState("Add");
+  const [location, setLocation] = useState(undefined);
+  const [selectedState, setSelectedState] = useState(null);
+  const [cities, setCities] = useState([]);
   const [messageApi, contextHolder] = message.useMessage();
   
   const { data: jobList, isLoading: loading1} = useJobsQuery();
   const { data: userInfo, isLoading: loading8} = useGetUserDataQuery();
+  const { data: statesList } = useStateQuery();
   
   const { data: jobApplicationsList } = useJobApplicationsQuery();
   const { data: allJobApplicationsList } = useJobAllApplicationsQuery();
@@ -31,6 +40,10 @@ const MyJobs = () => {
   const { mutate: createJobMutation, isSuccess, isLoading: loading3 } = useCreateJobMutation();
   const { mutate: deleteJobMutation, isLoading: loading4} = useDeleteJobMutation();
   const { mutate: updateJobMutation, isLoading: loading5} = useUpdateJobMutation();
+  const {mutate: getStateMutation } = useGetStateMutation();
+
+  const {data: countriesList } = useGetCountriesQuery();
+  const {mutate: getCountriesMutation } = useGetCountriesMutation();
 
   const { mutate: createJobApplications} = useCreateJobApplicationsMutation()
   const { mutate: getUserQuery, isLoading: loading6} = useGetUserQuery();
@@ -151,8 +164,21 @@ const MyJobs = () => {
     fetchUserDetails();
     fetchJobApplicationsMutation();
     getAllApplicationsMutation();
+    getStateMutation();
+    getCountriesMutation();
   }, []);
 
+  useEffect(() => {
+    if (selectedState) {
+      const cities = mapCities(statesList, selectedState);
+      setCities(cities);
+    }
+  }, [selectedState]);
+
+  useEffect(() => {
+    const states = mapStates(statesList);
+    setLocation(states);
+  }, [statesList]);
 
   return (
     <Spin spinning={mainLoader}>
@@ -208,6 +234,21 @@ const MyJobs = () => {
             });
           }}
         />
+        <label className="input-label">
+          <span style={{ color: "red", fontSize: "18px" }}>*</span> Budget
+          :
+        </label>
+        <InputNumber
+        placeholder="Budget"
+        style={{width: '100%'}}
+        value={formData?.budget}
+        onChange={(e) => {
+          setFormData({
+            ...formData,
+            budget: e,
+          });
+        }}
+      />
         {/*<label className="input-label">
           <span style={{ color: "red", fontSize: "18px" }}>*</span> Category :
         </label>
@@ -274,6 +315,95 @@ const MyJobs = () => {
           // disabled
           />
         </Space>
+
+        <FormSelect
+          name="country"
+          label="Select your country"
+          value={formData?.country}
+          onSelect={(cat, val) => {
+            setSelectedState(val.value);
+            const data = {
+              ...formData, country: val.value, state: '', city: ""
+            };
+            setFormData(data);
+          }}
+          options={
+            countriesList &&
+            countriesList?.map((item, idx) => {
+              return {
+                _id: idx,
+                id: idx,
+                key: idx,
+                code: item?.phone_code,
+                value: item?.country_name 
+              };
+            })
+          }
+          showSearch
+          required
+          filterOption={(input, option) =>
+            option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+          }
+          // validationError={formDataErrors.states}
+          width={"100%"}
+        />
+
+        <FormSelect
+          name="state"
+          label="Select your state"
+          value={formData?.state}
+          onSelect={(cat, val) => {
+            setSelectedState(val.value);
+            const data = {
+              ...formData, state: val.value, city: "" ,
+            };
+            setFormData(data);
+          }}
+          options={
+            location && Object.keys(location)?.map((item, idx) => {
+              return {
+                _id: idx,
+                value: item
+              };
+            })
+          }
+          showSearch
+          required
+          filterOption={(input, option) =>
+            option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+          }
+          // validationError={formDataErrors.states}
+          width={"100%"}
+        />
+
+        <FormSelect
+          name="cities"
+          label="Select your city"
+          value={formData?.city}
+          onSelect={(cat, val) => {
+            const data = {
+              ...formData, city: val.value,
+            };
+            setFormData(data);
+          }}
+          options={
+            cities && cities?.map((item, idx) => {
+              return {
+                _id: idx,
+                value: item?.value
+              };
+            })
+          }
+          // options={cities}
+          showSearch
+          required
+          filterOption={(input, option) =>
+            option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+          }
+          // validationError={formDataErrors.city}
+          width={"100%"}
+        />
+
         {/* <label className="input-label">Time :</label>
           <Select
             mode="multiple"

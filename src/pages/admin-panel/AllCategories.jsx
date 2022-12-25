@@ -131,7 +131,7 @@ const AllCategories = () => {
       setIsEditOptions(false);
       setIsEdit(true);
     }
-    if (type == 'Sub-category' || type == 'tags' || type == 'filters') {
+    if (type == 'tags') {
       
       setFormData({...entity, [type]: entity.value})
       setTitle(type);

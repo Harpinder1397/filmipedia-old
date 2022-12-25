@@ -9,6 +9,7 @@ import EmptyMessage from "../../common/emptyMessage/EmptyMessage";
 // styles
 import "./card/cardStyle.less";
 import CommonPagination from "../../common/pagination/CommonPagination";
+import CommonJobList from "../../common/common-job-list";
 
 const { Title } = Typography;
 
@@ -89,9 +90,9 @@ const Jobs = () => {
     const payload = {
       userId: userId
     };
-    Object.keys(formData).forEach(key => {
-      if(!formData[key])
-        delete formData[key]
+    Object.keys(payload).forEach(key => {
+      if(!payload[key])
+        delete payload[key]
     });
     fetchJobList(payload);
     fetchUserDetails();
@@ -101,21 +102,19 @@ const Jobs = () => {
 
   return (
     <Spin spinning={mainLoader}>
-    <Title level={3}>Jobs List</Title>
+    {/*<Title level={3}>Jobs List</Title>*/}
     <div className="jobcard-page-body">
-       {jobList?.data?.length ? <JobCard
-          userId={userId}
-          data={jobList?.data}
-          jobApplicationsList={jobApplicationsList}
-          allJobApplicationsList={allJobApplicationsList}
-          handleShareDetails={handleShareDetails}
-          handleUpdate={handleUpdate}
-          handleDelete={handleDelete}
-        // JobApplicationsLength={jobApplicationsData?.length || 0}
-      /> : (
-       <EmptyMessage />
-      )}
-
+    <CommonJobList
+      userId={userId}
+      jobList={jobList}
+      fetchJobList={fetchJobList}
+      jobApplicationsList={jobApplicationsList}
+      allJobApplicationsList={allJobApplicationsList}
+      handleShareDetails={handleShareDetails}
+      handleUpdate={handleUpdate}
+      handleDelete={handleDelete}
+      JobApplicationsLength={jobApplicationsList?.length || 0}
+    />
       <div className="pagination-section">
       {jobList?.data?.length >= 9 && <CommonPagination total={jobList?.data?.length} onShowSizeChange={onShowSizeChange}/>}
        </div>

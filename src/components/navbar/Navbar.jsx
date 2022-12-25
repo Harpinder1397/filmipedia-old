@@ -87,7 +87,7 @@ const Navbar = ({setIsloading}) => {
           delete formData[key]
       });
       if(formData?.category || formData?.subCategory || formData?.tags && !databasePath) {
-        history.push("/database");
+        //  history.push("/database");
       }
       userNameMutation(payload);
   }, [formData?.category, formData?.subCategory, formData?.tags])

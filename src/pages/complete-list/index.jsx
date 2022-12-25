@@ -3,8 +3,8 @@ import CommonDataBaseList from "../../common/common-database-list";
 import { useUserQuery } from "../../api/user";
 
 export default function CompleteList() {
-  const { data, isLoading } = useUserQuery();
+  // const { data, isLoading } = useUserQuery();
   return (
-    <CommonDataBaseList allUsers={data} isLoading={isLoading} />
+    <CommonDataBaseList />
   )
 }
