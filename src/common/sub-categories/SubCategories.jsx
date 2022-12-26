@@ -156,7 +156,7 @@ const SubCategoryComponent = ({
               setCities([]);
               
             }}
-            options={subCategory}
+            options={formData?.category && subCategory}
           showSearch
           required
           filterOption={(input, option) =>
