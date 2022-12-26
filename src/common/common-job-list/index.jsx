@@ -55,8 +55,8 @@ const CommonJobList = (props) => {
     return (
       <>
       <Collapse defaultActiveKey={[""]}>
-      {formData?.category ? <div className="active-filters"> <div className='show-text-value'>{`${formData?.category || ''}${formData?.subCategory || ''}`}</div><CloseCircleOutlined onClick={() => {
-        setFormData({...formData, country: null, state: null,  city: null});
+      {formData?.category ? <div className="active-filters"> <div className='show-text-value'>{`${formData?.category || ''} ${formData?.subCategory || ''}`}</div><CloseCircleOutlined onClick={() => {
+        setFormData({...formData, category: null, subCategory: null});
         }} className="close-icon" /></div> : ''}
         <Panel header="Category" key="1">
         <SubCategoryComponent
