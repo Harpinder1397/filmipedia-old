@@ -38,7 +38,8 @@ const Navbar = ({setIsloading}) => {
     formData,
     setFormData,
     tags,
-    setTags
+    setTags,
+    selectedSubCategories
   } = useContext(FiltersContext);
 
   const handelLogout = () => {
@@ -313,7 +314,7 @@ const Navbar = ({setIsloading}) => {
                 setFormData({ ...formData, subCategory: val.value });
               }}
               onClear={() => setFormData({ ...formData, subCategory: "" })}
-              options={subCategoriesList}
+              options={selectedSubCategories}
               filterOption={(input, option) =>
                 option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
               }
