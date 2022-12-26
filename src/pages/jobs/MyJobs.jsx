@@ -66,6 +66,7 @@ const MyJobs = () => {
         ...formData,
         // thumbnail: fileList,
         postedByCategory: userInfo.category,
+        postedBySubCategory: userInfo.subCategory,
         postedById: userInfo?._id,
         postedByName: userInfo?.fullName,
       }

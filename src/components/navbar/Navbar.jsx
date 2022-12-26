@@ -26,7 +26,6 @@ const Navbar = ({setIsloading}) => {
  const getThemeType = localStorage.getItem('themeType')
  const defalutThemeType = getThemeType == 'dark' ? true : false
   const [themeType, setThemeType] = useState(defalutThemeType || false);
-  const [tags, setTags] = useState([]);
   const [activeTag, setActiveTag] = useState('');
   const [subCategoriesList, setSubCategoriesList] = useState([]);
   const databasePath = location.pathname == '/database' 
@@ -38,6 +37,8 @@ const Navbar = ({setIsloading}) => {
     setToken,
     formData,
     setFormData,
+    tags,
+    setTags
   } = useContext(FiltersContext);
 
   const handelLogout = () => {
@@ -108,9 +109,9 @@ const Navbar = ({setIsloading}) => {
   }, [formData?.fullName]);
   
 
-  useEffect(() => {
-    setSubCategories('639823ebcac41f6a64632c69');
-  }, []);
+  // useEffect(() => {
+  //   setSubCategories();
+  // }, []);
 
 
   const userMenu = [

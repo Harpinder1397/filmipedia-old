@@ -46,24 +46,29 @@ const App = () => {
   const [categories, setCategories] = useState([]);
   const [formData, setFormData] = useState({category: 'Cast'});
   const [selectedSubCategories, setSelectedSubCategories] = useState([]);
-  const [tags, setTags] = useState([]);
   const [filters, setFilters] = useState([]);
   const [token, setToken] = useState(false);
-  const [category, setSelectedCategory] = useState(undefined);
   const [subCategory, setSubCategory] = useState(undefined);
+  const [tags, setTags] = useState([]); 
   const history = useHistory();
   const location = useLocation(); // React Hook
-
+  const [category, setSelectedCategory] = useState([]);
   // loading
   const [isloading, setIsloading] = useState(false);
   const getCategories = async () => {
     const data = await getCategoryApi();
-
+    if(data) {
+      setCategories(data);
+      const defaultFilter = data?.find((cat) => cat?._id == '639823ebcac41f6a64632c69');
+      setSelectedCategory(defaultFilter?.value);
+      setSelectedSubCategories(defaultFilter?.childern);
+      setTags(defaultFilter?.tags);
+      setFilters(defaultFilter?.filters)
+    }
     // const updateData = data?.map((item) => ({
     //   ...item,
     //   id: item?._id,
     // }));
-    setCategories(data);
   };
 
 
@@ -72,18 +77,29 @@ const App = () => {
   //   setStates(data);
   // };
 
-  const setSubCategories = (id) => {
-    const data = categories?.find((cat) => cat._id === id);
-    setSelectedCategory(data?.value);
-    setSelectedSubCategories(data?.childern);
-    setTags(data?.tags);
-    setFilters(data?.filters)
-  };
 
   useEffect(() => {
     const isProfileCompleted = localStorage.getItem("isProfileCompleted");
     setProfileCompleted(isProfileCompleted);
+    getCategories();
   }, []);
+
+  const setSubCategories = (id) => {
+    const data = categories?.find((cat) => cat._id == id);
+    if(data) {
+      setSelectedCategory(data?.value);
+      setSelectedSubCategories(data?.childern);
+      setTags(data?.tags);
+      setFilters(data?.filters)
+    } else {
+      setSelectedCategory([]);
+      setSelectedSubCategories([]);
+      setTags([]);
+      setFilters([])
+    }
+   
+  };
+
 
   const { mutate: fetchStatesMutation } = useUpdateStateMutation();
 
@@ -91,11 +107,10 @@ const App = () => {
 
   useEffect(() => {
     const token = localStorage.getItem("token");
-    getCategories();
     // getStates();
     setToken(token);
-    fetchStatesMutation();
-      
+    fetchStatesMutation();  
+    // setSubCategories()
   }, []);
 
   // useEffect(() => {

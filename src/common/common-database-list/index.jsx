@@ -381,10 +381,9 @@ const CommonDataBaseList = ({isFav, loading }) => {
     }
   };
 
-console.log(formData['experienceMinimum'], 'formData[item.key]')
   const renderConditionFilter = () => {
     return filters?.length
-      ? filters.map((item, idx) => {
+      ? filters?.map((item, idx) => {
           return (
             <>
               <Collapse defaultActiveKey={[""]}>

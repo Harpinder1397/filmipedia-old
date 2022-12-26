@@ -31,7 +31,7 @@ const CommonJobList = (props) => {
   const { jobList, isFav, loading, userId,jobApplicationsList, allJobApplicationsList, handleShareDetails , handleUpdate, handleDelete , JobApplicationsLength, fetchJobList } = props;
   const [isloading, setIsloading] = useState(false);
   const [formData, setFormData ] = useState({});
-  const { filters } = useContext(FiltersContext);
+  const { categories } = useContext(FiltersContext);
   const {data: countriesList } = useGetCountriesQuery();
   const {mutate: getCountriesMutation } = useGetCountriesMutation();
 
@@ -54,10 +54,25 @@ const CommonJobList = (props) => {
   const renderLeftSideFilter = () => {
     return (
       <>
+      <Collapse defaultActiveKey={[""]}>
+      {formData?.category ? <div className="active-filters"> <div className='show-text-value'>{`${formData?.category || ''}${formData?.subCategory || ''}`}</div><CloseCircleOutlined onClick={() => {
+        setFormData({...formData, country: null, state: null,  city: null});
+        }} className="close-icon" /></div> : ''}
+        <Panel header="Category" key="1">
+        <SubCategoryComponent
+        title="Category"
+        name="category"
+        options={categories}
+        formData={formData}
+        setFormData={setFormData}
+      />
+        </Panel>
+      </Collapse>
+
         <Collapse defaultActiveKey={[""]}>
-        {formData?.city || formData?.state || formData?.country && <div className="active-filters"> <div className='show-text-value'>{`${formData?.country || ''}${formData?.state || ''}${formData?.city && formData?.city || '' }`}</div><CloseCircleOutlined onClick={() => {
+        {formData?.city || formData?.state || formData?.country ? <div className="active-filters"> <div className='show-text-value'>{`${formData?.country || ''}${formData?.state || ''}${formData?.city && formData?.city || '' }`}</div><CloseCircleOutlined onClick={() => {
           setFormData({...formData, country: null, state: null,  city: null});
-          }} className="close-icon" /></div>}
+          }} className="close-icon" /></div> : ''}
           <Panel header="Location" key="1">
           <SubCategoryComponent
           title="Location"
@@ -144,7 +159,6 @@ const CommonJobList = (props) => {
 //         return null;
 //     }
 //   };
-console.log(formData['experienceMinimum'], 'formData[item.key]')
   const renderConditionFilter = () => {
     return renderLeftSideFilter();
     {/*return filters?.length

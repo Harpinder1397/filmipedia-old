@@ -20,6 +20,7 @@ const SubCategoryComponent = ({
 
   const { data } = useStateQuery();
   const [location, setLocation] = useState(undefined);
+  const [subCategory, setSubCategory] = useState([]);
 	const [selectedState, setSelectedState] = useState(null);
 	const [cities, setCities] = useState([]);
 
@@ -67,9 +68,8 @@ const SubCategoryComponent = ({
           placeholder="Select State"
             value={formData?.state}
             onSelect={(cat, val) => {
-              // console.log(val, cat, 'val')
-              setSelectedState(val.value)
-              setFormData({...formData, state: val.value, city: null})
+              setFormData({...formData, state: val?.value, city: null})
+              setSelectedState(val?.value)
             }}
             onClear={() => {
               setFormData({...formData, state: null, city: null});
@@ -77,7 +77,7 @@ const SubCategoryComponent = ({
               setCities([]);
               
             }}
-            options={location && Object.keys(location).map((item, idx) => {
+            options={location && Object.keys(location)?.map((item, idx) => {
 							return {
 								id: idx,
 								value: item
@@ -86,7 +86,7 @@ const SubCategoryComponent = ({
           showSearch
           required
           filterOption={(input, option) =>
-            option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+            option?.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
           }
           // validationError={formDataErrors.states}
           width="100%"
@@ -95,7 +95,7 @@ const SubCategoryComponent = ({
             name="cities"
             placeholder="Select City"
             className="city-search-input"
-						value={formData.city}
+						value={formData?.city}
             onSelect={(cat, val) => {
               setFormData({...formData, city: val.value})
             }}
@@ -106,6 +106,65 @@ const SubCategoryComponent = ({
 						// validationError={formDataErrors.city}
 						width={"100%"}
 					/>
+      </div>
+    );
+  };
+
+  const categoryFun = () => {
+    return (
+      <div className="location-filter">
+        <FormSelect
+          className="state-search-input"
+          name="category"
+          allowClear={true}
+          placeholder="Select category"
+          value={formData?.category}
+          onSelect={(cat, val) => {
+            // console.log(val, cat, 'val')
+            setFormData({...formData, category: val.value, subCategory: null})
+            const getSubCategories = options.find(
+              (item) => item._id == val.id
+            );
+            setSubCategory(getSubCategories?.childern);
+          }}
+          onClear={() => {
+            setFormData({...formData, category: null, subCategory: null})
+            setSubCategory([]);
+          }}
+          options={options}
+          showSearch
+          required
+          filterOption={(input, option) =>
+            option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+          }
+          // validationError={formDataErrors.states}
+          width="100%"
+        />
+        <FormSelect
+          className="state-search-input"
+          name="subCategory"
+          allowClear={true}
+          placeholder="Select sub category"
+            value={formData?.subCategory}
+            onSelect={(cat, val) => {
+              setFormData({...formData, subCategory: val?.value})
+              setSelectedState(val?.value)
+            }}
+            onClear={() => {
+              setFormData({...formData, subCategory: null});
+              setSelectedState('');
+              setCities([]);
+              
+            }}
+            options={subCategory}
+          showSearch
+          required
+          filterOption={(input, option) =>
+            option?.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+          }
+          // validationError={formDataErrors.states}
+          width="100%"
+        />
       </div>
     );
   };
@@ -420,6 +479,8 @@ const SubCategoryComponent = ({
     switch (title) {
       case "Location":
         return locationFun();
+      case "Category":
+        return categoryFun();
       case "Experience" : 
         return experienceFun()
       case "Age" : 
