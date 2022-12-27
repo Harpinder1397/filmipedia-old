@@ -412,12 +412,12 @@ const CommonDataBaseList = ({isFav, loading }) => {
           setIsloading={setIsloading}
         />
         <div className="database-container">
-        <CommonList
+        {/*<CommonList
             users={allUsers?.users || allUsers}
             isFav={isFav}
             isLoading={isLoading || loading || isloading}
-          />
-          {/*  <InfiniteScrollCard formData={formData} userNameMutation={userNameMutation} />*/}
+  /> */}
+           <InfiniteScrollCard formData={formData} userNameMutation={userNameMutation} />
           {/* <CommonScroll allUsers={allUsers} userNameMutation={userNameMutation}  />*/}
         </div>
 

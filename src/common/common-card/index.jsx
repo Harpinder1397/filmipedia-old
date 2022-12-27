@@ -61,13 +61,13 @@ const renderIconCheckColor = (verify) => {
   return (
     <div  key={key} className="card-container">
       <div className="img-wrapper">
-        <img src={isFav ? (user.favThumbnail || defaultThumbnail) : (user.thumbnails?.find((thumbnail) => thumbnail.dp)?.url || defaultThumbnail)} alt="dp" />
+        <img src={isFav ? (user?.favThumbnail || defaultThumbnail) : (user?.thumbnails?.find((thumbnail) => thumbnail.dp)?.url || defaultThumbnail)} alt="dp" />
       </div>
       <div className='d-flex flex-col details'>
         <div>
         <div className="name-section">
           <div className="cursor-pointer" onClick={() => handleNavigationUser(user)}>
-              {user.fullName || user.favName}
+              {user?.fullName || user?.favName}
           </div>
           <Tooltip className="icon" placement="bottom" title={renderToptipTitle(user?.verified)}>
             <Checks size={16} color={renderIconCheckColor(user?.verified)} />
@@ -75,10 +75,10 @@ const renderIconCheckColor = (verify) => {
          
           </div>
           <div className="sub-cat">
-              {user.subCategory || user.favSubCategory}
+              {user?.subCategory || user?.favSubCategory}
           </div>
           <div className="meta">
-            {/* user.experience ? `${user.experience} years` : '' */}
+            {/* user?.experience ? `${user?.experience} years` : '' */}
             {user?.city && `${user?.city}, `}{user?.state && `${user?.state}`}{user?.country && `, ${user?.country}`}
           </div>
           <div className="meta available-meta">
@@ -89,8 +89,8 @@ const renderIconCheckColor = (verify) => {
         <div className="action-btns">
           <div />
           {token ?
-            isFav || favList?.find((fav) => user._id === fav.favUserId)
-            ? <HeartFilled style={{ color: 'red'}} onClick={() => handleRemoveFavourite(user.favUserId || user._id)}/>
+            isFav || favList?.find((fav) => user?._id === fav.favUserId)
+            ? <HeartFilled style={{ color: 'red'}} onClick={() => handleRemoveFavourite(user?.favUserId || user?._id)}/>
             : <HeartOutlined onClick={() => handleFavourite(user)}/> : null
           }
         {/* </div> */}

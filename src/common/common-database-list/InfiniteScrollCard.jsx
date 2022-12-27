@@ -18,58 +18,67 @@ const antIcon = (
 );
 
 const InfiniteScrollCard = ({formData, userNameMutation}) => {
-  const [page, setPage] = useState(0)
+  const [page, setPage] = useState(1)
   const { data: userList, isLoading } = useUserQuery();
-  const [data, setData] = useState(userList?.users || [])
-  const [dataAdd, setDataAdd] = useState([])
-  const [updateData, setUpdateData] = useState(userList.users)
-console.log(updateData, 'updateDataupdateData')
+  const [data, setData] = useState([]);
+
   const fetchMoreData = () => {
     setPage(page + 1)
-    const payload = {...formData, page: page + 1};
+    const payload = {...formData, page: page + 1, limit: 30};
     Object.keys(payload).forEach(key => {
       if(!payload[key])
         delete payload[key]
     });
     setTimeout(() => {
       userNameMutation(payload)
-      setUpdateData([...updateData, ...userList.users])
-      // setData(userList?.users);
-      setDataAdd([...dataAdd, ...userList?.users])
     }, 1500);
-
-    // fetch(`${AWS_URL}/user`)
-    //   .then((res) => res.json())
-    //   .then((body) => {
-    //     setDataLength(dataLength + 9)
-    //     console.log(body, 'bodybodybodybody')
-    //     setTimeout(() => {
-    //     setData([...data, ...body?.users]);
-    //     // setDataLength(body.length)
-    //     }, 1500);
-    //   })
-      // .catch(() => {
-        // setLoading(false);
-      // });
-    
   };
 
 
   useEffect(() => {
-    fetchMoreData();
+    // fetchMoreData();
   }, []);
+
+
+
+  useEffect(() => {
+    const newData = userList?.users || []
+    setData([...data, ...newData])
+  }, [userList?.users])
+  
+  useEffect(() => {
+      const payload = {...formData, page: 1, limit: 30};
+      Object.keys(payload).forEach(key => {
+        if(!payload[key])
+          delete payload[key]
+      });
+      userNameMutation(payload);
+      // setData([])
+      setData(userList?.users || []);
+      setPage(1);
+  }, [
+    formData?.category, formData?.subCategory, formData?.tags, formData?.city,
+    formData?.state, formData?.country, formData?.fullName, formData?.skinTone,
+    formData?.hairColor, formData?.eyeColor, formData?.available, formData?.extraTalent,
+    formData?.bestIn, formData?.languages, formData?.gender, formData?.weightMinimum,
+    formData?.weightMaximum, formData?.heightMinimum, formData?.heightMaximum, formData?.budgetMinimum,
+    formData?.budgetMaximum, formData?.ageMinimum, formData?.ageMaximum, formData?.experienceMinimum,
+    formData?.experienceMaximum
+  ])
 
 
     return (
         <InfiniteScroll
-          dataLength={updateData?.length}
+          dataLength={data?.length}
           next={fetchMoreData}
-          hasMore={updateData?.length}
-          loader={<div style={{textAlign: 'center', marginTop: '40px'}}><Spin indicator={antIcon} /></div>}
-          endMessage={<Divider plain>It is all, nothing more 🤐</Divider>}
+          hasMore={true}
+          refreshFunction={fetchMoreData}
+          pullDownToRefresh
+          loader={<div style={{textAlign: 'center', marginTop: '40px'}}><Spin /></div>}
+          // endMessage={<Divider plain>It is all, nothing more 🤐</Divider>}
         >
         <List
-          dataSource={updateData}
+          dataSource={data}
           renderItem={(item) => (
             <CommonCard
               user={item}

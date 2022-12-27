@@ -88,7 +88,7 @@ const Navbar = ({setIsloading}) => {
         if(!formData[key])
           delete formData[key]
       });
-      if(formData?.category || formData?.subCategory || formData?.tags && !databasePath) {
+      if((formData?.category || formData?.subCategory || formData?.tags) && !databasePath) {
         //  history.push("/database");
       }
       userNameMutation(payload);

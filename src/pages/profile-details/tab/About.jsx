@@ -7,7 +7,7 @@ const About = ({userDetails}) => {
             <Descriptions.Item span={2} label="User Name">{userDetails?.userName || '-'}</Descriptions.Item>
             <Descriptions.Item span={2} label="Gender">{userDetails?.gender || '-'}</Descriptions.Item>
             <Descriptions.Item span={2} label="Date of Birth">{userDetails?.dateOfBirth || '-'}</Descriptions.Item>
-            <Descriptions.Item span={2} label="Email">{userDetails?.bio || '-'}</Descriptions.Item>
+            <Descriptions.Item span={2} label="Email">{userDetails?.email || '-'}</Descriptions.Item>
             <Descriptions.Item span={2} label="Language">{userDetails?.languages?.toString() || '-'}</Descriptions.Item>
             <Descriptions.Item span={2} label="Category">{userDetails?.category || '-'}</Descriptions.Item>
             <Descriptions.Item span={2} label="Sub Category">{userDetails?.subCategory || '-'}</Descriptions.Item>
