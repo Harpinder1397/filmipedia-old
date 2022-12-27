@@ -117,7 +117,7 @@ const Navbar = ({setIsloading}) => {
   
 
   useEffect(() => {
-    if(location.pathname == '/jobs'){
+    if(location.pathname.includes('jobs')){
       const payload = qs.parse(location?.search);
       Object.keys(payload)?.forEach(key => {
         if(!payload[key])
