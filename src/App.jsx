@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
-import { Switch, Route, Link, useLocation } from "react-router-dom";
+import { Switch, Route, Link, useLocation, useParams } from "react-router-dom";
 import { useHistory } from 'react-router';
+import qs from "query-string";
 // eslint-disable-next-line import/no-unresolved
 import { Layout, message, Row, Spin } from "antd";
 import "./App.less";
@@ -42,18 +43,20 @@ export const FiltersContext = createContext({});
 export const FilterProvider = FiltersContext.Provider;
 
 const App = () => {
+  const userId = localStorage.getItem('user');
   const [profileCompleted, setProfileCompleted] = useState(false);
   const [categories, setCategories] = useState([]);
-  const [formData, setFormData] = useState({category: 'Cast'});
+  const location = useLocation(); // React Hook
+  const paramQuery = qs.parse(location?.search)
+  const [formData, setFormData] = useState({category: 'Cast', ...paramQuery});
+  const [jobFormData, setJobFormData] = useState({userId: userId, ...paramQuery});
   const [selectedSubCategories, setSelectedSubCategories] = useState([]);
   const [filters, setFilters] = useState([]);
   const [token, setToken] = useState(false);
   const [subCategory, setSubCategory] = useState(undefined);
   const [tags, setTags] = useState([]); 
   const history = useHistory();
-  const location = useLocation(); // React Hook
   const [category, setSelectedCategory] = useState([]);
-  // loading
   const [isloading, setIsloading] = useState(false);
   const getCategories = async () => {
     const data = await getCategoryApi();
@@ -77,6 +80,26 @@ const App = () => {
   //   setStates(data);
   // };
 
+
+  useEffect(() => {
+    if(location.pathname.includes('jobs' && jobFormData)){
+      const query = jobFormData
+      Object.keys(query).forEach(key => {
+        if(!query[key])
+          delete query[key]
+      });
+      history.push(`/jobs${query ? `?${qs.stringify(query)}` : ""}`);
+    }else {
+      if(formData){
+        const query = formData
+        Object.keys(query).forEach(key => {
+          if(!query[key])
+            delete query[key]
+        });
+        history.push(`/database${query ? `?${qs.stringify(query)}` : ""}`);
+      }
+    }
+  }, [formData, jobFormData]);
 
   useEffect(() => {
     const isProfileCompleted = localStorage.getItem("isProfileCompleted");
@@ -155,7 +178,9 @@ const App = () => {
             subCategory,
             setSubCategory,
             formData,
-            setFormData
+            setFormData,
+            jobFormData,
+            setJobFormData
           }}
         >
          {renderTopNavbar()}
@@ -178,11 +203,13 @@ const App = () => {
               />
               <LoginRoute exact path="/admin" component={AdminPanel} />
               <LoginRoute exact path="/jobs" component={Jobs} />
+              <LoginRoute exact path="/jobs/:jobSearch" component={Jobs} />
               <LoginRoute exact path="/my/jobs" component={MyJobs} />
               <LoginRoute exact path="/job/applications" component={JobApplications} />
               <LoginRoute exact path="/my/job/applications" component={MyApplications} />
               <Route exact path="/register" component={RegistrationForms} />
               <Route exact path="/database" component={CompleteList} />
+              <Route exact path="/database/:search" component={CompleteList} />
               <LoginRoute
                 exact
                 path="/shortlisted"

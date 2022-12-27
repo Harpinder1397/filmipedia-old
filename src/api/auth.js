@@ -18,6 +18,7 @@ export const LoginAPI = (payload, setProfileCompleted) => {
         }
         localStorage.setItem("token", res?.token);
         localStorage.setItem("user", res?.user?._id);
+        localStorage.setItem("userName", res?.user?.fullName);
         localStorage.setItem("userType", res?.user?.type);
         return res?.auth;
       }

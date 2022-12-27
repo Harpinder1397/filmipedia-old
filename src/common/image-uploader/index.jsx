@@ -51,7 +51,6 @@ const ImageUploaderComponent = (props) => {
   };
 
   const handleCancel = () => {
-    alert('dsdd');
     setIsOpen(false);
   };
 

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { Typography, Spin } from "antd";
 import JobCard from "./card";
 import { useDeleteJobMutation, useJobsQuery, useUpdateJobsMutation } from "../../api/getJobs";
@@ -10,13 +10,17 @@ import EmptyMessage from "../../common/emptyMessage/EmptyMessage";
 import "./card/cardStyle.less";
 import CommonPagination from "../../common/pagination/CommonPagination";
 import CommonJobList from "../../common/common-job-list";
+import { FiltersContext } from "../../App";
+import { useHistory } from 'react-router';
+
 
 const { Title } = Typography;
 
 const Jobs = () => {
   const userId = localStorage.getItem('user');
   const [formData, setFormData] = useState({});
-  
+  const history = useHistory();
+
   const { data: jobList, isLoading: loading1} = useJobsQuery();
   const { data: userInfo, isLoading: loading8} = useGetUserDataQuery();  
   const { data: jobApplicationsList } = useJobApplicationsQuery();
@@ -98,6 +102,9 @@ const Jobs = () => {
     fetchUserDetails();
     fetchJobApplicationsMutation();
     getAllApplicationsMutation();
+    // history.replace({
+    //   search: '',
+    // })
   }, []);
 
   return (

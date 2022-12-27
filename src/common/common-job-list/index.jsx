@@ -25,27 +25,39 @@ import {
 
 import { FiltersContext } from "../../App";
 import { useGetCountriesMutation, useGetCountriesQuery } from "../../api/getCountries";
+import { useLocation } from "react-router-dom";
+import qs from "query-string";
+
 const { Panel } = Collapse;
 
 const CommonJobList = (props) => {
   const { jobList, isFav, loading, userId,jobApplicationsList, allJobApplicationsList, handleShareDetails , handleUpdate, handleDelete , JobApplicationsLength, fetchJobList } = props;
+
+  const {
+    jobFormData,
+    setJobFormData,
+    categories
+  } = useContext(FiltersContext);
+  const location = useLocation(); // React Hook
+  const jobFormDataQuery = qs.parse(location?.search)
+
+  console.log(jobFormData, 'jobFormData')
+
   const [isloading, setIsloading] = useState(false);
-  const [formData, setFormData ] = useState({});
-  const { categories } = useContext(FiltersContext);
   const {data: countriesList } = useGetCountriesQuery();
   const {mutate: getCountriesMutation } = useGetCountriesMutation();
 
   useEffect(() => {
     const payload = {
       userId: userId,
-      ...formData
+      ...jobFormData
     };
-    // const payload = formData;
+    // const payload = jobFormData;
     Object.keys(payload).forEach((key) => {
       if (!payload[key]) delete payload[key];
     });
     fetchJobList(payload);
-  }, [formData]);
+  }, [jobFormData]);
 
   useEffect(() => {
     getCountriesMutation()
@@ -54,24 +66,24 @@ const CommonJobList = (props) => {
   const renderLeftSideFilter = () => {
     return (
       <>
-      <Collapse defaultActiveKey={[""]}>
-      {formData?.category ? <div className="active-filters"> <div className='show-text-value'>{`${formData?.category || ''} ${formData?.subCategory || ''}`}</div><CloseCircleOutlined onClick={() => {
-        setFormData({...formData, category: null, subCategory: null});
+      {/*<Collapse defaultActiveKey={[""]}>
+      {jobFormDataQuery?.category ? <div className="active-filters"> <div className='show-text-value'>{`${jobFormDataQuery?.category || ''} ${jobFormDataQuery?.subCategory || ''}`}</div><CloseCircleOutlined onClick={() => {
+        setJobFormData({...jobFormDataQuery, category: null, subCategory: null});
         }} className="close-icon" /></div> : ''}
         <Panel header="Category" key="1">
         <SubCategoryComponent
         title="Category"
         name="category"
         options={categories}
-        formData={formData}
-        setFormData={setFormData}
+        formData={jobFormDataQuery}
+        setFormData={setJobFormData}
       />
         </Panel>
-      </Collapse>
+      </Collapse>*/}
 
         <Collapse defaultActiveKey={[""]}>
-        {formData?.city || formData?.state || formData?.country ? <div className="active-filters"> <div className='show-text-value'>{`${formData?.country || ''}${formData?.state || ''}${formData?.city && formData?.city || '' }`}</div><CloseCircleOutlined onClick={() => {
-          setFormData({...formData, country: null, state: null,  city: null});
+        {jobFormDataQuery?.city || jobFormDataQuery?.state || jobFormDataQuery?.country ? <div className="active-filters"> <div className='show-text-value'>{`${jobFormDataQuery?.country || ''}${jobFormDataQuery?.state || ''}${jobFormDataQuery?.city && jobFormDataQuery?.city || '' }`}</div><CloseCircleOutlined onClick={() => {
+          setJobFormData({...jobFormDataQuery, country: null, state: null,  city: null});
           }} className="close-icon" /></div> : ''}
           <Panel header="Location" key="1">
           <SubCategoryComponent
@@ -90,14 +102,14 @@ const CommonJobList = (props) => {
               };
             })
           }
-          formData={formData}
-          setFormData={setFormData}
+          formData={jobFormDataQuery}
+          setFormData={setJobFormData}
         />
           </Panel>
         </Collapse>
         <Collapse defaultActiveKey={[""]}>
-        {formData.budgetMinimum && <div className="active-filters"> <div className='show-text-value'>{formData?.budgetMinimum && `${formData?.budgetMinimum || '' } - ${formData?.budgetMaximum || ''}`}</div><CloseCircleOutlined onClick={() => {
-          setFormData({...formData, budgetMinimum: null, budgetMaximum: null});
+        {jobFormDataQuery.budgetMinimum && <div className="active-filters"> <div className='show-text-value'>{jobFormDataQuery?.budgetMinimum && `${jobFormDataQuery?.budgetMinimum || '' } - ${jobFormDataQuery?.budgetMaximum || ''}`}</div><CloseCircleOutlined onClick={() => {
+          setJobFormData({...jobFormDataQuery, budgetMinimum: null, budgetMaximum: null});
           }} className="close-icon" /></div>}
           <Panel header="Budget" key="2">
           <SubCategoryComponent
@@ -112,8 +124,8 @@ const CommonJobList = (props) => {
               };
             })
           }
-          formData={formData}
-          setFormData={setFormData}
+          formData={jobFormDataQuery}
+          setFormData={setJobFormData}
         />
           </Panel>
         </Collapse>
@@ -141,8 +153,8 @@ const CommonJobList = (props) => {
 //                 };
 //               })
 //             }
-//             formData={formData}
-//             setFormData={setFormData}
+//             jobFormData={jobFormData}
+//             setJobFormData={setJobFormData}
 //           />
 //         );
 //       case "budget":
@@ -151,8 +163,8 @@ const CommonJobList = (props) => {
 //             title="Budget"
 //             name="budget"
 //             options={ageFilter}
-//             formData={formData}
-//             setFormData={setFormData}
+//             jobFormData={jobFormData}
+//             setJobFormData={setJobFormData}
 //           />
 //         );
 //       default:
@@ -166,8 +178,8 @@ const CommonJobList = (props) => {
           return (
             <>
               <Collapse defaultActiveKey={[""]}>
-              <div className="active-filters">{formData['experienceMinimum']} <CloseCircleOutlined onClick={() => {
-                setFormData({...formData, ageMinimum: '', ageMaximum: ''})
+              <div className="active-filters">{jobFormData['experienceMinimum']} <CloseCircleOutlined onClick={() => {
+                setJobFormData({...jobFormData, ageMinimum: '', ageMaximum: ''})
               }} className="close-icon" /></div>
 
                 <Panel header={item.value} key={idx}>

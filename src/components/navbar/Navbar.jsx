@@ -11,36 +11,58 @@ import {
   Switch,
 } from "antd";
 import { useHistory, useLocation } from "react-router-dom";
+import qs from "query-string";
+
 // eslint-disable-next-line import/no-unresolved
 import "./Navbar.less";
 import { FiltersContext } from "../../App";
 import FormSelect from "../../common/inputs/FormSelect";
-import { useUpdateUserNameMutation } from "../../api/user";
+import { getUserApi, updateUserApi, useUpdateUserNameMutation } from "../../api/user";
 import MobileNavbar from "./MobileNavbar";
 import { CloseCircleOutlined } from "@ant-design/icons";
+import { useUpdateJobsMutation } from "../../api/getJobs";
 
 const Navbar = ({setIsloading}) => {
   const history = useHistory();
   const location = useLocation(); // React Hook
   const [collapsed, setCollapsed] = useState(false);
- const getThemeType = localStorage.getItem('themeType')
- const defalutThemeType = getThemeType == 'dark' ? true : false
+  const [userDetails, setUserDetails] = useState({});
+  const getThemeType = localStorage.getItem('themeType')
+  const defalutThemeType = getThemeType == 'dark' ? true : false
   const [themeType, setThemeType] = useState(defalutThemeType || false);
-  const [activeTag, setActiveTag] = useState('');
   const [subCategoriesList, setSubCategoriesList] = useState([]);
-  const databasePath = location.pathname == '/database' 
+  const multiplePath = ['database', 'jobs']
+  const databasePath = multiplePath.includes(location.pathname);
   const userType  = localStorage.getItem("userType");
+  const userName  = localStorage.getItem("userName");
+  const myUserId = localStorage.getItem("user");
+  const jobsLocation = location.pathname.includes('jobs')
+
+  
   const {
     categories,
     setSubCategories,
     token,
     setToken,
-    formData,
+    // formData,
     setFormData,
     tags,
     setTags,
-    selectedSubCategories
+    selectedSubCategories,
+    setJobFormData
   } = useContext(FiltersContext);
+
+  const formData = qs.parse(location?.search)
+
+ 
+
+  const getUserDetails = async () => {
+    const data = await getUserApi(myUserId).then((data) => {
+      return data;
+    });
+    const { thumbnails, projects, ...rest } = data;
+    setUserDetails({ thumbnails, projects, rest });
+  };
 
   const handelLogout = () => {
     setToken(false);
@@ -56,6 +78,9 @@ const Navbar = ({setIsloading}) => {
     setCollapsed(false);
   };
   const { mutate: userNameMutation, isLoading } = useUpdateUserNameMutation();
+  const { mutate: fetchJobList, isLoading: loading2} = useUpdateJobsMutation();
+
+
 
   const handleThemeMode = (e) => {
     if(e){
@@ -65,6 +90,15 @@ const Navbar = ({setIsloading}) => {
       setThemeType(e);
       localStorage.setItem('themeType', 'light');
     }
+  }
+
+  const onChangeAvailable = async (e) => {
+    setIsloading(true);
+    const payloadCreate = {...userDetails?.rest, available: e ? 'Available' : 'Not Available' }
+    await updateUserApi(myUserId, payloadCreate).then(() => {
+      setIsloading(false);
+      getUserDetails();
+    });
   }
 
   useEffect(() => {
@@ -83,26 +117,36 @@ const Navbar = ({setIsloading}) => {
   
 
   useEffect(() => {
-      const payload = formData;
-      Object.keys(formData)?.forEach(key => {
-        if(!formData[key])
-          delete formData[key]
+    if(location.pathname == '/jobs'){
+      const payload = qs.parse(location?.search);
+      Object.keys(payload)?.forEach(key => {
+        if(!payload[key])
+          delete payload[key]
+      });
+      fetchJobList(payload);
+    }else{
+      const payload = qs.parse(location?.search);
+      Object.keys(payload)?.forEach(key => {
+        if(!payload[key])
+          delete payload[key]
       });
       if((formData?.category || formData?.subCategory || formData?.tags) && !databasePath) {
         //  history.push("/database");
       }
       userNameMutation(payload);
+      
+    }
   }, [formData?.category, formData?.subCategory, formData?.tags])
 
   useEffect(() => {
     const timeOutId = setTimeout(async () => {
         const payload = formData;
-        Object.keys(formData).forEach(key => {
-          if(!formData[key])
-            delete formData[key]
+        Object.keys(payload).forEach(key => {
+          if(!payload[key])
+            delete payload[key]
         });
         if(formData?.fullName && !databasePath){
-          history.push("/database");
+          // history.push("/database");
         }
         userNameMutation(payload);
     }, 1000);
@@ -110,12 +154,26 @@ const Navbar = ({setIsloading}) => {
   }, [formData?.fullName]);
   
 
-  // useEffect(() => {
-  //   setSubCategories();
-  // }, []);
+  useEffect(() => {
+    getUserDetails();
+    history.replace({
+      search: '',
+    })
+  }, []);
 
 
   const userMenu = [
+    {
+      key: "0",
+      label: (
+        <div> 
+          Avaliable : <Switch checked={userDetails?.rest?.available == 'Available' ? true : false} onChange={onChangeAvailable} />
+        </div>
+      ),
+    },
+    {
+      type: "divider",
+    },
     {
       key: "1",
       label: (
@@ -150,6 +208,17 @@ const Navbar = ({setIsloading}) => {
   ]
 
   const AdminMenu = [
+    {
+      key: "0",
+      label: (
+        <div> 
+          Avaliable : <Switch checked={userDetails?.rest?.available == 'Available' ? true : false} onChange={onChangeAvailable} />
+        </div>
+      ),
+    },
+    {
+      type: "divider",
+    },
     {
       key: "1",
       label: (
@@ -253,7 +322,7 @@ const Navbar = ({setIsloading}) => {
             arrow={{ pointAtCenter: true }}
           >
           <Space>
-            <Avatar src="https://joeschmoe.io/api/v1/random" style={{height: '35px', width: '35px', border: '1px solid darkgrey'}}/>
+            <Avatar style={{height: '35px', width: '35px', border: '1px solid darkgrey'}}>{userName?.slice(0,1)}</Avatar>
           </Space>
         </Dropdown>
       )
@@ -283,16 +352,29 @@ const Navbar = ({setIsloading}) => {
                 setSubCategoriesList(getSubCategories?.childern);
                 setSubCategories(val.id);
                 // HandlenewChnage()
-                setFormData({
-                  ...formData,
-                  category: val.value,
-                  subCategory: "",
-                  tags: ''
-                });
+                if(jobsLocation){
+                  setJobFormData({
+                    ...formData,
+                    category: val.value,
+                    subCategory: "",
+                    tags: ''
+                  });
+                }else {
+                  setFormData({
+                    ...formData,
+                    category: val.value,
+                    subCategory: "",
+                    tags: ''
+                  });
+                }
                 setTags(getSubCategories?.tags)
               }}
               onClear={() => {
-                setFormData({ ...formData, category: "", subCategory: "" });
+                if(jobsLocation){
+                    setJobFormData({ ...formData, category: "", subCategory: "" });
+                }else {
+                  setFormData({ ...formData, category: "", subCategory: "" });
+                }
                 setSubCategories("");
                 setSubCategoriesList([])
                 setTags([]);
@@ -311,9 +393,20 @@ const Navbar = ({setIsloading}) => {
               onSelect={(id, val) => {
                 // selectedSubCategories(id);
                 // setSubCategory(val.key)
-                setFormData({ ...formData, subCategory: val.value });
+                
+                if(jobsLocation){
+                  setJobFormData({ ...formData, subCategory: val.value });
+                }else {
+                  setFormData({ ...formData, subCategory: val.value });
+                }
               }}
-              onClear={() => setFormData({ ...formData, subCategory: "" })}
+              onClear={() => {
+                if(jobsLocation){
+                  setJobFormData({ ...formData, subCategory: "" })
+                }else {
+                  setFormData({ ...formData, subCategory: "" })
+                }
+              }}
               options={selectedSubCategories}
               filterOption={(input, option) =>
                 option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
@@ -328,10 +421,14 @@ const Navbar = ({setIsloading}) => {
           name="fullName"
           className="navbar-search-input"
           placeholder="Search"
-          value={formData?.fullName}
-          onChange={(e) =>
-            setFormData({ ...formData, fullName: e.target.value })
-          }
+          value={formData?.fullName || formData?.title}
+          onChange={(e) =>{
+            if(jobsLocation){
+              setJobFormData({...formData, title: e.target.value})
+            }else {
+              setFormData({ ...formData, fullName: e.target.value })
+            }
+          }}
         />
         <div className="navbar__right">{renderButtons()}</div>
         {renderProfileIcon()}
@@ -346,19 +443,17 @@ const Navbar = ({setIsloading}) => {
           <div className="tag-list">
           {tags?.map((tag) => (
             <div
-              className={`nav-subBar ${tag.value == activeTag && "active-navbar-subBar"}`}
+              className={`nav-subBar ${tag.value == formData?.tags && "active-navbar-subBar"}`}
               onClick={() => {
                 setFormData({...formData, tags: [tag.value]})
-                setActiveTag(tag.value);
               }}
             >
               {tag.value}
             </div>
           ))}
           </div>
-          {activeTag && <CloseCircleOutlined className="close-circle-outline" onClick={() => {
+          {formData?.tags && <CloseCircleOutlined className="close-circle-outline" onClick={() => {
             setFormData({...formData, tags: []})
-            setActiveTag('');
           }} />}
         </Row>
       ) : null}

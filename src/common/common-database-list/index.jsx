@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useContext } from "react";
+import qs from "query-string";
 import "react-calendar/dist/Calendar.css";
 import SubCategoryComponent from "../sub-categories/SubCategories";
 import CommonList from "../../common/CommonList";
@@ -27,11 +28,17 @@ import { useGetCountriesMutation, useGetCountriesQuery } from "../../api/getCoun
 import { CloseCircleOutlined } from "@ant-design/icons";
 import CommonScroll from "./CommonScroll";
 import InfiniteScrollCard from "./InfiniteScrollCard";
+import { useLocation } from "react-router-dom";
+import { useHistory } from 'react-router';
 const { Panel } = Collapse;
 
 const CommonDataBaseList = ({isFav, loading }) => {
   const [isloading, setIsloading] = useState(false);
-  const { filters, formData, setFormData } = useContext(FiltersContext);
+  
+  const location = useLocation(); // React Hook
+  const history = useHistory();
+  const { filters,formData, setFormData } = useContext(FiltersContext);
+  const formData1 = qs.parse(location?.search)
   const { data: allUsers } = useUserQuery();
   const { mutate: userNameMutation, isLoading } = useUpdateUserNameMutation();
   const {data: countriesList } = useGetCountriesQuery();
@@ -43,8 +50,8 @@ const CommonDataBaseList = ({isFav, loading }) => {
       page: page,
       // limit: limit
     };
-    Object.keys(formData).forEach((key) => {
-      if (!formData[key]) delete formData[key];
+    Object.keys(payload).forEach((key) => {
+      if (!payload[key]) delete payload[key];
     });
     userNameMutation(payload);
   };
@@ -64,6 +71,9 @@ const CommonDataBaseList = ({isFav, loading }) => {
       if (!formData[key]) delete formData[key];
     });
     userNameMutation(payload);
+    // history.replace({
+    //   search: '',
+    // })
   }, []);
 
   const renderLeftSideFilter = () => {
@@ -78,7 +88,7 @@ const CommonDataBaseList = ({isFav, loading }) => {
               title="Experience"
               name="experience"
               options={experienceFilter}
-              formData={formData}
+              formData={formData1}
               setFormData={setFormData}
             />
           </Panel>
@@ -92,7 +102,7 @@ const CommonDataBaseList = ({isFav, loading }) => {
               title="Age"
               name="age"
               options={ageFilter}
-              formData={formData}
+              formData={formData1}
               setFormData={setFormData}
             />
           </Panel>
@@ -107,7 +117,7 @@ const CommonDataBaseList = ({isFav, loading }) => {
               title="Gender"
               name="gender"
               options={genderFilter}
-              formData={formData}
+              formData={formData1}
               setFormData={setFormData}
             />
           </Panel>
@@ -124,7 +134,7 @@ const CommonDataBaseList = ({isFav, loading }) => {
             title="Available"
             name="available"
             value={formData?.available}
-            formData={formData}
+            formData={formData1}
             setFormData={setFormData}
             onSelect={(cat, val) => {
               // console.log(val, cat, 'val')
@@ -140,7 +150,7 @@ const CommonDataBaseList = ({isFav, loading }) => {
             title="Experience"
             name="experience"
             options={experienceFilter}
-            formData={formData}
+            formData={formData1}
             setFormData={setFormData}
           />
         );
@@ -162,7 +172,7 @@ const CommonDataBaseList = ({isFav, loading }) => {
                 };
               })
             }
-            formData={formData}
+            formData={formData1}
             setFormData={setFormData}
           />
         );
@@ -172,7 +182,7 @@ const CommonDataBaseList = ({isFav, loading }) => {
             title="Gender"
             name="gender"
             options={genderFilter}
-            formData={formData}
+            formData={formData1}
             setFormData={setFormData}
           />
         );
@@ -182,7 +192,7 @@ const CommonDataBaseList = ({isFav, loading }) => {
             title="Age"
             name="age"
             options={ageFilter}
-            formData={formData}
+            formData={formData1}
             setFormData={setFormData}
           />
         );
@@ -192,7 +202,7 @@ const CommonDataBaseList = ({isFav, loading }) => {
             title="Weight"
             name="weight"
             options={ageFilter}
-            formData={formData}
+            formData={formData1}
             setFormData={setFormData}
           />
         );
@@ -202,7 +212,7 @@ const CommonDataBaseList = ({isFav, loading }) => {
             title="Height"
             name="height"
             options={ageFilter}
-            formData={formData}
+            formData={formData1}
             setFormData={setFormData}
           />
         );
@@ -212,7 +222,7 @@ const CommonDataBaseList = ({isFav, loading }) => {
             title="Budget"
             name="budget"
             options={budgetFilter}
-            formData={formData}
+            formData={formData1}
             setFormData={setFormData}
           />
         );
@@ -222,7 +232,7 @@ const CommonDataBaseList = ({isFav, loading }) => {
             title="Language"
             name="languages"
             options={languageFilter}
-            formData={formData}
+            formData={formData1}
             setFormData={setFormData}
           />
         );
@@ -232,7 +242,7 @@ const CommonDataBaseList = ({isFav, loading }) => {
             title="Best In"
             name="bestIn"
             value={formData?.bestIn}
-            formData={formData}
+            formData={formData1}
             setFormData={setFormData}
             onSelect={(cat, val) => {
               // console.log(val, cat, 'val')
@@ -248,7 +258,7 @@ const CommonDataBaseList = ({isFav, loading }) => {
             title="Extra Talent"
             name="extraTalent"
             value={formData?.extraTalent}
-            formData={formData}
+            formData={formData1}
             setFormData={setFormData}
             onSelect={(cat, val) => {
               // console.log(val, cat, 'val')
@@ -264,7 +274,7 @@ const CommonDataBaseList = ({isFav, loading }) => {
             title="Eye Color"
             name="eyeColor"
             value={formData?.eyeColor}
-            formData={formData}
+            formData={formData1}
             setFormData={setFormData}
             onSelect={(cat, val) => {
               // console.log(val, cat, 'val')
@@ -280,7 +290,7 @@ const CommonDataBaseList = ({isFav, loading }) => {
             title="Hair Color"
             name="hairColor"
             value={formData?.hairColor}
-            formData={formData}
+            formData={formData1}
             setFormData={setFormData}
             onSelect={(cat, val) => {
               // console.log(val, cat, 'val')
@@ -296,7 +306,7 @@ const CommonDataBaseList = ({isFav, loading }) => {
             title="Skin Tone"
             name="skinTone"
             value={formData?.skinTone}
-            formData={formData}
+            formData={formData1}
             setFormData={setFormData}
             onSelect={(cat, val) => {
               // console.log(val, cat, 'val')
@@ -314,33 +324,33 @@ const CommonDataBaseList = ({isFav, loading }) => {
   const renderShowValue = (key) => {
     switch (key) {
       case "available":
-        return formData.available || ''
+        return formData1.available || ''
       case "experience":
-        return formData?.experienceMinimum && `${formData?.experienceMinimum || ''} - ${formData?.experienceMaximum || ''}`
+        return formData1?.experienceMinimum && `${formData1?.experienceMinimum || ''} - ${formData1?.experienceMaximum || ''}`
       case "location":
-        return `${formData?.country || ''}${formData?.state || ''}${formData?.city && formData?.city || '' }`
+        return `${formData1?.country || ''}${formData1?.state || ''}${formData1?.city && formData1?.city || '' }`
       case "gender":
-        return formData.gender && formData.gender.toString() || '' 
+        return formData1.gender && formData1.gender.toString() || '' 
       case "age":
-        return formData?.ageMinimum && `${formData?.ageMinimum || '' } - ${formData?.ageMaximum || ''}`
+        return formData1?.ageMinimum && `${formData1?.ageMinimum || '' } - ${formData1?.ageMaximum || ''}`
       case "weight":
-        return formData?.weightMinimum && `${formData?.weightMinimum || '' } - ${formData?.weightMaximum || ''}`
+        return formData1?.weightMinimum && `${formData1?.weightMinimum || '' } - ${formData1?.weightMaximum || ''}`
       case "height":
-        return formData?.heightMinimum && `${formData?.heightMinimum || '' } - ${formData?.heightMaximum || ''}`
+        return formData1?.heightMinimum && `${formData1?.heightMinimum || '' } - ${formData1?.heightMaximum || ''}`
       case "budget":
-        return formData?.budgetMinimum && `${formData?.budgetMinimum || '' } - ${formData?.budgetMaximum || ''}`
+        return formData1?.budgetMinimum && `${formData1?.budgetMinimum || '' } - ${formData1?.budgetMaximum || ''}`
       case "language":
-        return formData.languages && formData.languages.toString() || '' 
+        return formData1.languages && formData1.languages.toString() || '' 
       case "best-in":
-        return formData.bestIn || ''
+        return formData1.bestIn || ''
       case "extra-talent":
-        return formData.extraTalent || '' 
+        return formData1.extraTalent || '' 
       case "eye-color":
-        return formData.eyeColor || '' 
+        return formData1.eyeColor || '' 
       case "hair-color":
-        return formData.hairColor || '' 
+        return formData1.hairColor || '' 
       case "skin-tone":
-        return formData.skinTone || '' 
+        return formData1.skinTone || '' 
       default:
         return null;
     }
@@ -417,7 +427,7 @@ const CommonDataBaseList = ({isFav, loading }) => {
             isFav={isFav}
             isLoading={isLoading || loading || isloading}
   /> */}
-           <InfiniteScrollCard formData={formData} userNameMutation={userNameMutation} />
+           <InfiniteScrollCard formData={formData1} userNameMutation={userNameMutation} />
           {/* <CommonScroll allUsers={allUsers} userNameMutation={userNameMutation}  />*/}
         </div>
 
