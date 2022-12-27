@@ -82,7 +82,7 @@ const App = () => {
 
 
   useEffect(() => {
-    if(location.pathname.includes('jobs' && jobFormData)){
+    if(location.pathname.includes('jobs') && jobFormData){
       const query = jobFormData
       Object.keys(query).forEach(key => {
         if(!query[key])
