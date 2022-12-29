@@ -71,6 +71,28 @@ export const updateTagsApi = (id, payload) => {
     });
 };
 
+export const updateBestInApi = (id, payload) => {
+  const url = `${API_URL}/categories/${id}/best-in`;
+  return apiPost(url, payload)
+    .then((res) => {
+      return res;
+    })
+    .catch((error) => {
+      return error;
+    });
+};
+
+export const updateExtraTalentApi = (id, payload) => {
+  const url = `${API_URL}/categories/${id}/extra-talent`;
+  return apiPost(url, payload)
+    .then((res) => {
+      return res;
+    })
+    .catch((error) => {
+      return error;
+    });
+};
+
 export const updateFiltersApi = (id, payload) => {
   const url = `${API_URL}/categories/${id}/filters`;
   return apiPost(url, payload)

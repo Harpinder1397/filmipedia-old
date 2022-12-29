@@ -127,6 +127,10 @@
         background-color: var(--background-color);
         min-height: 100vh;
         padding: 20px;
+        .half-container {
+          max-height: 40vh;
+          overflow-y: auto;
+        }
 
         .title {
           display: flex;
@@ -261,6 +265,10 @@
     .tags-container {
       width: 100% !important;
       min-height: unset !important;
+      .half-container {
+        max-height: unset !important;
+        overflow-y: unset !important;
+      }
     }
     .filters-container {
       border-left: none;

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
-import { Input, Modal, Form, Spin } from "antd";
+import { Input, Modal, Form, Spin, Divider } from "antd";
 import { DeleteOutlined, EditOutlined, FileAddOutlined } from "@ant-design/icons";
-import { createCategoryApi, deleteCategoryApi, updateCategoryApi, updateSubCategoryApi, updateTagsApi, updateFiltersApi, useFetchCategoryApiQuery, useGetCategoryApiQuery } from "../../api/getCategories";
+import { createCategoryApi, deleteCategoryApi, updateCategoryApi, updateBestInApi,updateExtraTalentApi, updateSubCategoryApi, updateTagsApi, updateFiltersApi, useFetchCategoryApiQuery, useGetCategoryApiQuery } from "../../api/getCategories";
 import PopConfirm from "../../common/pop-confirm";
 import EmptyMessage from "../../common/emptyMessage/EmptyMessage";
 import FormSelect from "../../common/inputs/FormSelect";
@@ -13,6 +13,8 @@ const renderMethod = (payload, title, id) => {
   if (title === 'Sub-category') return updateSubCategoryApi(id, payload);
   if (title === 'tags') return updateTagsApi(id, payload);
   if (title === 'filters') return updateFiltersApi(id, payload);
+  if (title === 'Best-In') return updateBestInApi(id, payload);
+  if (title === 'Extra-Talent') return updateExtraTalentApi(id, payload);
 }
 const AllCategories = () => {
 
@@ -79,7 +81,7 @@ const AllCategories = () => {
       } 
     }
 
-    if ( title === 'tags') {
+    if ( title == 'tags') {
       if (isEditOptions) {
         payload = selectedCategory?.tags.map((item) => 
         item.key === formData.key
@@ -103,7 +105,7 @@ const AllCategories = () => {
         )
       } else {
         const newPayload = formData['filters'].map((item) => {
-          return { key: item.toLowerCase().replace(' ', '-'), value: item}
+          return { key: item.toLowerCase().replace(' ', '-'), _id: new Date().valueOf(), value: item}
         })
         payload = [
           ...selectedCategory?.filters,
@@ -111,6 +113,36 @@ const AllCategories = () => {
         ]
       } 
     } 
+
+    if (title === 'Best-In') {
+      if (isEditOptions) {
+        payload = selectedCategory?.bestIn.map((item) => 
+        item.key === formData.key
+          ? {...item, key: formData['Best-In'].toLowerCase().replace(' ', '-'), value: formData[title]}
+          : {...item}
+        )
+      } else {
+        payload = [
+          ...selectedCategory?.bestIn,
+          {key: formData['Best-In'].toLowerCase().replace(' ', '-'), _id: new Date().valueOf(), value: formData[title]}
+        ]
+      } 
+    }
+
+    if (title === 'Extra-Talent') {
+      if (isEditOptions) {
+        payload = selectedCategory?.extraTalent.map((item) => 
+        item.key === formData.key
+          ? {...item, key: formData['Extra-Talent'].toLowerCase().replace(' ', '-'), value: formData[title]}
+          : {...item}
+        )
+      } else {
+        payload = [
+          ...selectedCategory?.extraTalent,
+          {key: formData['Extra-Talent'].toLowerCase().replace(' ', '-'),_id: new Date().valueOf(), value: formData[title]}
+        ]
+      } 
+    }
     
     isEdit ? 
     updateCategoryListApi(payload)
@@ -139,6 +171,24 @@ const AllCategories = () => {
       // setIsVisible(true);
       setIsEdit(true);
     }
+    if (type == 'Best-In') {
+      
+      setFormData({...entity, [type]: entity.value})
+      setTitle(type);
+      setIsEditOptions(true);
+      // setIsVisible(true);
+      setIsEdit(true);
+    }
+
+    if (type == 'Extra-Talent') {
+      
+      setFormData({...entity, [type]: entity.value})
+      setTitle(type);
+      setIsEditOptions(true);
+      // setIsVisible(true);
+      setIsEdit(true);
+    }
+    
     // setFormData({...entity, 'category': entity.value})
     setTitle(type);
     setIsVisible(true);
@@ -168,7 +218,7 @@ const AllCategories = () => {
         fetchCategories();
       }
     }
-    if(type == 'tags' ){
+    if(type == 'tags'){
       const updateTags = selectedCategory?.tags?.filter((item) => item?._id != id)
       const res = await updateTagsApi(selectedCategory?._id, updateTags)
       if(res){
@@ -178,6 +228,22 @@ const AllCategories = () => {
     if(type == 'filters') {
       const updateFilters = selectedCategory?.filters?.filter((item) => item?.key != id)
       const res = await updateFiltersApi(selectedCategory?._id, updateFilters)
+      if(res){
+        fetchCategories();
+      }
+    }
+
+    if(type == 'Best-In') {
+      const updateFilters = selectedCategory?.bestIn?.filter((item) => item?._id != id)
+      const res = await updateBestInApi(selectedCategory?._id, updateFilters)
+      if(res){
+        fetchCategories();
+      }
+    }
+
+    if(type == 'Extra-Talent') {
+      const updateFilters = selectedCategory?.extraTalent?.filter((item) => item?._id != id)
+      const res = await updateExtraTalentApi(selectedCategory?._id, updateFilters)
       if(res){
         fetchCategories();
       }
@@ -288,6 +354,7 @@ const AllCategories = () => {
             onClick={() => handleAdd('tags')}
           />
         </div>
+        <div className="half-container">
         {
           categories?.find((cat) => cat?._id === selectedCategory?._id)?.tags?.length ? categories?.find((cat) => cat?._id === selectedCategory?._id)?.tags?.map((tag, idx) => (
             <div className="single-tag">
@@ -317,6 +384,45 @@ const AllCategories = () => {
             </div>
           )) : <EmptyMessage /> 
         }
+        </div>
+        <Divider />
+        <div>
+        <div className="title">
+          <div>Best In</div>
+          <FileAddOutlined
+            onClick={() => handleAdd('Best-In')}
+          />
+        </div>
+        {
+          categories?.find((cat) => cat?._id === selectedCategory?._id)?.bestIn?.length ? categories?.find((cat) => cat?._id === selectedCategory?._id)?.bestIn?.map((bestIn, idx) => (
+            <div className="single-tag">
+              <div className="name-container">
+                <div className="serial-number">
+                  {idx + 1}.
+                </div>
+                <div
+                  className="cat-name"
+                  onClick={() => null}
+                >
+                  {bestIn.value}
+                </div>
+              </div>
+              <div className="action">
+                <EditOutlined onClick={() => handleEdit(bestIn, 'Best-In')}/>
+                <PopConfirm
+                  title='Are you sure?'
+                  onConfirm={() => {
+                    handleDelete(bestIn?._id, 'Best-In')
+                  }}
+                  body={
+                    <DeleteOutlined />
+                  }
+                />
+              </div>
+            </div>
+          )) : <EmptyMessage /> 
+        }
+      </div>
       </div>
 
       <div className="tags-container filters-container">
@@ -326,6 +432,7 @@ const AllCategories = () => {
           onClick={() => handleAdd('filters')}
         />
       </div>
+      <div className="half-container">
       {
         categories?.find((cat) => cat?._id === selectedCategory?._id)?.filters?.length ? categories?.find((cat) => cat?._id === selectedCategory?._id)?.filters?.map((filter, idx) => (
           <div className="single-tag">
@@ -346,6 +453,44 @@ const AllCategories = () => {
                 title='Are you sure?'
                 onConfirm={() => {
                   handleDelete(filter?.key, 'filters')
+                }}
+                body={
+                  <DeleteOutlined />
+                }
+              />
+            </div>
+          </div>
+        )) : <EmptyMessage /> 
+      }
+      </div>
+
+      <Divider />
+      <div className="title">
+      <div>Extra Talent</div>
+      <FileAddOutlined
+        onClick={() => handleAdd('Extra-Talent')}
+      />
+    </div>
+      {
+        categories?.find((cat) => cat?._id === selectedCategory?._id)?.extraTalent?.length ? categories?.find((cat) => cat?._id === selectedCategory?._id)?.extraTalent?.map((extraTalent, idx) => (
+          <div className="single-tag">
+            <div className="name-container">
+              <div className="serial-number">
+                {idx + 1}.
+              </div>
+              <div
+                className="cat-name"
+                onClick={() => null}
+              >
+                {extraTalent.value}
+              </div>
+            </div>
+            <div className="action">
+              <EditOutlined onClick={() => handleEdit(extraTalent, 'Extra-Talent')}/>
+              <PopConfirm
+                title='Are you sure?'
+                onConfirm={() => {
+                  handleDelete(extraTalent?._id, 'Extra-Talent')
                 }}
                 body={
                   <DeleteOutlined />
