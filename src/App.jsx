@@ -67,7 +67,7 @@ const App = () => {
     const data = await getCategoryApi();
     if(data) {
       setCategories(data);
-      const defaultFilter = data?.find((cat) => cat?._id == id);
+      const defaultFilter = data?.find((cat) => cat?._id == (id || '639823ebcac41f6a64632c69'));
       setSelectedCategory(defaultFilter?.value);
       setSelectedSubCategories(defaultFilter?.childern);
       setTags(defaultFilter?.tags);
