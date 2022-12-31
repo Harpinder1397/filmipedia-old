@@ -15,6 +15,12 @@ import MyImages from "./gallery/MyImages";
 import "./my-profile.less";
 import { useHistory, useParams } from "react-router-dom";
 import moment from "moment";
+import {
+  getCategoryApi,
+  updateBestInApi,
+  updateExtraTalentApi,
+  updateTagsApi,
+} from "../../api/getCategories";
 
 const MyProfile = () => {
   const myUserId = localStorage.getItem("user");
@@ -24,22 +30,37 @@ const MyProfile = () => {
   const [activeTab, setActiveTab] = useState(getActiveTab || 1);
   const [location, setLocation] = useState(undefined);
   const [isloading, setIsloading] = useState(false);
+  const [customValueAdd, setCustomValueAdd] = useState({});
   const [selectedState, setSelectedState] = useState(null);
   const [cities, setCities] = useState([]);
   const [files, setFiles] = useState({});
-  const { states } = useContext(FiltersContext);
+  const {
+    states,
+    categoryId,
+    setCategoryId,
+    bestIn,
+    setBestIn,
+    extraTalent,
+    setExtraTalent,
+    tags,
+    setTags,
+    fetchCategories,
+    setSubCategories,
+  } = useContext(FiltersContext);
   const { Id } = useParams();
   const userId = Id || myUserId;
   const createUserCheck = window.location.pathname == "/user/create/profile";
+
 
   const getUserDetails = async () => {
     setIsloading(true);
     const data = await getUserApi(userId).then((data) => {
       setIsloading(false);
+      setCategoryId(data?.categoryId);
+      setSubCategories(data?.categoryId);
       return data;
     });
     const { thumbnails, projects, ...rest } = data;
-
     setUserDetails({ thumbnails, projects, rest });
   };
 
@@ -50,7 +71,6 @@ const MyProfile = () => {
       getUserDetails();
     }
   }, [window.location.pathname]);
-
 
   const onChangeRestOptions = (e) => {
     const { name, value } = e.target;
@@ -95,7 +115,7 @@ const MyProfile = () => {
         alert("Please fill in mandatory fields.");
         return;
       }
-      const age = moment().diff(userDetails?.rest?.dateOfBirth, "years")
+      const age = moment().diff(userDetails?.rest?.dateOfBirth, "years");
       const payload = {
         ...userDetails.rest,
         age: age,
@@ -113,12 +133,62 @@ const MyProfile = () => {
       return;
     } else {
       setIsloading(true);
-      const age = moment().diff(userDetails?.rest?.dateOfBirth, "years")
-      const payloadCreate = {...userDetails?.rest, age: age }
+      const age = moment().diff(userDetails?.rest?.dateOfBirth, "years");
+      const payloadCreate = { ...userDetails?.rest, age: age };
       await updateUserApi(userId, payloadCreate).then(() => {
         setIsloading(false);
       });
     }
+
+    if (customValueAdd?.bestIn?.length) {
+      const convertArray = customValueAdd?.bestIn?.map((value, index) => ({
+        key: value.toLowerCase().replace(" ", "-"),
+        _id: new Date().valueOf() + index,
+        value: value,
+      }));
+      const payload = [...bestIn, ...convertArray];
+      const res = updateBestInApi(categoryId, payload);
+       if(res){
+          setTimeout(() => {
+          fetchCategories(categoryId)
+
+          }, 2000);
+       }
+    }
+    if (customValueAdd?.tags?.length) {
+      const convertArray = customValueAdd?.tags?.map((value, index) => ({
+        key: value.toLowerCase().replace(" ", "-"),
+        _id: new Date().valueOf() + index,
+        value: value,
+      }));
+      const payload = [...tags, ...convertArray];
+      const res = updateTagsApi(categoryId, payload);
+      if(res){
+        setTimeout(() => {
+          fetchCategories(categoryId)
+          }, 2000);
+      }
+    }
+    if (customValueAdd?.extraTalent?.length) {
+      const convertArray = customValueAdd?.extraTalent?.map((value, index) => ({
+        key: value.toLowerCase().replace(" ", "-"),
+        _id: new Date().valueOf() + index,
+        value: value,
+      }));
+      const payload = [...extraTalent, ...convertArray];
+      const res = updateExtraTalentApi(categoryId, payload);
+      if(res){
+        setTimeout(() => {
+          // fetchCategories();
+          fetchCategories(categoryId)
+
+          }, 2000);
+      }
+    }
+    // const response = fetchCategories();
+    // if (response) {
+    //   setSubCategories(categoryId);
+    // }
   };
 
   useEffect(() => {
@@ -210,10 +280,6 @@ const MyProfile = () => {
     localStorage.setItem("activeTab", activeTab);
   }, [activeTab]);
 
-  // useEffect(() => {
-  //   setUserDetails({})
-  // }, [])
-
   const taboOnChange = (e) => {
     setActiveTab(e);
   };
@@ -231,6 +297,8 @@ const MyProfile = () => {
                   onChangeRestNumberOptions={onChangeRestNumberOptions}
                   setUserDetails={setUserDetails}
                   updateBasicDetails={updateBasicDetails}
+                  customValueAdd={customValueAdd}
+                  setCustomValueAdd={setCustomValueAdd}
                 />
               </Tabs.TabPane>
               {!createUserCheck && (

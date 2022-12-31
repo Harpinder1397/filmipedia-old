@@ -52,21 +52,53 @@ const App = () => {
   const [jobFormData, setJobFormData] = useState({userId: userId, ...paramQuery});
   const [selectedSubCategories, setSelectedSubCategories] = useState([]);
   const [filters, setFilters] = useState([]);
+  const [categoryId, setCategoryId] = useState();
   const [token, setToken] = useState(false);
   const [subCategory, setSubCategory] = useState(undefined);
   const [tags, setTags] = useState([]); 
+  const [bestIn, setBestIn] = useState([]); 
+  const [extraTalent, setExtraTalent] = useState([]); 
   const history = useHistory();
   const [category, setSelectedCategory] = useState([]);
   const [isloading, setIsloading] = useState(false);
-  const getCategories = async () => {
+
+
+  const fetchCategories = async (id) => {
     const data = await getCategoryApi();
     if(data) {
       setCategories(data);
+      const defaultFilter = data?.find((cat) => cat?._id == id);
+      setSelectedCategory(defaultFilter?.value);
+      setSelectedSubCategories(defaultFilter?.childern);
+      setTags(defaultFilter?.tags);
+      setBestIn(defaultFilter?.bestIn);
+      setExtraTalent(defaultFilter?.extraTalent);
+      setFilters(defaultFilter?.filters)
+      setCategoryId(defaultFilter?.categoryId);
+    } else {
+      setCategories([]);
+    }
+  };
+
+  const getCategories = async () => {
+    const data = await getCategoryApi();
+    if(data && formData) {
       const defaultFilter = data?.find((cat) => cat?._id == '639823ebcac41f6a64632c69');
       setSelectedCategory(defaultFilter?.value);
       setSelectedSubCategories(defaultFilter?.childern);
       setTags(defaultFilter?.tags);
+      // setBestIn(defaultFilter?.bestIn);
+      setExtraTalent(defaultFilter?.extraTalent);
       setFilters(defaultFilter?.filters)
+      setCategoryId(defaultFilter?.categoryId);
+
+    } else {
+      setSelectedCategory([]);
+      setSelectedSubCategories([]);
+      setTags([]);
+      setBestIn([]);
+      setExtraTalent([]);
+      setFilters([])
     }
     // const updateData = data?.map((item) => ({
     //   ...item,
@@ -79,7 +111,6 @@ const App = () => {
   //   const data = await getStatesApi();
   //   setStates(data);
   // };
-
 
   useEffect(() => {
     if(location.pathname.includes('jobs') && jobFormData){
@@ -109,30 +140,37 @@ const App = () => {
 
   const setSubCategories = (id) => {
     const data = categories?.find((cat) => cat._id == id);
+
     if(data) {
       setSelectedCategory(data?.value);
       setSelectedSubCategories(data?.childern);
       setTags(data?.tags);
+      setBestIn(data?.bestIn);
+      setExtraTalent(data?.extraTalent);
       setFilters(data?.filters)
     } else {
       setSelectedCategory([]);
       setSelectedSubCategories([]);
       setTags([]);
+      setBestIn([]);
+      setExtraTalent([]);
       setFilters([])
     }
    
   };
-
-
+  
   const { mutate: fetchStatesMutation } = useUpdateStateMutation();
 
   localStorage.setItem("loading", true);
+
+
 
   useEffect(() => {
     const token = localStorage.getItem("token");
     // getStates();
     setToken(token);
-    fetchStatesMutation();  
+    fetchStatesMutation();
+fetchCategories()  
     // setSubCategories()
   }, []);
 
@@ -160,6 +198,7 @@ const App = () => {
     }
   }
 
+
   return (
     <Spin 
     spinning={false}
@@ -175,12 +214,18 @@ const App = () => {
             setToken,
             tags,
             filters,
+            bestIn,
+            extraTalent,
             subCategory,
             setSubCategory,
             formData,
             setFormData,
             jobFormData,
-            setJobFormData
+            setJobFormData,
+            categoryId,
+            setCategoryId,
+            getCategories,
+            fetchCategories
           }}
         >
          {renderTopNavbar()}

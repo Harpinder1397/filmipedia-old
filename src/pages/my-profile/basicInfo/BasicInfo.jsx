@@ -1,10 +1,9 @@
 import { Row, Col, Button, Form, Input, Select, Divider, Switch } from "antd";
 import FormInput from "../../../common/inputs/FormInput";
 import FormSelect from "../../../common/inputs/FormSelect";
-import { bestInOptions, genderOptions, languageOptions } from "../../../constant/common";
+import { genderOptions, languageOptions } from "../../../constant/common";
 import { FiltersContext } from "../../../App";
 import {
-  extraTalent,
   eyeColors,
   hairColors,
   skinColors,
@@ -22,12 +21,14 @@ const BasicInfo = ({
   onChangeRestNumberOptions,
   setUserDetails,
   updateBasicDetails,
+  setCustomValueAdd,
+  customValueAdd
 }) => {
   const [location, setLocation] = useState(undefined);
   const [selectedState, setSelectedState] = useState(null);
   const [collapsed, setCollapsed] = useState(false);
   const [cities, setCities] = useState([]);
-  const { tags, categories, setSubCategories, selectedSubCategories } =
+  const { tags, bestIn, extraTalent, categories, setSubCategories,setCategoryId, selectedSubCategories } =
     useContext(FiltersContext);
   const { data } = useStateQuery();
 
@@ -36,7 +37,6 @@ const BasicInfo = ({
   const {mutate: getCountriesMutation } = useGetCountriesMutation();
   const {mutate: getStateMutation } = useGetStateMutation();
   
-console.log(cities, 'statesList.subdivision.name')
 
 const handleThemeMode = (e) => {
   const data = {
@@ -74,11 +74,11 @@ const handleThemeMode = (e) => {
   // const cities = getUniqueListBy(data, 'state').sort((a, b) => a.state.localeCompare(b.state)).map(data =>(
   //   {...data, 'value': data.state }
   // ));
-
+// const db = {}
   return (
     <>
+    <Divider orientation="left" className="divider-color-font">Category Info</Divider>
     <Row gutter={[12, 12]} className="basic-info-ant-row">
-
     <Col xs={24} sm={12} md={8} lg={6} xxl={6} xl={6}>
     <FormSelect
       name="category"
@@ -86,9 +86,10 @@ const handleThemeMode = (e) => {
       value={userDetails?.rest?.category}
       onSelect={(id, val) => {
         setSubCategories(val.id);
+        setCategoryId(val.id);
         const data = {
           ...userDetails,
-          rest: { ...userDetails.rest, category: val.value, subCategory: '', tags: []},
+          rest: { ...userDetails.rest, categoryId: val.id, category: val.value, subCategory: '', tags: [], extraTalent: [], bestIn: []},
         };
         setUserDetails(data);
       }}
@@ -126,24 +127,42 @@ const handleThemeMode = (e) => {
           label="Tags"
           mode="tags"
           value={userDetails?.rest?.tags}
-          onSelect={(cat, val) => {
-            const data = {
-              ...userDetails,
-              rest: {
-                ...userDetails.rest,
-                tags: userDetails?.rest?.tags?.length
-                  ? [...userDetails.rest.tags, val.value]
-                  : [val.value],
-              },
-            };
-            setUserDetails(data);
-          }}
+          // onSelect={(cat, val) => {
+          //   const data = {
+          //     ...userDetails,
+          //     rest: {
+          //       ...userDetails.rest,
+          //       tags: userDetails?.rest?.tags?.length
+          //         ? [...userDetails.rest.tags, val.value]
+          //         : [val.value],
+          //     },
+          //   };
+          //   setUserDetails(data);
+          // }}
           onDeselect={(val) => {
             const tags = userDetails.rest.tags.filter((item) => item !== val);
             setUserDetails({
               ...userDetails,
               rest: { ...userDetails.rest, tags: tags },
             });
+          }}
+          onChange={(e) => {
+            const convertArray = tags.map((x, index) => (
+              x.value
+            ));
+            const newValue = e.filter(element => !convertArray.includes(element));
+            const data = {
+                ...userDetails,
+                rest: {
+                  ...userDetails.rest,
+                  tags: e
+                },
+              };
+              setUserDetails(data);
+              setCustomValueAdd({
+                ...customValueAdd,
+                tags: newValue
+              })
           }}
           options={tags}
           showSearch
@@ -156,15 +175,125 @@ const handleThemeMode = (e) => {
         />
       </Col>
 
+      <Col xs={24} sm={12} md={8} lg={6} xxl={6} xl={6}>
+        <FormSelect
+          name="extraTalent"
+          label="Extra Talent"
+          mode="tags"
+          value={userDetails?.rest?.extraTalent}
+          // onSelect={(cat, val) => {
+          //   const data = {
+          //     ...userDetails,
+          //     rest: {
+          //       ...userDetails.rest,
+          //       extraTalent: userDetails?.rest?.extraTalent?.length
+          //         ? [...userDetails.rest.extraTalent, val.value]
+          //         : [val.value],
+          //     },
+          //   };
+          //   setUserDetails(data);
+          // }}
+          onDeselect={(val) => {
+            const extraTalent = userDetails.rest.extraTalent.filter((item) => item !== val);
+            setUserDetails({
+              ...userDetails,
+              rest: { ...userDetails.rest, extraTalent: extraTalent },
+            });
+          }}
+          onChange={(e) => {
+            const convertArray = extraTalent.map((x, index) => (
+              x.value
+            ));
+            const newValue = e.filter(element => !convertArray.includes(element));
+            const data = {
+                ...userDetails,
+                rest: {
+                  ...userDetails.rest,
+                  extraTalent: e
+                },
+              };
+              setUserDetails(data);
+              setCustomValueAdd({
+                ...customValueAdd,
+                extraTalent: newValue
+              })
+          }}
+          options={extraTalent}
+          showSearch
+          required
+          filterOption={(input, option) =>
+            option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+          }
+          // validationError={formDataErrors.languages}
+          width={"100%"}
+        />
+      </Col>
+      <Col xs={24} sm={12} md={8} lg={6} xxl={6} xl={6}>
+        <FormSelect
+          name="bestIn"
+          label="Best in"
+          mode="tags"
+          value={userDetails?.rest?.bestIn}
+          // onSelect={(cat, val) => {
+          //   const data = {
+          //     ...userDetails,
+          //     rest: {
+          //       ...userDetails.rest,
+          //       bestIn: userDetails?.rest?.bestIn?.length
+          //         ? [...userDetails.rest.bestIn, val.value]
+          //         : [val.value],
+          //     },
+          //   };
+          //   setUserDetails(data);
+          // }}
+          onDeselect={(val) => {
+            const bestIn = userDetails.rest.bestIn.filter(
+              (item) => item !== val
+            );
+            setUserDetails({
+              ...userDetails,
+              rest: { ...userDetails.rest, bestIn: bestIn },
+            });
+          }}
+          onChange={(e) => {
+            const convertArray = bestIn.map((x, index) => (
+              x.value
+            ));
+            const newValue = e.filter(element => !convertArray.includes(element));
+            const data = {
+                ...userDetails,
+                rest: {
+                  ...userDetails.rest,
+                  bestIn: e
+                },
+              };
+              setUserDetails(data);
+              setCustomValueAdd({
+                ...customValueAdd,
+                bestIn: newValue
+              })
+          }}
+          options={bestIn}
+          
+          showSearch
+          required
+          filterOption={(input, option) =>
+            option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+          }
+          // validationError={formDataErrors.languages}
+          width={"100%"}
+        />
+      </Col>
+
     </Row>
-    <Divider></Divider>
+    <Divider orientation="left" className="divider-color-font">Status Info</Divider>
     <Col xs={24} sm={24} md={24} lg={24} xxl={24} xl={24}>
       <div className="checkbox-mode-available">
       <span>Available :</span>
       <Switch checked={userDetails?.rest?.available == 'Available' ? true : false} onChange={handleThemeMode} />
       </div>
     </Col>
-    <Divider></Divider>
+    <Divider orientation="left" className="divider-color-font">Basic Info</Divider>
 
     <Row gutter={[12, 12]} className="basic-info-ant-row">
       <Col xs={24} sm={12} md={8} lg={6} xxl={6} xl={6}>
@@ -238,78 +367,7 @@ const handleThemeMode = (e) => {
           required
         />
       </Col>
-      <Col xs={24} sm={12} md={8} lg={6} xxl={6} xl={6}>
-        <FormSelect
-          name="extraTalent"
-          label="Extra Talent"
-          mode="tags"
-          value={userDetails?.rest?.extraTalent}
-          onSelect={(cat, val) => {
-            const data = {
-              ...userDetails,
-              rest: {
-                ...userDetails.rest,
-                extraTalent: userDetails?.rest?.extraTalent?.length
-                  ? [...userDetails.rest.extraTalent, val.value]
-                  : [val.value],
-              },
-            };
-            setUserDetails(data);
-          }}
-          onDeselect={(val) => {
-            const extraTalent = userDetails.rest.extraTalent.filter((item) => item !== val);
-            setUserDetails({
-              ...userDetails,
-              rest: { ...userDetails.rest, extraTalent: extraTalent },
-            });
-          }}
-          options={extraTalent}
-          showSearch
-          required
-          filterOption={(input, option) =>
-            option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
-          }
-          // validationError={formDataErrors.languages}
-          width={"100%"}
-        />
-      </Col>
-      <Col xs={24} sm={12} md={8} lg={6} xxl={6} xl={6}>
-        <FormSelect
-          name="bestIn"
-          label="Best in"
-          mode="tags"
-          value={userDetails?.rest?.bestIn}
-          onSelect={(cat, val) => {
-            const data = {
-              ...userDetails,
-              rest: {
-                ...userDetails.rest,
-                bestIn: userDetails?.rest?.bestIn?.length
-                  ? [...userDetails.rest.bestIn, val.value]
-                  : [val.value],
-              },
-            };
-            setUserDetails(data);
-          }}
-          onDeselect={(val) => {
-            const bestIn = userDetails.rest.bestIn.filter(
-              (item) => item !== val
-            );
-            setUserDetails({
-              ...userDetails,
-              rest: { ...userDetails.rest, bestIn: bestIn },
-            });
-          }}
-          options={bestInOptions}
-          showSearch
-          required
-          filterOption={(input, option) =>
-            option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
-          }
-          // validationError={formDataErrors.languages}
-          width={"100%"}
-        />
-      </Col>
+
       <Col xs={24} sm={12} md={8} lg={6} xxl={6} xl={6}>
         {/* <FormSelect
             name="languages"
@@ -384,6 +442,34 @@ const handleThemeMode = (e) => {
           // disabled
         />
       </Col>
+      <Col xs={24} sm={12} md={8} lg={6} xxl={6} xl={6}>
+            <FormInput
+              type="number"
+              name="budget"
+              label="Budget (per day)"
+              value={userDetails?.rest?.budget}
+              onChange={onChangeRestOptions}
+              // validationError={formDataErrors.experience}
+              required
+              // disabled
+            />
+          </Col>
+      <Col xs={24} sm={12} md={8} lg={6} xxl={6} xl={6}>
+      <FormInput
+        type="textarea"
+        name="bio"
+        label="Bio"
+        value={userDetails?.rest?.bio}
+        onChange={onChangeRestOptions}
+        // validationError={formDataErrors.bio}
+        // disabled
+      />
+    </Col>
+      </Row>
+      <Divider orientation="left" className="divider-color-font">Location Info</Divider>
+
+      <Row gutter={[12, 12]} className="basic-info-ant-row">
+
       <Col xs={24} sm={12} md={8} lg={6} xxl={6} xl={6}>
       <FormSelect
         name="country"
@@ -483,19 +569,15 @@ const handleThemeMode = (e) => {
           width={"100%"}
         />
       </Col>
-      <Col xs={24} sm={12} md={8} lg={6} xxl={6} xl={6}>
-        <FormInput
-          type="textarea"
-          name="bio"
-          label="Bio"
-          value={userDetails?.rest?.bio}
-          onChange={onChangeRestOptions}
-          // validationError={formDataErrors.bio}
-          // disabled
-        />
-      </Col>
+      </Row>
+
+      
       {userDetails?.rest?.category === "Cast" ? (
         <>
+      <Divider orientation="left" className="divider-color-font">Extra Info</Divider>
+        
+        <Row gutter={[12, 12]} className="basic-info-ant-row">
+
           <Col xs={24} sm={12} md={8} lg={6} xxl={6} xl={6}>
             <FormInput
               type="number"
@@ -521,18 +603,6 @@ const handleThemeMode = (e) => {
             />
           </Col>
           <Col xs={24} sm={12} md={8} lg={6} xxl={6} xl={6}>
-            <FormInput
-              type="number"
-              name="budget"
-              label="Budget (per day)"
-              value={userDetails?.rest?.budget}
-              onChange={onChangeRestOptions}
-              // validationError={formDataErrors.experience}
-              required
-              // disabled
-            />
-          </Col>
-          <Col xs={24} sm={12} md={8} lg={6} xxl={6} xl={6}>
             <FormSelect
               name="eyes"
               label="Eyes color"
@@ -546,7 +616,7 @@ const handleThemeMode = (e) => {
                 setUserDetails(data);
               }}
               // onSelect={(cat, val) => {
-              //   // console.log('language', val, cat)
+
               //   setFormData({...formData, eyes: val.children})
               // }}
               options={eyeColors}
@@ -611,7 +681,8 @@ const handleThemeMode = (e) => {
               width={"100%"}
             />
           </Col>
-        </>
+        </Row>
+      </>
       ) : null}
       <Col
         xs={24}
@@ -626,7 +697,6 @@ const handleThemeMode = (e) => {
           Save
         </Button>
       </Col>
-    </Row>
     </>
   );
 };

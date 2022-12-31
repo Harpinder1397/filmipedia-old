@@ -349,7 +349,7 @@ const Navbar = ({setIsloading}) => {
                 const getSubCategories = categories.find(
                   (item) => item._id == val.id
                 );
-                setSubCategoriesList(getSubCategories?.childern);
+                setSubCategoriesList(val.id);
                 setSubCategories(val.id);
                 // HandlenewChnage()
                 if(jobsLocation){
