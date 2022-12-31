@@ -13,13 +13,10 @@ import {
   skinColors,
   hairColors,
   eyeColors,
-  extraTalent,
   genderFilter,
-  languageOptions,
   experienceFilter,
   ageFilter,
   budgetFilter,
-  bestInOptions,
   availableOptions,
 } from "../../constant/common";
 
@@ -37,7 +34,7 @@ const CommonDataBaseList = ({isFav, loading }) => {
   
   const location = useLocation(); // React Hook
   const history = useHistory();
-  const { filters,formData, setFormData } = useContext(FiltersContext);
+  const { filters, formData, extraTalent, bestIn, setFormData, fetchCategories, categoryId } = useContext(FiltersContext);
   const formData1 = qs.parse(location?.search)
   const { data: allUsers } = useUserQuery();
   const { mutate: userNameMutation, isLoading } = useUpdateUserNameMutation();
@@ -74,6 +71,7 @@ const CommonDataBaseList = ({isFav, loading }) => {
     // history.replace({
     //   search: '',
     // })
+    fetchCategories(categoryId);
   }, []);
 
   const renderLeftSideFilter = () => {
@@ -249,7 +247,7 @@ const CommonDataBaseList = ({isFav, loading }) => {
               setFormData({ ...formData, bestIn: val.value });
             }}
             onClear={() => setFormData({ ...formData, bestIn: "" })}
-            options={bestInOptions}
+            options={bestIn}
           />
         );
       case "extra-talent":
