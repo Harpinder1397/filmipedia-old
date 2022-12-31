@@ -149,10 +149,11 @@ const MyProfile = () => {
       const payload = [...bestIn, ...convertArray];
       const res = updateBestInApi(categoryId, payload);
        if(res){
+          setIsloading(true);
           setTimeout(() => {
           fetchCategories(categoryId)
-
-          }, 2000);
+          setIsloading(false);
+          }, 1000);
        }
     }
     if (customValueAdd?.tags?.length) {
@@ -164,9 +165,11 @@ const MyProfile = () => {
       const payload = [...tags, ...convertArray];
       const res = updateTagsApi(categoryId, payload);
       if(res){
+        setIsloading(true);
         setTimeout(() => {
           fetchCategories(categoryId)
-          }, 2000);
+          setIsloading(false);
+          }, 1000);
       }
     }
     if (customValueAdd?.extraTalent?.length) {
@@ -178,11 +181,13 @@ const MyProfile = () => {
       const payload = [...extraTalent, ...convertArray];
       const res = updateExtraTalentApi(categoryId, payload);
       if(res){
+        setIsloading(true);
         setTimeout(() => {
           // fetchCategories();
+          setIsloading(false);
           fetchCategories(categoryId)
 
-          }, 2000);
+          }, 1000);
       }
     }
     // const response = fetchCategories();
