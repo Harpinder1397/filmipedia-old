@@ -48,7 +48,7 @@ const App = () => {
   const [categories, setCategories] = useState([]);
   const location = useLocation(); // React Hook
   const paramQuery = qs.parse(location?.search)
-  const [formData, setFormData] = useState({category: 'Cast', ...paramQuery});
+  const [formData, setFormData] = useState({category: 'Cast',limit: 100, ...paramQuery});
   const [jobFormData, setJobFormData] = useState({userId: userId, ...paramQuery});
   const [selectedSubCategories, setSelectedSubCategories] = useState([]);
   const [filters, setFilters] = useState([]);

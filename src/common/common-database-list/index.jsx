@@ -34,22 +34,25 @@ const CommonDataBaseList = ({isFav, loading }) => {
   
   const location = useLocation(); // React Hook
   const history = useHistory();
-  const { filters, formData, extraTalent, bestIn, setFormData, fetchCategories, categoryId } = useContext(FiltersContext);
+  const paramQuery = qs.parse(location?.search)
+  const { filters, formData, categories, extraTalent, bestIn, setFormData, fetchCategories, categoryId, setSubCategories } = useContext(FiltersContext);
   const formData1 = qs.parse(location?.search)
   const { data: allUsers } = useUserQuery();
   const { mutate: userNameMutation, isLoading } = useUpdateUserNameMutation();
   const {data: countriesList } = useGetCountriesQuery();
   const {mutate: getCountriesMutation } = useGetCountriesMutation();
 
+
   const onShowSizeChange = (page, limit) => {
     const payload = {
       ...formData,
       page: page,
-      // limit: limit
+      limit: limit
     };
     Object.keys(payload).forEach((key) => {
       if (!payload[key]) delete payload[key];
     });
+    setFormData(payload)
     userNameMutation(payload);
   };
 
@@ -63,9 +66,9 @@ const CommonDataBaseList = ({isFav, loading }) => {
 
   useEffect(() => {
     getCountriesMutation()
-    const payload = formData;
-    Object.keys(formData).forEach((key) => {
-      if (!formData[key]) delete formData[key];
+    const payload = paramQuery;
+    Object.keys(paramQuery).forEach((key) => {
+      if (!paramQuery[key]) delete paramQuery[key];
     });
     userNameMutation(payload);
     // history.replace({
@@ -118,6 +121,28 @@ const CommonDataBaseList = ({isFav, loading }) => {
               formData={formData1}
               setFormData={setFormData}
             />
+          </Panel>
+        </Collapse>
+      </>
+    );
+  };
+
+  const renderCategoryLeftSideFilter = () => {
+    return (
+      <>
+        <Collapse defaultActiveKey={["1"]}>
+        {formData1?.category && <div className="active-filters"> <div className='show-text-value'>{renderShowValue('category')}</div><CloseCircleOutlined onClick={() => {
+          setFormData({...formData, category: '', subCategory: ''})
+        }} className="close-icon" /></div> }
+          <Panel header="Category" key="1">
+          <SubCategoryComponent
+            title="Category"
+            name="category"
+            options={categories}
+            formData={formData1}
+            setFormData={setFormData}
+            setSubCategories={setSubCategories}
+          />
           </Panel>
         </Collapse>
       </>
@@ -323,6 +348,8 @@ const CommonDataBaseList = ({isFav, loading }) => {
     switch (key) {
       case "available":
         return formData1.available || ''
+      case "category":
+        return formData1?.category && `${formData1?.category || ''} ${formData1?.subCategory || ''}`
       case "experience":
         return formData1?.experienceMinimum && `${formData1?.experienceMinimum || ''} - ${formData1?.experienceMaximum || ''}`
       case "location":
@@ -412,7 +439,10 @@ const CommonDataBaseList = ({isFav, loading }) => {
 
   return (
     <div className="list-con">
-      <div className="left-side-bar">{renderConditionFilter()}</div>
+      <div className="left-side-bar">
+      {renderCategoryLeftSideFilter()}
+      {renderConditionFilter()}
+      </div>
 
       <div className="database-right-side-section">
         <FilterMenu
@@ -420,12 +450,22 @@ const CommonDataBaseList = ({isFav, loading }) => {
           setIsloading={setIsloading}
         />
         <div className="database-container">
-        {/*<CommonList
+        <CommonList
             users={allUsers?.users || allUsers}
             isFav={isFav}
             isLoading={isLoading || loading || isloading}
-  /> */}
-           <InfiniteScrollCard formData={formData1} userNameMutation={userNameMutation} />
+  />
+  <div className="pagination-section">
+    <CommonPagination
+      pageSize={100}
+      total={allUsers?.total}
+      current={paramQuery?.page || 1}
+      onShowSizeChange={onShowSizeChange}
+    />
+
+  </div>
+
+          {/* <InfiniteScrollCard formData={formData1} userNameMutation={userNameMutation} />*/}
           {/* <CommonScroll allUsers={allUsers} userNameMutation={userNameMutation}  />*/}
         </div>
 

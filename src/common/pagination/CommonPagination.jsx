@@ -5,17 +5,29 @@ import { Pagination } from 'antd';
 //   console.log(current, pageSize, 'gfggfg');
 // };
 
-const CommonPagination = ({onShowSizeChange, total}) => {
+const CommonPagination = ({onShowSizeChange, total, current, tablePagination, pageSize}) => {
     return (
+      <> {tablePagination ? 
     <Pagination
       showSizeChanger={false}
       onChange={onShowSizeChange}
-    //   onShowSizeChange={onShowSizeChange}
-    //   defaultCurrent={1}
+      // onShowSizeChange={onShowSizeChange}
+      // current={current}
+      defaultCurrent={1}
     // pageSizeOptions={20}
-    pageSize={9}
+      pageSize={pageSize || 10}
       total={total}
-    />
+    /> : <Pagination
+    showSizeChanger={false}
+    onChange={onShowSizeChange}
+    // onShowSizeChange={onShowSizeChange}
+    current={current}
+    // defaultCurrent={current}
+  // pageSizeOptions={20}
+    pageSize={pageSize || 10}
+    total={total}
+  /> 
+    } </>
     )
     };
 export default CommonPagination;

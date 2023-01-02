@@ -24,7 +24,7 @@ const InfiniteScrollCard = ({formData, userNameMutation}) => {
 
   const fetchMoreData = () => {
     setPage(page + 1)
-    const payload = {...formData, page: page + 1, limit: 30};
+    const payload = {...formData, page: page + 1, limit: 100};
     Object.keys(payload).forEach(key => {
       if(!payload[key])
         delete payload[key]

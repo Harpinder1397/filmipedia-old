@@ -19,7 +19,7 @@ const ManageUsers = ({states }) => {
   const onShowSizeChange = (page, limit) => {
     const payload = {
       page: page,
-      // limit: limit
+      limit: limit
     };
     Object.keys(payload).forEach(key => {
       if(!payload[key])
@@ -106,7 +106,15 @@ const ManageUsers = ({states }) => {
     // }else {
     //   fetchStatesMutation();
     // }
-    fetchserNameMutation();
+    const payload = {
+      page: 1,
+      limit: 10
+    };
+    Object.keys(payload).forEach(key => {
+      if(!payload[key])
+        delete payload[key]
+    });
+    fetchserNameMutation(payload);
   }, []);
 
   return (
@@ -122,7 +130,7 @@ const ManageUsers = ({states }) => {
         // onChange={hanlePaginationChange}
       />
       <div className="pagination-section">
-      {userList?.total >= 9 && <CommonPagination total={userList?.total} onShowSizeChange={onShowSizeChange}/>}
+        <CommonPagination pageSize={10} tablePagination={true} total={userList?.total} onShowSizeChange={onShowSizeChange}/>
        </div>
     </div>
     </Spin>

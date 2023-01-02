@@ -36,12 +36,14 @@ const CommonJobList = (props) => {
   const {
     jobFormData,
     setJobFormData,
-    categories
+    categories,
   } = useContext(FiltersContext);
   const location = useLocation(); // React Hook
   const jobFormDataQuery = qs.parse(location?.search)
+  const jobsLocation = location.pathname.includes('jobs')
 
-  console.log(jobFormData, 'jobFormData')
+
+  console.log(jobFormData, 'jobFormData jobFormData')
 
   const [isloading, setIsloading] = useState(false);
   const {data: countriesList } = useGetCountriesQuery();
@@ -66,7 +68,7 @@ const CommonJobList = (props) => {
   const renderLeftSideFilter = () => {
     return (
       <>
-      {/*<Collapse defaultActiveKey={[""]}>
+      <Collapse defaultActiveKey={[""]}>
       {jobFormDataQuery?.category ? <div className="active-filters"> <div className='show-text-value'>{`${jobFormDataQuery?.category || ''} ${jobFormDataQuery?.subCategory || ''}`}</div><CloseCircleOutlined onClick={() => {
         setJobFormData({...jobFormDataQuery, category: null, subCategory: null});
         }} className="close-icon" /></div> : ''}
@@ -77,9 +79,10 @@ const CommonJobList = (props) => {
         options={categories}
         formData={jobFormDataQuery}
         setFormData={setJobFormData}
+        jobsLocation={jobsLocation}
       />
         </Panel>
-      </Collapse>*/}
+      </Collapse>
 
         <Collapse defaultActiveKey={[""]}>
         {jobFormDataQuery?.city || jobFormDataQuery?.state || jobFormDataQuery?.country ? <div className="active-filters"> <div className='show-text-value'>{`${jobFormDataQuery?.country || ''}${jobFormDataQuery?.state || ''}${jobFormDataQuery?.city && jobFormDataQuery?.city || '' }`}</div><CloseCircleOutlined onClick={() => {

@@ -37,8 +37,9 @@ const Navbar = ({setIsloading}) => {
   const userName  = localStorage.getItem("userName");
   const myUserId = localStorage.getItem("user");
   const jobsLocation = location.pathname.includes('jobs')
+  const paramQuery = qs.parse(location?.search)
 
-  
+  console.log(paramQuery, 'paramQuery')
   const {
     categories,
     setSubCategories,
@@ -332,12 +333,11 @@ const Navbar = ({setIsloading}) => {
   return (
     <Layout.Header className="navbar">
       <Row className="navbar-ant-row" justify="space-around" align="middle">
-        <div className="ant-row ant-row-middle navbar__left">
-          {/* <div className="navbar__logo" > */}
-          {/* F I L M I P E D I A */}
+        <div className="navbar__logo" >
+          F I L M I P E D I A
           {/* W E B S I T E */}
-
-          {/* </div> */}
+        </div>
+        <div className="ant-row ant-row-middle navbar__left">
           <div className="d-flex">
             <FormSelect
               allowClear={true}
@@ -350,7 +350,7 @@ const Navbar = ({setIsloading}) => {
                   (item) => item._id == val.id
                 );
                 setSubCategoriesList(val.id);
-                setSubCategories(val.id);
+                // setSubCategories(val.id);
                 // HandlenewChnage()
                 if(jobsLocation){
                   setJobFormData({
@@ -364,7 +364,9 @@ const Navbar = ({setIsloading}) => {
                     ...formData,
                     category: val.value,
                     subCategory: "",
-                    tags: ''
+                    tags: '',
+                    page: 1,
+                    limit: 100
                   });
                 }
                 setTags(getSubCategories?.tags)
@@ -373,7 +375,7 @@ const Navbar = ({setIsloading}) => {
                 if(jobsLocation){
                     setJobFormData({ ...formData, category: "", subCategory: "" });
                 }else {
-                  setFormData({ ...formData, category: "", subCategory: "" });
+                  setFormData({ ...formData, category: "", subCategory: "", page: 1 });
                 }
                 setSubCategories("");
                 setSubCategoriesList([])
@@ -397,14 +399,96 @@ const Navbar = ({setIsloading}) => {
                 if(jobsLocation){
                   setJobFormData({ ...formData, subCategory: val.value });
                 }else {
-                  setFormData({ ...formData, subCategory: val.value });
+                  setFormData({ ...formData, subCategory: val.value, page: 1 });
                 }
               }}
               onClear={() => {
                 if(jobsLocation){
                   setJobFormData({ ...formData, subCategory: "" })
                 }else {
-                  setFormData({ ...formData, subCategory: "" })
+                  setFormData({ ...formData, subCategory: "", page: 1 })
+                }
+              }}
+              options={selectedSubCategories}
+              filterOption={(input, option) =>
+                option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+              }
+              // width={'50%'}
+              value={formData?.subCategory}
+            />
+          </div>
+        </div>
+
+        <div className="ant-row ant-row-middle navbar__left">
+          <div className="d-flex">
+            <FormSelect
+              allowClear={true}
+              showSearch
+              placeholder="Please select"
+              className="navbar__category-selector"
+              onSelect={(id, val) => {
+                console.log(val.id, 'val')
+                const getSubCategories = categories.find(
+                  (item) => item._id == val.id
+                );
+                setSubCategoriesList(val.id);
+                // setSubCategories(val.id);
+                // HandlenewChnage()
+                if(jobsLocation){
+                  setJobFormData({
+                    ...formData,
+                    category: val.value,
+                    subCategory: "",
+                    tags: ''
+                  });
+                }else {
+                  setFormData({
+                    ...formData,
+                    category: val.value,
+                    subCategory: "",
+                    tags: '',
+                    page: 1,
+                    limit: 100
+                  });
+                }
+                setTags(getSubCategories?.tags)
+              }}
+              onClear={() => {
+                if(jobsLocation){
+                    setJobFormData({ ...formData, category: "", subCategory: "" });
+                }else {
+                  setFormData({ ...formData, category: "", subCategory: "", page: 1 });
+                }
+                setSubCategories("");
+                setSubCategoriesList([])
+                setTags([]);
+              }}
+              options={categories}
+              filterOption={(input, option) =>
+                option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+              }
+              value={formData?.category}
+            />
+            <FormSelect
+              allowClear={true}
+              showSearch
+              placeholder="Please select"
+              className="navbar__tag-selector"
+              onSelect={(id, val) => {
+                // selectedSubCategories(id);
+                // setSubCategory(val.key)
+                
+                if(jobsLocation){
+                  setJobFormData({ ...formData, subCategory: val.value });
+                }else {
+                  setFormData({ ...formData, subCategory: val.value, page: 1 });
+                }
+              }}
+              onClear={() => {
+                if(jobsLocation){
+                  setJobFormData({ ...formData, subCategory: "" })
+                }else {
+                  setFormData({ ...formData, subCategory: "", page: 1 })
                 }
               }}
               options={selectedSubCategories}
@@ -426,7 +510,7 @@ const Navbar = ({setIsloading}) => {
             if(jobsLocation){
               setJobFormData({...formData, title: e.target.value})
             }else {
-              setFormData({ ...formData, fullName: e.target.value })
+              setFormData({ ...formData, fullName: e.target.value, page: 1 })
             }
           }}
         />
@@ -438,7 +522,7 @@ const Navbar = ({setIsloading}) => {
             handleOnClick={handleOnClick}
           />
       </Row>
-      {tags?.length ? (
+      {tags?.length && location.pathname.includes('database') && paramQuery?.category ? (
         <Row className="navbar__tags-container">
           <div className="tag-list">
           {tags?.map((tag) => (

@@ -5,6 +5,7 @@ import './subCategoriesStyle.less';
 import GroupCheckbox from "../group-checkbox/GroupCheckbox";
 import { useStateQuery } from "../../api/getStatesQuery";
 import { mapCities, mapStates } from "../../common/utils";
+import { useLocation } from "react-router-dom";
 
 const SubCategoryComponent = ({
   options,
@@ -15,7 +16,8 @@ const SubCategoryComponent = ({
   name,
   onSelect,
   onClear,
-  value
+  value,
+  setSubCategories,
 }) => {
 
   const { data } = useStateQuery();
@@ -23,7 +25,8 @@ const SubCategoryComponent = ({
   const [subCategory, setSubCategory] = useState([]);
 	const [selectedState, setSelectedState] = useState(null);
 	const [cities, setCities] = useState([]);
-
+  const locationPath = useLocation(); // React Hook
+  const jobsLocation = locationPath.pathname.includes('jobs')
   useEffect(() => {
 		const states = mapStates(data);
 		setLocation(states);
@@ -36,7 +39,7 @@ const SubCategoryComponent = ({
 		}
 	},[selectedState])
 
-
+console.log(formData, 'formData formData')
 
   const locationFun = () => {
     return (
@@ -109,6 +112,7 @@ const SubCategoryComponent = ({
       </div>
     );
   };
+  console.log(formData, 'formData')
 
   const categoryFun = () => {
     return (
@@ -121,15 +125,38 @@ const SubCategoryComponent = ({
           value={formData?.category}
           onSelect={(cat, val) => {
             // console.log(val, cat, 'val')
-            setFormData({...formData, category: val.value, subCategory: null})
-            const getSubCategories = options.find(
-              (item) => item._id == val.id
-            );
+            if(jobsLocation){
+              setFormData({
+                    ...formData,
+                    category: val.value,
+                    subCategory: "",
+                    tags: ''
+                  });
+                }else {
+                setSubCategories(val.id);
+                  setFormData({
+                    ...formData,
+                    category: val.value,
+                    subCategory: "",
+                    tags: '',
+                    page: 1,
+                    limit: 100
+                  });
+                }
+                const getSubCategories = options.find(
+                  (item) => item._id == val.id
+                );
             setSubCategory(getSubCategories?.childern);
           }}
           onClear={() => {
-            setFormData({...formData, category: null, subCategory: null})
+            // setFormData({...formData, category: null, subCategory: null})
+            setSubCategories('');
             setSubCategory([]);
+            if(jobsLocation){
+              setFormData({ ...formData, category: null, subCategory: null });
+          }else {
+            setFormData({ ...formData, category: null, subCategory: null, page: 1 });
+          }
           }}
           options={options}
           showSearch
