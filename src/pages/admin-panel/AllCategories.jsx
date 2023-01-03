@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Input, Modal, Form, Spin, Divider } from "antd";
 import { DeleteOutlined, EditOutlined, FileAddOutlined } from "@ant-design/icons";
-import { createCategoryApi, deleteCategoryApi, updateCategoryApi, updateBestInApi,updateExtraTalentApi, updateSubCategoryApi, updateTagsApi, updateFiltersApi, useFetchCategoryApiQuery, useGetCategoryApiQuery } from "../../api/getCategories";
+import { createCategoryApi, deleteCategoryApi, updateCategoryApi, updateBestInApi,updateExtraTalentApi, updateSubCategoryApi, updateTagsApi, updateFiltersApi, useFetchCategoryApiQuery, useGetCategoryApiQuery, updateSubCategoryByIdApi, updateTagsByIdApi, updateBestInByIdApi, updateExtraTalentByIdApi, deleteExtraTalentApi, deleteBestInApi, deleteFiltersApi, deleteTagsApi, deleteSubCategoryApi } from "../../api/getCategories";
 import PopConfirm from "../../common/pop-confirm";
 import EmptyMessage from "../../common/emptyMessage/EmptyMessage";
 import FormSelect from "../../common/inputs/FormSelect";
@@ -16,6 +16,15 @@ const renderMethod = (payload, title, id) => {
   if (title === 'Best-In') return updateBestInApi(id, payload);
   if (title === 'Extra-Talent') return updateExtraTalentApi(id, payload);
 }
+
+const editRenderMethod = (payload, title, id) => {
+  if (title === 'category') return createCategoryApi(payload);
+  if (title === 'Sub-category') return updateSubCategoryByIdApi(id, payload);
+  if (title === 'tags') return updateTagsByIdApi(id, payload);
+  if (title === 'Best-In') return updateBestInByIdApi(id, payload);
+  if (title === 'Extra-Talent') return updateExtraTalentByIdApi(id, payload);
+}
+
 const AllCategories = () => {
 
   const { data: categories } = useGetCategoryApiQuery();
@@ -27,12 +36,12 @@ const AllCategories = () => {
   const [formData, setFormData] = useState({});
   const [isEdit, setIsEdit] = useState(false);
   const [isEditOptions, setIsEditOptions] = useState(false);
-  const [selectedCategory, setSelectedCategory] = useState(categories?.length && categories[0]);
+  const [selectedCategory, setSelectedCategory] = useState(categories?.length && categories);
   // const [isLoading, setIsLoading] = useState(false);
-
+  console.log(selectedCategory, 'selectedCategory')
   const fetchCategoriesList = () => {
-    const updateSelectedCategory = categories?.filter((item) => item?._id == selectedCategory?._id)
-    setSelectedCategory(updateSelectedCategory?.length ? updateSelectedCategory[0] : selectedCategory)
+    const updateSelectedCategory = categories?.find((item) => item?._id == selectedCategory?._id)
+    setSelectedCategory(updateSelectedCategory ? updateSelectedCategory : selectedCategory)
   }
 
   const handleAdd = (type, id) => {
@@ -47,14 +56,18 @@ const AllCategories = () => {
     if(res){
       getCategories();
       setTitle('');
+    fetchCategoriesList();
     }
   }
 
 
-  const updateCategoryListApi = async(payload) => {
-    const res = await updateCategoryApi(formData?._id, payload);
+  const updateCategoryListApi = async(payload, title, selectedCategoryId) => {
+    console.log(payload, title, selectedCategoryId, 'payload, title, selectedCategoryId')
+    const res = await editRenderMethod(payload, title, selectedCategoryId);
     if(res){
       getCategories();
+    fetchCategoriesList();
+      setTitle('');
     }
   }
 
@@ -68,31 +81,27 @@ const AllCategories = () => {
     }
     if ( title === 'Sub-category') {
       if (isEditOptions) {
-        payload = selectedCategory?.childern?.map((item) => 
-        item.key === formData.key
-          ? {...item, key: formData['Sub-category'].toLowerCase().replace(' ', '-'), value: formData[title]}
-          : {...item}
-        )
+        payload = {_id:formData?._id ,key: formData['Sub-category'].toLowerCase().replace(' ', '-'), value: formData['Sub-category']}
+        // ?.map((item) => 
+        // item.key === formData.key
+        //   ? {...item, key: formData['Sub-category'].toLowerCase().replace(' ', '-'), value: formData[title]}
+        //   : {...item}
+        // )
       } else {
-        payload = [
-          ...selectedCategory?.childern,
-          {key: formData['Sub-category'].toLowerCase().replace(' ', '-'), _id: new Date().valueOf(), value: formData[title]}
-        ]
+        payload = { key: formData['Sub-category'].toLowerCase().replace(' ', '-'), _id: new Date().valueOf(), value: formData[title] }
       } 
     }
 
     if ( title == 'tags') {
       if (isEditOptions) {
-        payload = selectedCategory?.tags.map((item) => 
-        item.key === formData.key
-          ? {...item, key: formData['tags'].toLowerCase().replace(' ', '-'), value: formData[title]}
-          : {...item}
-        )
+        payload = {_id:formData?._id ,key: formData['tags'].toLowerCase().replace(' ', '-'), value: formData['tags']}
+        // payload = selectedCategory?.tags.map((item) => 
+        // item.key === formData.key
+        //   ? {...item, key: formData['tags'].toLowerCase().replace(' ', '-'), value: formData[title]}
+        //   : {...item}
+        // )
       } else {
-        payload = [
-          ...selectedCategory?.tags,
-          {key: formData['tags'].toLowerCase().replace(' ', '-'), _id: new Date().valueOf(), value: formData[title]}
-        ]
+        payload = { key: formData['tags'].toLowerCase().replace(' ', '-'), _id: new Date().valueOf(), value: formData[title]}
       } 
     } 
 
@@ -107,45 +116,38 @@ const AllCategories = () => {
         const newPayload = formData['filters'].map((item) => {
           return { key: item.toLowerCase().replace(' ', '-'), _id: new Date().valueOf(), value: item}
         })
-        payload = [
-          ...selectedCategory?.filters,
-          ...newPayload
-        ]
+        payload = newPayload
       } 
     } 
 
     if (title === 'Best-In') {
       if (isEditOptions) {
-        payload = selectedCategory?.bestIn.map((item) => 
-        item.key === formData.key
-          ? {...item, key: formData['Best-In'].toLowerCase().replace(' ', '-'), value: formData[title]}
-          : {...item}
-        )
+        payload = {_id:formData?._id ,key: formData['Best-In'].toLowerCase().replace(' ', '-'), value: formData['Best-In']}
+        // payload = selectedCategory?.bestIn.map((item) => 
+        // item.key === formData.key
+        //   ? {...item, key: formData['Best-In'].toLowerCase().replace(' ', '-'), value: formData[title]}
+        //   : {...item}
+        // )
       } else {
-        payload = [
-          ...selectedCategory?.bestIn,
-          {key: formData['Best-In'].toLowerCase().replace(' ', '-'), _id: new Date().valueOf(), value: formData[title]}
-        ]
+        payload = { key: formData['Best-In'].toLowerCase().replace(' ', '-'), _id: new Date().valueOf(), value: formData[title]}
       } 
     }
 
     if (title === 'Extra-Talent') {
       if (isEditOptions) {
-        payload = selectedCategory?.extraTalent.map((item) => 
-        item.key === formData.key
-          ? {...item, key: formData['Extra-Talent'].toLowerCase().replace(' ', '-'), value: formData[title]}
-          : {...item}
-        )
+        payload = {_id:formData?._id ,key: formData['Extra-Talent'].toLowerCase().replace(' ', '-'), value: formData['Extra-Talent']}
+        // payload = selectedCategory?.extraTalent.map((item) => 
+        // item.key === formData.key
+        //   ? {...item, key: formData['Extra-Talent'].toLowerCase().replace(' ', '-'), value: formData[title]}
+        //   : {...item}
+        // )
       } else {
-        payload = [
-          ...selectedCategory?.extraTalent,
-          {key: formData['Extra-Talent'].toLowerCase().replace(' ', '-'),_id: new Date().valueOf(), value: formData[title]}
-        ]
+        payload = { key: formData['Extra-Talent'].toLowerCase().replace(' ', '-'),_id: new Date().valueOf(), value: formData[title] }
       } 
     }
     
     isEdit ? 
-    updateCategoryListApi(payload)
+    updateCategoryListApi(payload, title, selectedCategory?._id)
     : fetchRenderMethodData(payload, title, selectedCategory?._id)
     setIsVisible(false);
     setFormData({});
@@ -156,6 +158,9 @@ const AllCategories = () => {
   
 
   const handleEdit = (entity, type) => {
+
+    console.log(selectedCategory._id , entity, 'entity entity')
+
     if (type == 'category') {
       setFormData({...entity, 'category': entity.value})
       setTitle(type);
@@ -163,8 +168,14 @@ const AllCategories = () => {
       setIsEditOptions(false);
       setIsEdit(true);
     }
+    if (type == 'Sub-category') {
+      setFormData({...entity, [type]: entity.value})
+      setTitle(type);
+      setIsEditOptions(true);
+      // setIsVisible(true);
+      setIsEdit(true);
+    }
     if (type == 'tags') {
-      
       setFormData({...entity, [type]: entity.value})
       setTitle(type);
       setIsEditOptions(true);
@@ -172,7 +183,6 @@ const AllCategories = () => {
       setIsEdit(true);
     }
     if (type == 'Best-In') {
-      
       setFormData({...entity, [type]: entity.value})
       setTitle(type);
       setIsEditOptions(true);
@@ -181,7 +191,6 @@ const AllCategories = () => {
     }
 
     if (type == 'Extra-Talent') {
-      
       setFormData({...entity, [type]: entity.value})
       setTitle(type);
       setIsEditOptions(true);
@@ -213,21 +222,21 @@ const AllCategories = () => {
     }
     if(type == 'Sub-category' ){
       const updateSubCategory = selectedCategory?.childern?.filter((item) => item?._id != id)
-      const res = await updateSubCategoryApi(selectedCategory?._id, updateSubCategory)
+      const res = await deleteSubCategoryApi(selectedCategory?._id, updateSubCategory)
       if(res){
         fetchCategories();
       }
     }
     if(type == 'tags'){
       const updateTags = selectedCategory?.tags?.filter((item) => item?._id != id)
-      const res = await updateTagsApi(selectedCategory?._id, updateTags)
+      const res = await deleteTagsApi(selectedCategory?._id, updateTags)
       if(res){
         fetchCategories();
       }
     }
     if(type == 'filters') {
       const updateFilters = selectedCategory?.filters?.filter((item) => item?.key != id)
-      const res = await updateFiltersApi(selectedCategory?._id, updateFilters)
+      const res = await deleteFiltersApi(selectedCategory?._id, updateFilters)
       if(res){
         fetchCategories();
       }
@@ -235,7 +244,7 @@ const AllCategories = () => {
 
     if(type == 'Best-In') {
       const updateFilters = selectedCategory?.bestIn?.filter((item) => item?._id != id)
-      const res = await updateBestInApi(selectedCategory?._id, updateFilters)
+      const res = await deleteBestInApi(selectedCategory?._id, updateFilters)
       if(res){
         fetchCategories();
       }
@@ -243,7 +252,7 @@ const AllCategories = () => {
 
     if(type == 'Extra-Talent') {
       const updateFilters = selectedCategory?.extraTalent?.filter((item) => item?._id != id)
-      const res = await updateExtraTalentApi(selectedCategory?._id, updateFilters)
+      const res = await deleteExtraTalentApi(selectedCategory?._id, updateFilters)
       if(res){
         fetchCategories();
       }
@@ -448,7 +457,7 @@ const AllCategories = () => {
               </div>
             </div>
             <div className="action">
-              <EditOutlined onClick={() => handleEdit(filter, 'filters')}/>
+              {/*<EditOutlined onClick={() => handleEdit(filter, 'filters')}/>*/}
               <PopConfirm
                 title='Are you sure?'
                 onConfirm={() => {
